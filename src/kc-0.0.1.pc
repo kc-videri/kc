@@ -1,0 +1,13 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+datarootdir=${prefix}/share
+datadir=${datarootdir}
+includedir=${prefix}/include/libkc-0.0.1
+
+Name: libkc
+Description: Sample library created by Anjuta project wizard.
+Version: 0.0.1
+Requires: 
+Libs: -L${libdir} -lkc
+Cflags: -I${includedir}

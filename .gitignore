@@ -31,3 +31,12 @@
 # Debug files
 *.dSYM/
 *.su
+
+# CDT-specific
+.cproject
+.autotools
+
+Makefile
+Makefile.in
+config.*
+configure
