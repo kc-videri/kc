@@ -91,11 +91,11 @@ KCWeb *kc_web_init_type(KCWebContentType type)
         }
     }
     if (result->content_type == NULL) {
-        printf("Content type not implemented yet");
+        fprintf(stderr, "Content type not implemented yet");
         goto kc_web_init_failed_memory;
     }
     // TODO Handle POST and GET variables
-    printf("Handle POST and GET variables\n");  // DELETE
+    fprintf(stderr, "Handle POST and GET variables\n");  // DELETE
     return result;
 
   kc_web_init_failed_memory:free(result);
@@ -131,7 +131,7 @@ int kc_web_print_image(KCWeb * web, KCString file_name)
 
     file = open(file_name, O_RDONLY);
     if (file == -1) {
-        printf("Cannot read file: %s (%d)\n", strerror(errno), errno);
+        fprintf(stderr, "Cannot read file: %s (%d)\n", strerror(errno), errno);
         return errno;
     }
 #if 0
@@ -164,9 +164,13 @@ KCWebContentType kc_web_get_content_type_from_ending(KCString str)
     KCString buffer;
     KCString *ending;
 
+    if (str == NULL) {
+        return type;
+    }
+
     buffer = rindex(str, '.');
     if (buffer == NULL || strlen(buffer) < 2) {
-        printf("Cannot find ending");
+        fprintf(stderr, "Cannot find ending");
         return type;
     }
     buffer++;
@@ -181,7 +185,7 @@ KCWebContentType kc_web_get_content_type_from_ending(KCString str)
         }
     }
     if (type == KC_WEB_CONTENT_UNDEF) {
-        printf("Unknown content type");
+        fprintf(stderr, "Unknown content type");
     }
 
     return type;
@@ -274,7 +278,7 @@ KCString kc_web_convert_value_string(const char *value, size_t length)
                 buffer[2] = '\0';
 
                 c = (uint8_t)strtol(buffer, NULL, 16);
-                printf("c: %c (%.2x)<br />\n", c, c); // DELETE
+                fprintf(stderr, "c: %c (%.2x)<br />\n", c, c); // DELETE
                 result[i] = c;
                 for (j = i + 1; j < _length - 2; j++) {
                     result[j] = result[j + 2];
