@@ -26,6 +26,15 @@
 #include <kc-string.h>
 
 /**
+ * Enumeration for different types of giving parameter
+ */
+typedef enum {
+    KC_WEB_PARAMETER_GET,       ///< Parameter comes using GET
+    KC_WEB_PARAMETER_POST,      ///< Parameter comes using POST
+    KC_WEB_PARAMETER_HTTP,      ///< Parameter comes using HTTP
+} KCWebParameterType;
+
+/**
  * Enumeration for different types of receiving data
  */
 typedef enum {
@@ -62,7 +71,7 @@ typedef struct kc_web_content_type_def {
 typedef struct kc_web_parameter {
     KCString key;               ///< Key of a parameter
     KCString value;             ///< Value of a parameter
-    KCWebRequestType type;      ///< With which request type do I received it
+    KCWebParameterType type;    ///< On which way does the parameter come
 } KCWebParameter;
 
 /**
@@ -145,7 +154,8 @@ KCString kc_web_parameter_get_key(KCWebParameter *item);
 int kc_web_parameter_set_value(KCWebParameter *item, KCString value);
 KCString kc_web_parameter_get_value(KCWebParameter *item);
 int kc_web_parameter_set_type(KCWebParameter * item,
-                              KCWebRequestType type);
-KCWebRequestType kc_web_parameter_get_type(KCWebParameter *item);
+                              KCWebParameterType type);
+KCWebParameterType kc_web_parameter_get_type(KCWebParameter *item);
+int kc_web_parameter_add_item(KCWebParameter * item);
 
 #endif /* __KC_WEB_H__ */

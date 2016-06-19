@@ -60,7 +60,7 @@ KCWebContentTypeDef content_types[] = {
  * @return
  */
 int kc_web_parse_query_string(KCWeb * web, const char *query_string,
-                              KCWebRequestType type);
+                              KCWebParameterType type);
 
 KCWeb *kc_web_init()
 {
@@ -71,6 +71,7 @@ KCWeb *kc_web_init_type(KCWebContentType type)
 {
     KCWeb *result;
     KCWebContentTypeDef *content_type;
+    KCString buffer;
 
     result = (KCWeb *)malloc(sizeof(KCWeb));
     if (result == NULL) {
@@ -94,11 +95,36 @@ KCWeb *kc_web_init_type(KCWebContentType type)
         fprintf(stderr, "Content type not implemented yet");
         goto kc_web_init_failed_memory;
     }
-    // TODO Handle POST and GET variables
-    fprintf(stderr, "Handle POST and GET variables\n");  // DELETE
+
+    // TODO Handle POST, GET and HTTP variables
+    fprintf(stderr, "Handle POST, GET and HTTP variables\n");  // DELETE
+    // GET parameter
+    buffer = getenv("QUERY_STRING");
+    if (buffer != NULL && strlen(buffer) > 0) {
+        kc_web_parse_query_string(result, buffer, KC_WEB_PARAMETER_GET);
+    }
+
+    buffer = getenv("CONTENT_LENGTH");
+    if (buffer != NULL) {
+        size_t post_length;
+        char *post_content;
+
+        post_length = atoi(buffer);
+        if (post_length != 0) {
+            post_content =
+                (char *) malloc((post_length + 1) * sizeof(char));
+            if (post_content != NULL) {
+                fgets(post_content, post_length + 1, stdin);
+
+                kc_web_parse_query_string(result, buffer, KC_WEB_PARAMETER_POST);
+            }
+        }
+    }
+
     return result;
 
-  kc_web_init_failed_memory:free(result);
+  kc_web_init_failed_memory:
+    free(result);
     return NULL;
 }
 
@@ -192,7 +218,7 @@ KCWebContentType kc_web_get_content_type_from_ending(KCString str)
 }
 
 int kc_web_parse_query_string(KCWeb * web, const char *query_string,
-                              KCWebRequestType type)
+                              KCWebParameterType type)
 {
     int result = 0;
     char *buffer;
@@ -348,14 +374,14 @@ KCString kc_web_parameter_get_value(KCWebParameter *item)
     return item->value;
 }
 
-int kc_web_parameter_set_type(KCWebParameter *item, KCWebRequestType type)
+int kc_web_parameter_set_type(KCWebParameter *item, KCWebParameterType type)
 {
     item->type = type;
 
     return 0;
 }
 
-KCWebRequestType kc_web_parameter_get_type(KCWebParameter *item)
+KCWebParameterType kc_web_parameter_get_type(KCWebParameter *item)
 {
     return item->type;
 }
