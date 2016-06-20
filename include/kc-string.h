@@ -1,7 +1,7 @@
 /**
  * @file        kc_string.h
  * @brief       Header file for all string operations
- * @author      Michael Ott <michael@king-coder.de>
+ * @author      Michael Ott <kc.videri@gmail.com>
  *
  * copyright:   (C) 2016 by Michael Ott
  *

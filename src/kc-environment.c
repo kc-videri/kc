@@ -1,7 +1,7 @@
 /**
  * @file        environment.c
  * @brief       Class to get environment variables (implementation)
- * @author      Michael Ott <michael@king-coder.de>
+ * @author      Michael Ott <kc.videri@gmail.com>
  *
  * copyright:   (C) 2013 by Michael Ott
  *

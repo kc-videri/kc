@@ -1,7 +1,7 @@
 /**
  * @file        kc_mutex.h
  * @brief       Mutex implemenation for KC framework (Header file)
- * @author      Michael Ott <michael@king-coder.de>
+ * @author      Michael Ott <kc.videri@gmail.com>
  *
  * copyright:   (C) 2016 by Michael Ott
  *
