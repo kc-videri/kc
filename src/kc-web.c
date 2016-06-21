@@ -335,7 +335,6 @@ int kc_web_parse_query_string(KCWeb * web, const char *query_string,
             break;
         }
 
-  parse_query_string_error:
         buffer += current_length;
         buffer++;
     }
