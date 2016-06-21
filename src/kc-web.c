@@ -33,7 +33,11 @@
 #include <kc-web_private.h>
 #include <kc-string.h>
 
-// Private structure declaration
+/**
+ * Private variable declaration
+ */
+
+extern char **environ;
 
 /**
  * Public function definition
@@ -49,6 +53,8 @@ KCWeb *kc_web_init_type(KCWebContentType type)
     KCWeb *result;
     KCWebContentTypeDef *content_type;
     KCString buffer;
+    char **env, **key;
+    kcbool found_one;
 
     result = (KCWeb *)malloc(sizeof(KCWeb));
     if (result == NULL) {
@@ -98,6 +104,22 @@ KCWeb *kc_web_init_type(KCWebContentType type)
 
     // TODO Handle HTTP variables
     fprintf(stderr, "%s(%d): Handle HTTP variables\n", __func__, __LINE__);  // DELETE
+    for (env = environ; *env; ++env) {
+        if (!strncmp(*env, KC_WEB_HTTP_PREFIX, strlen(KC_WEB_HTTP_PREFIX))) {
+            found_one = FALSE;
+            for (key = kc_web_http_keys; *key; key++) {
+                if (! strncmp(*key, *env, strlen(*key))) {
+                    found_one = TRUE;
+                    break;
+                }
+            }
+
+            if (found_one == FALSE) {
+                kc_web_parse_query_string(result, *env, KC_WEB_PARAMETER_HTTP);
+            }
+        }
+    }
+
 
 #if 0
     // DELETE start

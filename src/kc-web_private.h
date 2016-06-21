@@ -26,6 +26,12 @@
 #include <kc-string.h>
 
 /*
+ * Private define declaration
+ */
+
+#define KC_WEB_HTTP_PREFIX "HTTP_"
+
+/*
  * Private structure declaration
  * */
 
@@ -50,6 +56,18 @@ struct kc_web_content_type {
     {KC_WEB_CONTENT_TEXT, "text/text", {"txt", NULL}},
     {KC_WEB_CONTENT_ICO, "image/x-icon", {"ico", NULL}},
     {KC_WEB_CONTENT_UNDEF, NULL, {NULL}}
+};
+
+char *kc_web_http_keys[] = {
+    "HTTP_HOST",
+    "HTTP_USER_AGENT",
+    "HTTP_ACCEPT",
+    "HTTP_ACCEPT_LANGUAGE",
+    "HTTP_ACCEPT_ENCODING",
+    "HTTP_DNT",
+    "HTTP_COOKIE",
+    "HTTP_CONNECTION",
+    NULL,
 };
 
 /*
