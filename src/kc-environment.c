@@ -1,9 +1,9 @@
 /**
  * @file        environment.c
  * @brief       Class to get environment variables (implementation)
- * @author      Michael Ott <kc.videri@gmail.com>
+ * @author      K-C Videri <kc.videri@gmail.com>
  *
- * copyright:   (C) 2013 by Michael Ott
+ * copyright:   (C) 2013 by K-C Videri
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

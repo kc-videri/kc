@@ -1,9 +1,9 @@
 /**
  * @file        kc.h
  * @brief       Default header file for KC framework
- * @author      Michael Ott <kc.videri@gmail.com>
+ * @author      K-C Videri <kc.videri@gmail.com>
  *
- * copyright:   (C) 2016 by Michael Ott
+ * copyright:   (C) 2016 by K-C Videri
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as

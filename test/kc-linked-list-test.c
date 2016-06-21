@@ -1,9 +1,9 @@
 /**
  * @file        environment_test.c
  * @brief       Class to get environment variables (testing)
- * @author      Michael Ott <michael@king-coder.de>
+ * @author      K-C Videri <kc.videri@gmail.com>
  *
- * copyright:   (C) 2013 by Michael Ott
+ * copyright:   (C) 2013 by K-C Videri
  *
  * Description : Uses shared library to print greeting
  * To run the resulting executable the LD_LIBRARY_PATH must be
