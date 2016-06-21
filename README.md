@@ -31,6 +31,7 @@ LIBS=-lfcgi -Wl,-Bstatic -lkcweb -lkc -L<your folder>kc/source/src/.libs -Wl,-Bd
 * get kcweb to work completely
 * string operations
 * lists
+* debug class
 * packages for Debian and RedHat (OpenSuse)
 * get to work on Windows, Android and Mac
 

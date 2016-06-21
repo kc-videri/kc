@@ -33,6 +33,8 @@
 #include <kc-web_private.h>
 #include <kc-string.h>
 
+// Private structure declaration
+
 /**
  * Public function definition
  * */
@@ -67,12 +69,10 @@ KCWeb *kc_web_init_type(KCWebContentType type)
         }
     }
     if (result->content_type == NULL) {
-        fprintf(stderr, "Content type not implemented yet");
+        fprintf(stderr, "%s(%d): Content type not implemented yet\n", __func__, __LINE__);
         goto kc_web_init_failed_memory;
     }
 
-    // TODO Handle POST, GET and HTTP variables
-    fprintf(stderr, "Handle POST, GET and HTTP variables\n");  // DELETE
     // GET parameter
     buffer = getenv("QUERY_STRING");
     if (buffer != NULL && strlen(buffer) > 0) {
@@ -91,20 +91,30 @@ KCWeb *kc_web_init_type(KCWebContentType type)
             if (post_content != NULL) {
                 fgets(post_content, post_length + 1, stdin);
 
-                kc_web_parse_query_string(result, buffer, KC_WEB_PARAMETER_POST);
+                kc_web_parse_query_string(result, post_content, KC_WEB_PARAMETER_POST);
             }
         }
     }
 
+    // TODO Handle HTTP variables
+    fprintf(stderr, "%s(%d): Handle HTTP variables\n", __func__, __LINE__);  // DELETE
+
+#if 0
     // DELETE start
     KCLinkedListItem *item;
     int i = 0;
     for (item = kc_linked_list_get_first(result->parameter); item; item = kc_linked_list_get_next(item)) {
         KCWebParameter *entry;
         entry = (KCWebParameter *)kc_linked_list_element_get_data(item);
-        fprintf(stderr, "%d: %d: %s %s\n", i++, kc_web_parameter_get_type(entry), kc_web_parameter_get_key(entry), kc_web_parameter_get_value(entry));
+        fprintf(stderr, "%d:", i++);
+        fprintf(stderr, "type: %d;", kc_web_parameter_get_type(entry));
+        fprintf(stderr, " key: %s", kc_web_parameter_get_key(entry));
+        fprintf(stderr, " value: %s\n", kc_web_parameter_get_value(entry));
+        fprintf(stderr, "\n");
     }
     // DELETE end
+#endif
+
     return result;
 
   kc_web_init_failed_memory:
@@ -141,7 +151,7 @@ int kc_web_print_image(KCWeb * web, KCString file_name)
 
     file = open(file_name, O_RDONLY);
     if (file == -1) {
-        fprintf(stderr, "Cannot read file: %s (%d)\n", strerror(errno), errno);
+        fprintf(stderr, "%s(%d): Cannot read file: %s (%d)\n", __func__, __LINE__, strerror(errno), errno);
         return errno;
     }
 #if 0
@@ -180,7 +190,7 @@ KCWebContentType kc_web_get_content_type_from_ending(KCString str)
 
     buffer = rindex(str, '.');
     if (buffer == NULL || strlen(buffer) < 2) {
-        fprintf(stderr, "Cannot find ending");
+        fprintf(stderr, "%s(%d): Cannot find ending\n", __func__, __LINE__);
         return type;
     }
     buffer++;
@@ -195,7 +205,7 @@ KCWebContentType kc_web_get_content_type_from_ending(KCString str)
         }
     }
     if (type == KC_WEB_CONTENT_UNDEF) {
-        fprintf(stderr, "Unknown content type");
+        fprintf(stderr, "%s(%d): Unknown content type\n", __func__, __LINE__);
     }
 
     return type;
@@ -228,7 +238,6 @@ KCString kc_web_convert_value_string(const char *value, size_t length)
                 buffer[2] = '\0';
 
                 c = (uint8_t)strtol(buffer, NULL, 16);
-                fprintf(stderr, "c: %c (%.2x)<br />\n", c, c); // DELETE
                 result[i] = c;
                 for (j = i + 1; j < _length - 2; j++) {
                     result[j] = result[j + 2];
@@ -243,6 +252,92 @@ KCString kc_web_convert_value_string(const char *value, size_t length)
             ;
             break;
         }
+    }
+    result[_length] = '\0';
+
+    return result;
+}
+
+KCString kc_web_parameter_get_key(KCWebParameter *item)
+{
+    return item->key;
+}
+
+KCString kc_web_parameter_get_value(KCWebParameter *item)
+{
+    if (item->value == NULL) {
+        return "";
+    } else {
+        return item->value;
+    }
+}
+
+KCWebParameterType kc_web_parameter_get_type(KCWebParameter *item)
+{
+    return item->type;
+}
+
+/**
+ * Private function definition
+ * */
+
+int kc_web_parse_query_string(KCWeb * web, const char *query_string,
+                              KCWebParameterType type)
+{
+    int result = 0;
+    char *buffer;
+    size_t string_length;
+    size_t current_length;
+    int i;
+
+    buffer = (char *) query_string;
+    while (1) {
+        KCWebParameter *item = NULL;
+
+        string_length = strlen(buffer);
+
+        for (current_length = 0; current_length < strlen(buffer);
+             current_length++) {
+            if (buffer[current_length] == '&') {
+                break;
+            }
+        }
+
+        for (i = 0; i < current_length; i++) {
+            if (buffer[i] == '=') {
+                break;
+            }
+        }
+
+        if (i > 0) {
+            item = kc_web_parameter_new();
+            if (item == NULL) {
+                return -1;
+            }
+            kc_web_parameter_set_type(item, type);
+
+            kc_web_parameter_set_key(item, kc_string_create(buffer, i));
+
+            if (i != current_length) {
+                kc_web_parameter_set_value(item,
+                                           kc_web_convert_value_string
+                                           (buffer + i + 1,
+                                            current_length - i - 1));
+
+            }
+        }
+
+        if (item != NULL) {
+            kc_web_parameter_list_add_item(web, item);
+        }
+
+        if (current_length == string_length) {
+            break;
+        }
+
+  parse_query_string_error:
+        buffer += current_length;
+        buffer++;
     }
 
     return result;
@@ -281,21 +376,11 @@ int kc_web_parameter_set_key(KCWebParameter *item, KCString key)
     return 0;
 }
 
-KCString kc_web_parameter_get_key(KCWebParameter *item)
-{
-    return item->key;
-}
-
 int kc_web_parameter_set_value(KCWebParameter *item, KCString value)
 {
     item->value = value;
 
     return 0;
-}
-
-KCString kc_web_parameter_get_value(KCWebParameter *item)
-{
-    return item->value;
 }
 
 int kc_web_parameter_set_type(KCWebParameter *item, KCWebParameterType type)
@@ -305,73 +390,9 @@ int kc_web_parameter_set_type(KCWebParameter *item, KCWebParameterType type)
     return 0;
 }
 
-KCWebParameterType kc_web_parameter_get_type(KCWebParameter *item)
+int kc_web_parameter_list_add_item(KCWeb* web, KCWebParameter * item)
 {
-    return item->type;
+    kc_linked_list_add(web->parameter, item);
+
+    return 0;
 }
-
-/**
- * Private function definition
- * */
-
-int kc_web_parse_query_string(KCWeb * web, const char *query_string,
-                              KCWebParameterType type)
-{
-    int result = 0;
-    char *buffer;
-    size_t string_length;
-    size_t current_length;
-    int i;
-
-    buffer = (char *) query_string;
-    while (1) {
-        KCWebParameter *item;
-
-        item = kc_web_parameter_new();
-        if (item == NULL) {
-            return -1;
-        }
-        kc_web_parameter_set_type(item, type);
-
-        string_length = strlen(buffer);
-
-        for (current_length = 0; current_length < strlen(buffer);
-             current_length++) {
-            if (buffer[current_length] == '&') {
-                break;
-            }
-        }
-
-        for (i = 0; i < current_length; i++) {
-            if (buffer[i] == '=') {
-                break;
-            }
-        }
-
-        if (i > 0) {
-            kc_web_parameter_set_key(item, kc_string_create(buffer, i));
-            if (i == current_length) {
-                goto parse_query_string_error;
-            }
-
-            if (i != current_length) {
-                kc_web_parameter_set_value(item,
-                                           kc_web_convert_value_string
-                                           (buffer + i + 1,
-                                            current_length - i - 1));
-
-            }
-        }
-
-        if (current_length == string_length) {
-            break;
-        }
-
-  parse_query_string_error:
-        buffer += current_length;
-        buffer++;
-    }
-
-    return result;
-}
-

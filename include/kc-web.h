@@ -69,9 +69,9 @@ typedef struct kc_web_content_type_def {
  * Structure KCWebParameter: Structure to save received parameter item
  */
 typedef struct kc_web_parameter {
+    KCWebParameterType type;    ///< On which way does the parameter come
     KCString key;               ///< Key of a parameter
     KCString value;             ///< Value of a parameter
-    KCWebParameterType type;    ///< On which way does the parameter come
 } KCWebParameter;
 
 /**
@@ -143,19 +143,8 @@ KCWebContentType kc_web_get_content_type_from_ending(KCString str);
  */
 KCString kc_web_convert_value_string(const char *value, size_t length);
 
-/**
- * Create a new KCWebParameter
- * @return Item or NULL on error
- */
-KCWebParameter *kc_web_parameter_new();
-int kc_web_parameter_free(KCWebParameter *item);
-int kc_web_parameter_set_key(KCWebParameter *item, KCString key);
 KCString kc_web_parameter_get_key(KCWebParameter *item);
-int kc_web_parameter_set_value(KCWebParameter *item, KCString value);
 KCString kc_web_parameter_get_value(KCWebParameter *item);
-int kc_web_parameter_set_type(KCWebParameter * item,
-                              KCWebParameterType type);
 KCWebParameterType kc_web_parameter_get_type(KCWebParameter *item);
-int kc_web_parameter_add_item(KCWebParameter * item);
 
 #endif /* __KC_WEB_H__ */
