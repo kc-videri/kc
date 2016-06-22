@@ -102,6 +102,11 @@ KCWeb *kc_web_init_type(KCWebContentType type);
  * @return Pointer to KCWeb structure or NULL on error
  */
 KCWeb *kc_web_init_from_ending();
+/**
+ * Free allocated memory
+ * @return 0 => successful
+ */
+int kc_web_free();
 
 /**
  * Print content type
@@ -143,8 +148,36 @@ KCWebContentType kc_web_get_content_type_from_ending(KCString str);
  */
 KCString kc_web_convert_value_string(const char *value, size_t length);
 
+/**
+ * Get first entry of the parameter list (not thread saved)
+ * @param web Pointer to KCWeb structure
+ * @return First item in list
+ */
+KCLinkedListItem *kc_web_parameter_list_get_first(KCWeb *web);
+/**
+ * Get parameter item from string
+ * @param web Pointer to KCWeb structure
+ * @param search_string Key string to search for
+ * @return Pointer to item or NULL when not found
+ */
+KCWebParameter *kc_web_parameter_get(KCWeb *web, KCString search_string);
+/**
+* Get key from KCWebParameter item
+* @param item Pointer to KCWebParameter object
+* @return Pointer to key
+*/
 KCString kc_web_parameter_get_key(KCWebParameter *item);
+/**
+* Get value from KCWebParameter item
+* @param item Pointer to KCWebParameter object
+* @return Pointer to value
+*/
 KCString kc_web_parameter_get_value(KCWebParameter *item);
+/**
+* Get type from KCWebParameter item
+* @param item Pointer to KCWebParameter object
+* @return Parameter type
+*/
 KCWebParameterType kc_web_parameter_get_type(KCWebParameter *item);
 
 #endif /* __KC_WEB_H__ */

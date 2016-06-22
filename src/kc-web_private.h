@@ -75,7 +75,7 @@ char *kc_web_http_keys[] = {
  * */
 
 /**
- * Parse a received string (query, content, ...)
+ * Parse a received string (query (get), content (post), ...)
  * @param web Pointer to KC Web structure
  * @param query_string String to parse
  * @param length Length of the value
@@ -90,6 +90,15 @@ int kc_web_parse_query_string(KCWeb * web, const char *query_string,
  * @return Item or NULL on error
  */
 KCWebParameter *kc_web_parameter_new();
+/**
+ * Create a new KCWebParameter
+ * @param string String to check
+ * @param length Length of string
+ * @param type Type to set
+ * @return Item or NULL on error
+ */
+KCWebParameter *kc_web_parameter_new_from_string(KCString string, size_t length,
+                                                 KCWebParameterType type);
 /**
  * Free KCWebParameter pointer item
  * @param item Item to free
