@@ -25,7 +25,7 @@
 
 #include <kc-string.h>
 
-// TODO test application
+// TODO MOT: test application
 KCString kc_string_create(const char *value, size_t length)
 {
     char *result;
@@ -39,4 +39,9 @@ KCString kc_string_create(const char *value, size_t length)
 
   kc_sting_create_exit:
     return result;
+}
+
+int kc_string_free(KCString string)
+{
+    free(string);
 }

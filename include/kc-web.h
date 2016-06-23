@@ -78,8 +78,10 @@ typedef struct kc_web_parameter {
  * Structure KCWeb: Structure to save all important web information
  */
 typedef struct kc_web {
+#if 0
     char *uri;                  ///< URI
     char *get_query_string;     ///< Get query string
+#endif
     KCLinkedList *parameter;    ///< parameter list
     KCWebRequestType request_type;  ///< request type
     KCWebContentTypeDef *content_type;  ///< Content type structure
@@ -104,9 +106,10 @@ KCWeb *kc_web_init_type(KCWebContentType type);
 KCWeb *kc_web_init_from_ending();
 /**
  * Free allocated memory
+ * @param web Pointer to KCWeb structure
  * @return 0 => successful
  */
-int kc_web_free();
+int kc_web_free(KCWeb *web);
 
 /**
  * Print content type

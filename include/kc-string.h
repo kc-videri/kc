@@ -32,5 +32,11 @@ typedef kcchar* KCString;                      ///< Definition KCString
  * @return New created string or NULL on error
  */
 KCString kc_string_create(const char *value, size_t length);
+/**
+ * Free string
+ * @param string String to free
+ * @return 0 => successful
+ */
+int kc_string_free(KCString string);
 
 #endif /* __KC_STRING_H__ */

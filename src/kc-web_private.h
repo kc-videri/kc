@@ -48,7 +48,7 @@ struct kc_web_content_type {
  * Private variable declaration
  * */
 
-// TODO: add all useful content types
+// TODO MOT: add all useful content types
  KCWebContentTypeDef content_types[] = {
     {KC_WEB_CONTENT_HTML, "text/html", {"htm", "html", NULL}},
     {KC_WEB_CONTENT_XHTML, "text/xhtml", {"xhtml", NULL}},
@@ -99,6 +99,12 @@ KCWebParameter *kc_web_parameter_new();
  */
 KCWebParameter *kc_web_parameter_new_from_string(KCString string, size_t length,
                                                  KCWebParameterType type);
+/**
+ * Free parameter entry
+ * @param item Item to free
+ * @return 0 => successful
+ */
+int kc_web_parameter_free(KCWebParameter *item);
 /**
  * Free KCWebParameter pointer item
  * @param item Item to free

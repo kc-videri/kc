@@ -118,12 +118,12 @@ int get_hostname(KCEnvironment * environment)
     }
 #if defined(__linux__)
     gethostname(environment->hostname, BUFFER_LENGTH);
-    // TODO Error handling
+    // TODO MOT: Error handling
 
 #elif (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
     // Initialize winsock dll
     if (WSAStartup(MAKEWORD(1, 0), &WSAData) == FALSE) {
-        // TODO: Error handling
+        // TODO MOT: Error handling
     }
     // Get local host name
     if (gethostname(environment->hostname, BUFFER_LENGTH - 1)) {
@@ -148,7 +148,7 @@ int get_username(KCEnvironment * environment)
 #if defined(__linux__)
     //gethostname(environment->hostname, BUFFER_LENGTH);
     retval = getlogin_r(environment->username, BUFFER_LENGTH);
-    // TODO Error handling
+    // TODO MOT: Error handling
 
     return (0);
 #elif (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
@@ -182,7 +182,7 @@ int convert_wchar_multibyte(TCHAR * msg, char *value)
     WideCharToMultiByte(CP_ACP, 0, (LPCWSTR) msg,
                         wcslen((const wchar_t *) msg) + 1, value,
                         BUFFER_LENGTH, NULL, NULL);
-    // TODO error handling
+    // TODO MOT: error handling
     printf("%s\n", value);
 
     return (0);

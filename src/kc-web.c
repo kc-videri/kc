@@ -154,11 +154,22 @@ KCWeb *kc_web_init_from_ending()
     return kc_web_init_type(type);
 }
 
-int kc_web_free()
+int kc_web_free(KCWeb *web)
 {
-    fprintf(stderr, "TODO: To implement\n");
+    KCLinkedListItem *item;
+    KCWebParameter *parameter;
 
-    return -1;
+    kc_mutex_item_lock((KCMutexItem *) web->parameter);
+    for (item = kc_linked_list_get_first(web->parameter); item;
+            item = kc_linked_list_get_next(item)) {
+        parameter = (KCWebParameter *)kc_linked_list_element_get_data(item);
+        kc_string_free(kc_web_parameter_get_key(parameter));
+        kc_string_free(kc_web_parameter_get_value(parameter));
+        kc_web_parameter_free(parameter);
+    }
+    kc_mutex_item_unlock((KCMutexItem *) web->parameter);
+
+    return 0;
 }
 
 void kc_web_print_content_type(KCWeb * web)
@@ -290,7 +301,21 @@ KCLinkedListItem *kc_web_parameter_list_get_first(KCWeb *web)
 
 KCWebParameter *kc_web_parameter_get(KCWeb *web, KCString search_string)
 {
-    // TODO MOT: To implement
+    KCLinkedListItem *item;
+    KCWebParameter *parameter;
+
+    kc_mutex_item_lock((KCMutexItem *) web->parameter);
+    for (item = kc_linked_list_get_first(web->parameter); item;
+            item = kc_linked_list_get_next(item)) {
+        parameter = (KCWebParameter *)kc_linked_list_element_get_data(item);
+        if (! strcmp(search_string, kc_web_parameter_get_key(parameter))) {
+            kc_mutex_item_unlock((KCMutexItem *) web->parameter);
+
+            return parameter;
+        }
+    }
+
+    kc_mutex_item_unlock((KCMutexItem *) web->parameter);
 
     return NULL;
 }
