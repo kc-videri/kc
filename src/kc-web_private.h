@@ -106,12 +106,6 @@ KCWebParameter *kc_web_parameter_new_from_string(KCString string, size_t length,
  */
 int kc_web_parameter_free(KCWebParameter *item);
 /**
- * Free KCWebParameter pointer item
- * @param item Item to free
- * @return 0 => successful
- */
-int kc_web_parameter_free(KCWebParameter *item);
-/**
  * Set key
  * @param item KCWebParameter pointer item
  * @param key Key to set

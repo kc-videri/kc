@@ -163,11 +163,10 @@ int kc_web_free(KCWeb *web)
     for (item = kc_linked_list_get_first(web->parameter); item;
             item = kc_linked_list_get_next(item)) {
         parameter = (KCWebParameter *)kc_linked_list_element_get_data(item);
-        kc_string_free(kc_web_parameter_get_key(parameter));
-        kc_string_free(kc_web_parameter_get_value(parameter));
         kc_web_parameter_free(parameter);
     }
     kc_mutex_item_unlock((KCMutexItem *) web->parameter);
+    kc_linked_list_free(web->parameter);
 
     return 0;
 }
