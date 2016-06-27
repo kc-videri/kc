@@ -93,30 +93,33 @@ int kc_linked_list_remove(KCLinkedList * list, void *element)
     int retval;
     kcbool found_one = FALSE;
     KCLinkedListItem *current, *last = list->items;
+    KCLinkedListIterator iterator;
 
     kc_mutex_item_lock((KCMutexItem *) list);
 
-	for (current = kc_linked_list_get_first(list), retval = 0; current; current = kc_linked_list_get_next(current), retval++) {
-	    if (current->data == element) {
-	        if (current->next == NULL) {
-	            last->next = NULL;
-	        } else {
-	            last->next = current->next;
-	        }
+    for (iterator = kc_linked_list_get_first(list), retval = 0;
+         kc_linked_list_is_last(iterator);
+         iterator = kc_linked_list_get_next(iterator), retval++) {
+        if (kc_linked_list_element_get_data(iterator) == element) {
+            if (((KCLinkedListItem *)iterator.data)->next == NULL) {
+                last->next = NULL;
+            } else {
+                last->next = current->next;
+            }
 
-	        free(current);
-	        found_one = TRUE;
+            free(current);
+            found_one = TRUE;
 
-	        break;
-	    }
-	    last = current;
-	}
+            break;
+        }
+        last = current;
+    }
 
     kc_mutex_item_unlock((KCMutexItem *) list);
     if (found_one == FALSE) {
         retval = -1;
     }
-	return retval;
+    return retval;
 }
 
 int kc_linked_list_clear(KCLinkedList * list)
@@ -126,33 +129,58 @@ int kc_linked_list_clear(KCLinkedList * list)
 
     kc_mutex_item_lock((KCMutexItem *) list);
 
-	current = kc_linked_list_get_first(list);
-	while (current) {
-	    next = current->next;
+    current = list->items;
+    while (current) {
+        next = current->next;
         free(current);
         current = next;
-	}
+    }
 
     kc_mutex_item_unlock((KCMutexItem *) list);
 
-	return retval;
+    return retval;
 }
 
-KCLinkedListItem *kc_linked_list_get_first(KCLinkedList * list)
+KCLinkedListIterator kc_linked_list_get_first(KCLinkedList * list)
 {
+    KCLinkedListIterator iterator;
+
     if (list->items != NULL) {
-        return list->items;
+        iterator.data = list->items;
     }
 
-    return NULL;
+    return iterator;
 }
 
-KCLinkedListItem *kc_linked_list_get_next(KCLinkedListItem * item)
+KCLinkedListIterator kc_linked_list_get_last(KCLinkedList * list)
 {
-    return item->next;
+    KCLinkedListIterator iterator;
+
+    iterator.data = list->last;
+    return iterator;
+
 }
 
-void *kc_linked_list_element_get_data(KCLinkedListItem * element)
+kcbool kc_linked_list_is_last(KCLinkedListIterator iterator)
 {
-    return element->data;
+    if (((KCLinkedListItem *) iterator.data)->next == NULL) {
+        return TRUE;
+    } else {
+        return FALSE;
+    }
+
+}
+
+KCLinkedListIterator kc_linked_list_get_next(KCLinkedListIterator item)
+{
+    KCLinkedListIterator iterator;
+
+    iterator.data = ((KCLinkedListItem *) iterator.data)->next;
+
+    return iterator;
+}
+
+void *kc_linked_list_element_get_data(KCLinkedListIterator iterator)
+{
+    return ((KCLinkedListItem *) iterator.data)->data;
 }

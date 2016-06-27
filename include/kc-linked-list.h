@@ -23,17 +23,31 @@
 #define __KC_LINKED_LIST_H__
 
 #include <kc-mutex.h>
+#include <kc.h>
 
+/**
+ * structure KCLinkedListItem: Structure for a list item
+ */
 typedef struct kc_linked_list_item {
-    void *data;
-    struct kc_linked_list_item *next;
+    void *data;                         ///< Linked data
+    struct kc_linked_list_item *next;   ///< Next item
 } KCLinkedListItem;
 
+/**
+ * Structure KCLinkedList: Structure for a linked list
+ */
 typedef struct kc_linked_list {
-    KCMutexItem mutex_item;
-    KCLinkedListItem *items;
-    KCLinkedListItem *last;
+    KCMutexItem mutex_item;             ///< Mutex item for the thread save part of the linked list
+    KCLinkedListItem *items;            ///< Linked Items
+    KCLinkedListItem *last;             ///< Last element in list
 } KCLinkedList;
+
+/**
+ * Iterator for the linked List
+ */
+typedef struct kc_linked_list_iterator {
+    void *data;
+} KCLinkedListIterator;
 
 /**
  * Create a new linked list
@@ -73,18 +87,24 @@ int kc_linked_list_clear(KCLinkedList *list);
  * @param list Linked list
  * @return First item in list
  */
-KCLinkedListItem *kc_linked_list_get_first(KCLinkedList * list);
+KCLinkedListIterator kc_linked_list_get_first(KCLinkedList * list);
+/**
+ * Is this iterator the last item in the list (not thread saved)
+ * @param iterator
+ * @return TRUE -> is last
+ */
+kcbool kc_linked_list_is_last(KCLinkedListIterator iterator);
 /**
  * Get next item in list (not thread saved);
- * @param item Linked list item
+ * @param iterator Current iterator
  * @return Next item in list
  */
-KCLinkedListItem *kc_linked_list_get_next(KCLinkedListItem * item);
+KCLinkedListIterator kc_linked_list_get_next(KCLinkedListIterator iterator);
 /**
  * Get data from the current element
  * @param element Linked list item
  * @return Pointer to data
  */
-void *kc_linked_list_element_get_data(KCLinkedListItem * element);
+void *kc_linked_list_element_get_data(KCLinkedListIterator iterator);
 
 #endif /* __KC_LINKED_LIST_H__ */
