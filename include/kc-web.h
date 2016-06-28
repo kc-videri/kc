@@ -156,7 +156,7 @@ KCString kc_web_convert_value_string(const char *value, size_t length);
  * @param web Pointer to KCWeb structure
  * @return First item in list
  */
-KCLinkedListItem *kc_web_parameter_list_get_first(KCWeb *web);
+KCLinkedListIterator kc_web_parameter_list_get_first(KCWeb *web);
 /**
  * Get parameter item from string
  * @param web Pointer to KCWeb structure

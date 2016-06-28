@@ -57,7 +57,7 @@ KCWeb *kc_web_init_type(KCWebContentType type)
     kcbool found_one;
     int i;
 
-    result = (KCWeb *)malloc(sizeof(KCWeb));
+    result = (KCWeb *) malloc(sizeof(KCWeb));
     if (result == NULL) {
         return NULL;
     }
@@ -76,16 +76,15 @@ KCWeb *kc_web_init_type(KCWebContentType type)
         }
     }
     if (result->content_type == NULL) {
-        fprintf(stderr, "%s(%d): Content type not implemented yet\n", __func__, __LINE__);
+        fprintf(stderr, "%s(%d): Content type not implemented yet\n",
+                __func__, __LINE__);
         goto kc_web_init_failed_memory;
     }
-
     // GET parameter
     buffer = getenv("QUERY_STRING");
     if (buffer != NULL && strlen(buffer) > 0) {
         kc_web_parse_query_string(result, buffer, KC_WEB_PARAMETER_GET);
     }
-
     // POST parameter
     buffer = getenv("CONTENT_LENGTH");
     if (buffer != NULL) {
@@ -99,18 +98,18 @@ KCWeb *kc_web_init_type(KCWebContentType type)
             if (post_content != NULL) {
                 fgets(post_content, post_length + 1, stdin);
 
-                kc_web_parse_query_string(result, post_content, KC_WEB_PARAMETER_POST);
+                kc_web_parse_query_string(result, post_content,
+                                          KC_WEB_PARAMETER_POST);
             }
         }
     }
-
     // HTTP variables
-    fprintf(stderr, "%s(%d): Handle HTTP variables\n", __func__, __LINE__);  // DELETE
+    fprintf(stderr, "%s(%d): Handle HTTP variables\n", __func__, __LINE__); // DELETE
     for (env = environ; *env; ++env) {
         if (!strncmp(*env, KC_WEB_HTTP_PREFIX, strlen(KC_WEB_HTTP_PREFIX))) {
             found_one = FALSE;
             for (key = kc_web_http_keys; *key; key++) {
-                if (! strncmp(*key, *env, strlen(*key))) {
+                if (!strncmp(*key, *env, strlen(*key))) {
                     found_one = TRUE;
                     break;
                 }
@@ -119,12 +118,16 @@ KCWeb *kc_web_init_type(KCWebContentType type)
             if (found_one == FALSE) {
                 KCWebParameter *item;
 
-                item = kc_web_parameter_new_from_string(*env + strlen(KC_WEB_HTTP_PREFIX), strlen(*env), type);
+                item =
+                    kc_web_parameter_new_from_string(*env +
+                                                     strlen
+                                                     (KC_WEB_HTTP_PREFIX),
+                                                     strlen(*env), type);
                 if (item != NULL) {
                     KCString buffer;
 
                     buffer = kc_web_parameter_get_key(item);
-                    for(i = 0; buffer[i]; i++){
+                    for (i = 0; buffer[i]; i++) {
                         buffer[i] = tolower(buffer[i]);
                     }
                     kc_web_parameter_list_add_item(result, item);
@@ -154,15 +157,17 @@ KCWeb *kc_web_init_from_ending()
     return kc_web_init_type(type);
 }
 
-int kc_web_free(KCWeb *web)
+int kc_web_free(KCWeb * web)
 {
-    KCLinkedListItem *item;
+    KCLinkedListIterator iterator;
     KCWebParameter *parameter;
 
     kc_mutex_item_lock((KCMutexItem *) web->parameter);
-    for (item = kc_linked_list_get_first(web->parameter); item;
-            item = kc_linked_list_get_next(item)) {
-        parameter = (KCWebParameter *)kc_linked_list_element_get_data(item);
+    for (iterator = kc_linked_list_item_get_first(web->parameter);
+         kc_linked_list_item_is_last(iterator);
+         iterator = kc_linked_list_item_get_next(iterator)) {
+        parameter =
+            (KCWebParameter *) kc_linked_list_item_get_data(iterator);
         kc_web_parameter_free(parameter);
     }
     kc_mutex_item_unlock((KCMutexItem *) web->parameter);
@@ -186,7 +191,8 @@ int kc_web_print_image(KCWeb * web, KCString file_name)
 
     file = open(file_name, O_RDONLY);
     if (file == -1) {
-        fprintf(stderr, "%s(%d): Cannot read file: %s (%d)\n", __func__, __LINE__, strerror(errno), errno);
+        fprintf(stderr, "%s(%d): Cannot read file: %s (%d)\n", __func__,
+                __LINE__, strerror(errno), errno);
         return errno;
     }
 #if 0
@@ -225,7 +231,8 @@ KCWebContentType kc_web_get_content_type_from_ending(KCString str)
 
     buffer = rindex(str, '.');
     if (buffer == NULL || strlen(buffer) < 2) {
-        fprintf(stderr, "%s(%d): Cannot find ending\n", __func__, __LINE__);
+        fprintf(stderr, "%s(%d): Cannot find ending\n", __func__,
+                __LINE__);
         return type;
     }
     buffer++;
@@ -240,7 +247,8 @@ KCWebContentType kc_web_get_content_type_from_ending(KCString str)
         }
     }
     if (type == KC_WEB_CONTENT_UNDEF) {
-        fprintf(stderr, "%s(%d): Unknown content type\n", __func__, __LINE__);
+        fprintf(stderr, "%s(%d): Unknown content type\n", __func__,
+                __LINE__);
     }
 
     return type;
@@ -272,7 +280,7 @@ KCString kc_web_convert_value_string(const char *value, size_t length)
                 buffer[1] = result[i + 2];
                 buffer[2] = '\0';
 
-                c = (uint8_t)strtol(buffer, NULL, 16);
+                c = (uint8_t) strtol(buffer, NULL, 16);
                 result[i] = c;
                 for (j = i + 1; j < _length - 2; j++) {
                     result[j] = result[j + 2];
@@ -293,21 +301,23 @@ KCString kc_web_convert_value_string(const char *value, size_t length)
     return result;
 }
 
-KCLinkedListItem *kc_web_parameter_list_get_first(KCWeb *web)
+KCLinkedListIterator kc_web_parameter_list_item_get_first(KCWeb * web)
 {
-    return kc_linked_list_get_first(web->parameter);
+    return kc_linked_list_item_get_first(web->parameter);
 }
 
-KCWebParameter *kc_web_parameter_get(KCWeb *web, KCString search_string)
+KCWebParameter *kc_web_parameter_get(KCWeb * web, KCString search_string)
 {
-    KCLinkedListItem *item;
+    KCLinkedListIterator iterator;
     KCWebParameter *parameter;
 
     kc_mutex_item_lock((KCMutexItem *) web->parameter);
-    for (item = kc_linked_list_get_first(web->parameter); item;
-            item = kc_linked_list_get_next(item)) {
-        parameter = (KCWebParameter *)kc_linked_list_element_get_data(item);
-        if (! strcmp(search_string, kc_web_parameter_get_key(parameter))) {
+    for (iterator = kc_linked_list_item_get_first(web->parameter);
+         kc_linked_list_item_is_last(iterator);
+         iterator = kc_linked_list_item_get_next(iterator)) {
+        parameter =
+            (KCWebParameter *) kc_linked_list_item_get_data(iterator);
+        if (!strcmp(search_string, kc_web_parameter_get_key(parameter))) {
             kc_mutex_item_unlock((KCMutexItem *) web->parameter);
 
             return parameter;
@@ -319,12 +329,12 @@ KCWebParameter *kc_web_parameter_get(KCWeb *web, KCString search_string)
     return NULL;
 }
 
-KCString kc_web_parameter_get_key(KCWebParameter *item)
+KCString kc_web_parameter_get_key(KCWebParameter * item)
 {
     return item->key;
 }
 
-KCString kc_web_parameter_get_value(KCWebParameter *item)
+KCString kc_web_parameter_get_value(KCWebParameter * item)
 {
     if (item->value == NULL) {
         return "";
@@ -333,7 +343,7 @@ KCString kc_web_parameter_get_value(KCWebParameter *item)
     }
 }
 
-KCWebParameterType kc_web_parameter_get_type(KCWebParameter *item)
+KCWebParameterType kc_web_parameter_get_type(KCWebParameter * item)
 {
     return item->type;
 }
@@ -364,7 +374,8 @@ int kc_web_parse_query_string(KCWeb * web, const char *query_string,
             }
         }
 
-        item = kc_web_parameter_new_from_string(buffer, current_length, type);
+        item =
+            kc_web_parameter_new_from_string(buffer, current_length, type);
         if (item != NULL) {
             kc_web_parameter_list_add_item(web, item);
         }
@@ -384,7 +395,7 @@ KCWebParameter *kc_web_parameter_new()
 {
     KCWebParameter *result;
 
-    result = (KCWebParameter*)malloc(sizeof(KCWebParameter));
+    result = (KCWebParameter *) malloc(sizeof(KCWebParameter));
     if (result != NULL) {
         result->key = NULL;
         result->value = NULL;
@@ -393,7 +404,8 @@ KCWebParameter *kc_web_parameter_new()
     return result;
 }
 
-KCWebParameter *kc_web_parameter_new_from_string(KCString string, size_t length,
+KCWebParameter *kc_web_parameter_new_from_string(KCString string,
+                                                 size_t length,
                                                  KCWebParameterType type)
 {
     KCWebParameter *result = NULL;
@@ -416,15 +428,17 @@ KCWebParameter *kc_web_parameter_new_from_string(KCString string, size_t length,
 
         if (i != length) {
             kc_web_parameter_set_value(result,
-                                       kc_web_convert_value_string(string + i + 1,
-                                                                   length - i - 1));
+                                       kc_web_convert_value_string(string +
+                                                                   i + 1,
+                                                                   length -
+                                                                   i - 1));
         }
     }
 
     return result;
 }
 
-int kc_web_parameter_free(KCWebParameter *item)
+int kc_web_parameter_free(KCWebParameter * item)
 {
     if (item->key != NULL) {
         free(item->key);
@@ -437,28 +451,29 @@ int kc_web_parameter_free(KCWebParameter *item)
     return 0;
 }
 
-int kc_web_parameter_set_key(KCWebParameter *item, KCString key)
+int kc_web_parameter_set_key(KCWebParameter * item, KCString key)
 {
     item->key = key;
 
     return 0;
 }
 
-int kc_web_parameter_set_value(KCWebParameter *item, KCString value)
+int kc_web_parameter_set_value(KCWebParameter * item, KCString value)
 {
     item->value = value;
 
     return 0;
 }
 
-int kc_web_parameter_set_type(KCWebParameter *item, KCWebParameterType type)
+int kc_web_parameter_set_type(KCWebParameter * item,
+                              KCWebParameterType type)
 {
     item->type = type;
 
     return 0;
 }
 
-int kc_web_parameter_list_add_item(KCWeb* web, KCWebParameter * item)
+int kc_web_parameter_list_add_item(KCWeb * web, KCWebParameter * item)
 {
     kc_linked_list_add(web->parameter, item);
 

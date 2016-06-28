@@ -97,11 +97,12 @@ int kc_linked_list_remove(KCLinkedList * list, void *element)
 
     kc_mutex_item_lock((KCMutexItem *) list);
 
-    for (iterator = kc_linked_list_get_first(list), retval = 0;
-         kc_linked_list_is_last(iterator);
-         iterator = kc_linked_list_get_next(iterator), retval++) {
-        if (kc_linked_list_element_get_data(iterator) == element) {
-            if (((KCLinkedListItem *)iterator.data)->next == NULL) {
+    for (iterator = kc_linked_list_item_get_first(list), retval = 0;
+         !kc_linked_list_item_is_last(iterator);
+         iterator = kc_linked_list_item_get_next(iterator), retval++) {
+        current = (KCLinkedListItem *) iterator.data;
+        if (kc_linked_list_item_get_data(iterator) == element) {
+            if (((KCLinkedListItem *) iterator.data)->next == NULL) {
                 last->next = NULL;
             } else {
                 last->next = current->next;
@@ -141,18 +142,16 @@ int kc_linked_list_clear(KCLinkedList * list)
     return retval;
 }
 
-KCLinkedListIterator kc_linked_list_get_first(KCLinkedList * list)
+KCLinkedListIterator kc_linked_list_item_get_first(KCLinkedList * list)
 {
-    KCLinkedListIterator iterator;
+    KCLinkedListIterator result;
 
-    if (list->items != NULL) {
-        iterator.data = list->items;
-    }
+    result.data = list->items;
 
-    return iterator;
+    return result;
 }
 
-KCLinkedListIterator kc_linked_list_get_last(KCLinkedList * list)
+KCLinkedListIterator kc_linked_list_item_get_last(KCLinkedList * list)
 {
     KCLinkedListIterator iterator;
 
@@ -161,9 +160,9 @@ KCLinkedListIterator kc_linked_list_get_last(KCLinkedList * list)
 
 }
 
-kcbool kc_linked_list_is_last(KCLinkedListIterator iterator)
+kcbool kc_linked_list_item_is_last(KCLinkedListIterator iterator)
 {
-    if (((KCLinkedListItem *) iterator.data)->next == NULL) {
+    if (iterator.data == NULL) {
         return TRUE;
     } else {
         return FALSE;
@@ -171,16 +170,16 @@ kcbool kc_linked_list_is_last(KCLinkedListIterator iterator)
 
 }
 
-KCLinkedListIterator kc_linked_list_get_next(KCLinkedListIterator item)
+KCLinkedListIterator kc_linked_list_item_get_next(KCLinkedListIterator iterator)
 {
-    KCLinkedListIterator iterator;
+    KCLinkedListIterator result;
 
-    iterator.data = ((KCLinkedListItem *) iterator.data)->next;
+    result.data = ((KCLinkedListItem *) iterator.data)->next;
 
-    return iterator;
+    return result;
 }
 
-void *kc_linked_list_element_get_data(KCLinkedListIterator iterator)
+void *kc_linked_list_item_get_data(KCLinkedListIterator iterator)
 {
     return ((KCLinkedListItem *) iterator.data)->data;
 }

@@ -44,7 +44,6 @@ void print_content(KCLinkedList *list, kcbool content);
  */
 int main(void) {
 	KCLinkedList *list;
-	KCLinkedListItem *item;
 	int retval, i, buffer3;
 	char *buffer1, buffer2[BUFFER_LENGTH];
 
@@ -83,19 +82,21 @@ int main(void) {
 
 void print_content(KCLinkedList *list, kcbool content)
 {
-	KCLinkedListItem *item;
+	KCLinkedListIterator iterator;
 	int i;
 
-	for (item = kc_linked_list_get_first(list), i = 0; item; item = kc_linked_list_get_next(item), i++) {
-	    printf("%.2d: 0x%.8x: ", i, item->data);
+	for (iterator = kc_linked_list_item_get_first(list), i = 0;
+	     ! kc_linked_list_item_is_last(iterator);
+	     iterator = kc_linked_list_item_get_next(iterator), i++) {
+	    printf("%.2d: 0x%.8x: ", i, kc_linked_list_item_get_data(iterator));
 	    if (content == TRUE) {
 	    if ((i % 3) != 2) {
-                printf("%s", (char *)kc_linked_list_element_get_data(item));
+                printf("%s", (char *)kc_linked_list_item_get_data(iterator));
 	    } else {
-                printf("%d", *((int *)kc_linked_list_element_get_data(item)));
+                printf("%d", *((int *)kc_linked_list_item_get_data(iterator)));
             }
 	    } else {
-	        printf("%s", (char *)item->data);
+            printf("%s", (char *)kc_linked_list_item_get_data(iterator));
 	    }
 
 	    printf("\n");

@@ -87,24 +87,24 @@ int kc_linked_list_clear(KCLinkedList *list);
  * @param list Linked list
  * @return First item in list
  */
-KCLinkedListIterator kc_linked_list_get_first(KCLinkedList * list);
+KCLinkedListIterator kc_linked_list_item_get_first(KCLinkedList * list);
 /**
  * Is this iterator the last item in the list (not thread saved)
  * @param iterator
  * @return TRUE -> is last
  */
-kcbool kc_linked_list_is_last(KCLinkedListIterator iterator);
+kcbool kc_linked_list_item_is_last(KCLinkedListIterator iterator);
 /**
  * Get next item in list (not thread saved);
  * @param iterator Current iterator
  * @return Next item in list
  */
-KCLinkedListIterator kc_linked_list_get_next(KCLinkedListIterator iterator);
+KCLinkedListIterator kc_linked_list_item_get_next(KCLinkedListIterator iterator);
 /**
  * Get data from the current element
  * @param element Linked list item
  * @return Pointer to data
  */
-void *kc_linked_list_element_get_data(KCLinkedListIterator iterator);
+void *kc_linked_list_item_get_data(KCLinkedListIterator iterator);
 
 #endif /* __KC_LINKED_LIST_H__ */

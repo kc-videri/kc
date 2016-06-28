@@ -44,4 +44,6 @@ KCString kc_string_create(const char *value, size_t length)
 int kc_string_free(KCString string)
 {
     free(string);
+
+    return 0;
 }
