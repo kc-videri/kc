@@ -152,11 +152,11 @@ KCWebContentType kc_web_get_content_type_from_ending(KCString str);
 KCString kc_web_convert_value_string(const char *value, size_t length);
 
 /**
- * Get first entry of the parameter list (not thread saved)
+ * Get the parameter list
  * @param web Pointer to KCWeb structure
- * @return First item in list
+ * @return Linked parameter list
  */
-KCLinkedListIterator kc_web_parameter_list_get_first(KCWeb *web);
+KCLinkedList *kc_web_get_parameter_list(KCWeb *web);
 /**
  * Get parameter item from string
  * @param web Pointer to KCWeb structure

@@ -98,7 +98,7 @@ int kc_linked_list_remove(KCLinkedList * list, void *element)
     kc_mutex_item_lock((KCMutexItem *) list);
 
     for (iterator = kc_linked_list_item_get_first(list), retval = 0;
-         !kc_linked_list_item_is_last(iterator);
+         !kc_linked_list_item_is_last(list, iterator);
          iterator = kc_linked_list_item_get_next(iterator), retval++) {
         current = (KCLinkedListItem *) iterator.data;
         if (kc_linked_list_item_get_data(iterator) == element) {
@@ -160,7 +160,7 @@ KCLinkedListIterator kc_linked_list_item_get_last(KCLinkedList * list)
 
 }
 
-kcbool kc_linked_list_item_is_last(KCLinkedListIterator iterator)
+kcbool kc_linked_list_item_is_last(KCLinkedList * list, KCLinkedListIterator iterator)
 {
     if (iterator.data == NULL) {
         return TRUE;

@@ -90,10 +90,11 @@ int kc_linked_list_clear(KCLinkedList *list);
 KCLinkedListIterator kc_linked_list_item_get_first(KCLinkedList * list);
 /**
  * Is this iterator the last item in the list (not thread saved)
+ * @param list Linked list
  * @param iterator
  * @return TRUE -> is last
  */
-kcbool kc_linked_list_item_is_last(KCLinkedListIterator iterator);
+kcbool kc_linked_list_item_is_last(KCLinkedList * list, KCLinkedListIterator iterator);
 /**
  * Get next item in list (not thread saved);
  * @param iterator Current iterator
