@@ -86,7 +86,7 @@ void print_content(KCLinkedList *list, kcbool content)
 	int i;
 
 	for (iterator = kc_linked_list_item_get_first(list), i = 0;
-	     ! kc_linked_list_item_is_last(iterator);
+	     ! kc_linked_list_item_is_last(list, iterator);
 	     iterator = kc_linked_list_item_get_next(iterator), i++) {
 	    printf("%.2d: 0x%.8x: ", i, kc_linked_list_item_get_data(iterator));
 	    if (content == TRUE) {

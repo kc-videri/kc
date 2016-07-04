@@ -159,12 +159,14 @@ KCWeb *kc_web_init_from_ending()
 
 int kc_web_free(KCWeb * web)
 {
+    KCLinkedList *list;
     KCLinkedListIterator iterator;
     KCWebParameter *parameter;
 
-    kc_mutex_item_lock((KCMutexItem *) web->parameter);
-    for (iterator = kc_linked_list_item_get_first(web->parameter);
-         kc_linked_list_item_is_last(iterator);
+    kc_mutex_item_lock((KCMutexItem *) list);
+    list = kc_web_get_parameter_list(web);
+    for (iterator = kc_linked_list_item_get_first(list);
+         kc_linked_list_item_is_last(list, iterator);
          iterator = kc_linked_list_item_get_next(iterator)) {
         parameter =
             (KCWebParameter *) kc_linked_list_item_get_data(iterator);
@@ -301,19 +303,20 @@ KCString kc_web_convert_value_string(const char *value, size_t length)
     return result;
 }
 
-KCLinkedListIterator kc_web_parameter_list_item_get_first(KCWeb * web)
+KCLinkedList *kc_web_get_parameter_list(KCWeb * web)
 {
-    return kc_linked_list_item_get_first(web->parameter);
+    return web->parameter;
 }
 
 KCWebParameter *kc_web_parameter_get(KCWeb * web, KCString search_string)
 {
+    KCLinkedList *list;
     KCLinkedListIterator iterator;
     KCWebParameter *parameter;
 
-    kc_mutex_item_lock((KCMutexItem *) web->parameter);
-    for (iterator = kc_linked_list_item_get_first(web->parameter);
-         kc_linked_list_item_is_last(iterator);
+    kc_mutex_item_lock((KCMutexItem *) list);
+    for (iterator = kc_linked_list_item_get_first(list);
+         kc_linked_list_item_is_last(list, iterator);
          iterator = kc_linked_list_item_get_next(iterator)) {
         parameter =
             (KCWebParameter *) kc_linked_list_item_get_data(iterator);
