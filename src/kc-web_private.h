@@ -49,12 +49,23 @@ struct kc_web_content_type {
  * */
 
 // TODO MOT: add all useful content types
- KCWebContentTypeDef content_types[] = {
+KCWebContentTypeDef content_types[] = {
     {KC_WEB_CONTENT_HTML, "text/html", {"htm", "html", NULL}},
     {KC_WEB_CONTENT_XHTML, "text/xhtml", {"xhtml", NULL}},
     {KC_WEB_CONTENT_JSON, "application/json", {NULL}},
     {KC_WEB_CONTENT_TEXT, "text/text", {"txt", NULL}},
     {KC_WEB_CONTENT_ICO, "image/x-icon", {"ico", NULL}},
+    {KC_WEB_CONTENT_HTML, "application/x-www-form-urlencoded", {"htm", "html", NULL}},
+    {KC_WEB_CONTENT_UNDEF, "application/xml", {"xml", NULL}},
+    {KC_WEB_CONTENT_UNDEF, "application/atom+xml", {NULL}},
+    {KC_WEB_CONTENT_UNDEF, "mulitpart/form - data", {NULL}},
+    {KC_WEB_CONTENT_UNDEF, "mulitpart/alternative", {NULL}},
+    {KC_WEB_CONTENT_UNDEF, "mulitpart/mixed", {NULL}},
+    {KC_WEB_CONTENT_UNDEF, "application / base64 ", {NULL}},
+    {KC_WEB_CONTENT_UNDEF, "application / octet - stream ", {NULL}},
+    {KC_WEB_CONTENT_TEXT, "text/plain ", {"txt", NULL}},
+    {KC_WEB_CONTENT_UNDEF, "text/css ", {"css", NULL}},
+    {KC_WEB_CONTENT_UNDEF, "application/javascript", {"js", NULL}},
     {KC_WEB_CONTENT_UNDEF, NULL, {NULL}}
 };
 
@@ -97,41 +108,43 @@ KCWebParameter *kc_web_parameter_new();
  * @param type Type to set
  * @return Item or NULL on error
  */
-KCWebParameter *kc_web_parameter_new_from_string(KCString string, size_t length,
+KCWebParameter *kc_web_parameter_new_from_string(KCString string,
+                                                 size_t length,
                                                  KCWebParameterType type);
 /**
  * Free parameter entry
  * @param item Item to free
  * @return 0 => successful
  */
-int kc_web_parameter_free(KCWebParameter *item);
+int kc_web_parameter_free(KCWebParameter * item);
 /**
  * Set key
  * @param item KCWebParameter pointer item
  * @param key Key to set
  * @return 0 => successful
  */
-int kc_web_parameter_set_key(KCWebParameter *item, KCString key);
+int kc_web_parameter_set_key(KCWebParameter * item, KCString key);
 /**
  * Set value
  * @param item KCWebParameter pointer item
  * @param value Value to set
  * @return 0 => successful
  */
-int kc_web_parameter_set_value(KCWebParameter *item, KCString value);
+int kc_web_parameter_set_value(KCWebParameter * item, KCString value);
 /**
  * Set type
  * @param item KCWebParameter pointer item
  * @param type Type to set
  * @return 0 => successful
  */
-int kc_web_parameter_set_type(KCWebParameter * item, KCWebParameterType type);
+int kc_web_parameter_set_type(KCWebParameter * item,
+                              KCWebParameterType type);
 /**
  * Add item to parameter list
  * @param web Pointer to KCWeb structure
  * @param item Parameter item to add
  * @return 0 => successfull
  */
-int kc_web_parameter_list_add_item(KCWeb *web, KCWebParameter * item);
+int kc_web_parameter_list_add_item(KCWeb * web, KCWebParameter * item);
 
-#endif /* __KC_WEB_PRIVATE_H__ */
+#endif                          /* __KC_WEB_PRIVATE_H__ */

@@ -129,6 +129,12 @@ int kc_web_print_image(KCWeb *web, KCString file_name);
  * @param web Pointer to KCWeb structure
  * @return Content type
  */
+KCWebContentType kc_web_parse_content_type();
+/**
+ * Get content type
+ * @param web Pointer to KCWeb structure
+ * @return Content type
+ */
 KCWebContentType kc_web_get_content_type(KCWeb * web);
 /**
  * Get content type string

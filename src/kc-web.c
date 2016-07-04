@@ -104,7 +104,6 @@ KCWeb *kc_web_init_type(KCWebContentType type)
         }
     }
     // HTTP variables
-    fprintf(stderr, "%s(%d): Handle HTTP variables\n", __func__, __LINE__); // DELETE
     for (env = environ; *env; ++env) {
         if (!strncmp(*env, KC_WEB_HTTP_PREFIX, strlen(KC_WEB_HTTP_PREFIX))) {
             found_one = FALSE;
@@ -163,8 +162,8 @@ int kc_web_free(KCWeb * web)
     KCLinkedListIterator iterator;
     KCWebParameter *parameter;
 
-    kc_mutex_item_lock((KCMutexItem *) list);
     list = kc_web_get_parameter_list(web);
+    kc_mutex_item_lock((KCMutexItem *) list);
     for (iterator = kc_linked_list_item_get_first(list);
          kc_linked_list_item_is_last(list, iterator);
          iterator = kc_linked_list_item_get_next(iterator)) {
@@ -209,6 +208,36 @@ int kc_web_print_image(KCWeb * web, KCString file_name)
     close(file);
 
     return 0;
+}
+
+KCWebContentType kc_web_parse_content_type()
+{
+    KCWebContentType type = KC_WEB_CONTENT_UNDEF;
+    KCString buffer;
+    kcbool found_one = FALSE;
+
+    buffer = getenv("CONTENT_TYPE");
+    if (buffer == NULL) {
+        fprintf(stderr, "%s(%d): Cannot find content-type\n", __func__,
+                __LINE__);
+        return KC_WEB_CONTENT_TEXT;
+    }
+
+    KCWebContentTypeDef *content_type;
+    for (content_type = content_types;
+         content_type->type_string != NULL; content_type++) {
+        if (!strcmp(buffer, content_type->type_string)) {
+            type = content_type->type;
+            found_one = TRUE;
+            break;
+        }
+    }
+    if (type == KC_WEB_CONTENT_UNDEF || found_one == FALSE) {
+        fprintf(stderr, "%s(%d): Unknown content type: %s\n", __func__,
+                __LINE__, buffer);
+    }
+
+    return type;
 }
 
 KCWebContentType kc_web_get_content_type(KCWeb * web)
@@ -314,6 +343,7 @@ KCWebParameter *kc_web_parameter_get(KCWeb * web, KCString search_string)
     KCLinkedListIterator iterator;
     KCWebParameter *parameter;
 
+    list = kc_web_get_parameter_list(web);
     kc_mutex_item_lock((KCMutexItem *) list);
     for (iterator = kc_linked_list_item_get_first(list);
          kc_linked_list_item_is_last(list, iterator);
