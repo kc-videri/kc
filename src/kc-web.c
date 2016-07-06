@@ -51,7 +51,7 @@ KCWeb kc_web_init()
 KCWeb kc_web_init_type(KCWebContentType type)
 {
     KCWeb result;
-    KCWebContentTypeDef *content_type;
+    KCWebContentTypeDef content_type;
     KCString buffer;
     char **env, **key;
     kcbool found_one;
@@ -215,6 +215,7 @@ KCWebContentType kc_web_parse_content_type()
     KCWebContentType type = KC_WEB_CONTENT_UNDEF;
     KCString buffer;
     kcbool found_one = FALSE;
+    KCWebContentTypeDef content_type;
 
     buffer = getenv("CONTENT_TYPE");
     if (buffer == NULL) {
@@ -223,7 +224,6 @@ KCWebContentType kc_web_parse_content_type()
         return KC_WEB_CONTENT_TEXT;
     }
 
-    KCWebContentTypeDef *content_type;
     for (content_type = content_types;
          content_type->type_string != NULL; content_type++) {
         if (!strcmp(buffer, content_type->type_string)) {
@@ -255,6 +255,7 @@ KCWebContentType kc_web_get_content_type_from_ending(KCString str)
     KCWebContentType type = KC_WEB_CONTENT_UNDEF;
     KCString buffer;
     KCString *ending;
+    KCWebContentTypeDef content_type;
 
     if (str == NULL) {
         return type;
@@ -268,7 +269,6 @@ KCWebContentType kc_web_get_content_type_from_ending(KCString str)
     }
     buffer++;
 
-    KCWebContentTypeDef *content_type;
     for (content_type = content_types;
          content_type->type != KC_WEB_CONTENT_UNDEF; content_type++) {
         for (ending = content_type->endings; *ending != NULL; ending++) {

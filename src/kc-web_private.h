@@ -47,11 +47,13 @@ struct kc_web_content_type {
 /**
  * Structure struct kc_web_content_type: Structure to handle different content types
  */
-typedef struct kc_web_content_type_def {
+struct kc_web_content_type_def {
     KCWebContentType type;      ///< Content type
     KCString type_string;       ///< String to send to define type
     KCString endings[3];        ///< String to send to define type
-} KCWebContentTypeDef;
+};
+
+typedef struct kc_web_content_type_def *KCWebContentTypeDef;
 
 /**
  * Structure KCWebParameter: Structure to save received parameter item
@@ -72,7 +74,7 @@ struct kc_web {
 #endif
     KCLinkedList parameter;     ///< parameter list
     KCWebRequestType request_type;  ///< request type
-    KCWebContentTypeDef *content_type;  ///< Content type structure
+    KCWebContentTypeDef content_type;  ///< Content type structure
 };
 
 /*
@@ -80,7 +82,7 @@ struct kc_web {
  * */
 
 // TODO MOT: add all useful content types
-KCWebContentTypeDef content_types[] = {
+struct kc_web_content_type_def content_types[] = {
     {KC_WEB_CONTENT_HTML, "text/html", {"htm", "html", NULL}},
     {KC_WEB_CONTENT_XHTML, "text/xhtml", {"xhtml", NULL}},
     {KC_WEB_CONTENT_JSON, "application/json", {NULL}},
