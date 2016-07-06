@@ -10,4 +10,5 @@ include_HEADERS = \
 	kc-web.h \
 	kc-fcgi.h \
 	kc-parameter.h \
+	kc-json.h \
     kc.h

@@ -17,6 +17,7 @@ libkc_la_SOURCES = \
 	kc-string.c \
 	kc-linked-list.c \
 	kc-mutex.c \
+	kc-json.c \
 	kc.c
 
 libkc_la_LDFLAGS = 
