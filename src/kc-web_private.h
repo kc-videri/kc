@@ -81,6 +81,19 @@ char *kc_web_http_keys[] = {
     NULL,
 };
 
+/**
+ * Structure KCWeb: Structure to save all important web information
+ */
+struct kc_web {
+#if 0
+    char *uri;                  ///< URI
+    char *get_query_string;     ///< Get query string
+#endif
+    KCLinkedList *parameter;    ///< parameter list
+    KCWebRequestType request_type;  ///< request type
+    KCWebContentTypeDef *content_type;  ///< Content type structure
+};
+
 /*
  * Private function declaration
  * */
@@ -93,7 +106,7 @@ char *kc_web_http_keys[] = {
  * @param type Type of request
  * @return
  */
-int kc_web_parse_query_string(KCWeb * web, const char *query_string,
+int kc_web_parse_query_string(KCWeb web, const char *query_string,
                               KCWebParameterType type);
 
 /**
@@ -145,6 +158,6 @@ int kc_web_parameter_set_type(KCWebParameter * item,
  * @param item Parameter item to add
  * @return 0 => successfull
  */
-int kc_web_parameter_list_add_item(KCWeb * web, KCWebParameter * item);
+int kc_web_parameter_list_add_item(KCWeb web, KCWebParameter * item);
 
 #endif                          /* __KC_WEB_PRIVATE_H__ */

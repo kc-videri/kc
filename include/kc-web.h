@@ -74,55 +74,47 @@ typedef struct kc_web_parameter {
     KCString value;             ///< Value of a parameter
 } KCWebParameter;
 
-/**
- * Structure KCWeb: Structure to save all important web information
- */
-typedef struct kc_web {
-#if 0
-    char *uri;                  ///< URI
-    char *get_query_string;     ///< Get query string
-#endif
-    KCLinkedList *parameter;    ///< parameter list
-    KCWebRequestType request_type;  ///< request type
-    KCWebContentTypeDef *content_type;  ///< Content type structure
-} KCWeb;
+// forward declaration
+struct kc_web;
+
+typedef struct kc_web* KCWeb;
 
 /**
  * Initialise the KCWeb structure for a HTML document
  * @return Pointer to KCWeb structure or NULL on error
  */
-KCWeb *kc_web_init();
+KCWeb kc_web_init();
 /**
  * Initialise the KCWeb structure
  * @param type Content Type
  * @return Pointer to KCWeb structure or NULL on error
  */
-KCWeb *kc_web_init_type(KCWebContentType type);
+KCWeb kc_web_init_type(KCWebContentType type);
 /**
  * Initialise the KCWeb structure for a HTML document
  * Using SCRIPT_NAME value
  * @return Pointer to KCWeb structure or NULL on error
  */
-KCWeb *kc_web_init_from_ending();
+KCWeb kc_web_init_from_ending();
 /**
  * Free allocated memory
  * @param web Pointer to KCWeb structure
  * @return 0 => successful
  */
-int kc_web_free(KCWeb *web);
+int kc_web_free(KCWeb web);
 
 /**
  * Print content type
  * @param web Pointer to KCWeb structure
  */
-void kc_web_print_content_type(KCWeb *web);
+void kc_web_print_content_type(KCWeb web);
 /**
  * Print image
  * @param web Pointer to KCWeb structure
  * @param file_name File to print, File name with path
  * @return 0 => successful
  */
-int kc_web_print_image(KCWeb *web, KCString file_name);
+int kc_web_print_image(KCWeb web, KCString file_name);
 
 /**
  * Get content type
@@ -135,13 +127,13 @@ KCWebContentType kc_web_parse_content_type();
  * @param web Pointer to KCWeb structure
  * @return Content type
  */
-KCWebContentType kc_web_get_content_type(KCWeb * web);
+KCWebContentType kc_web_get_content_type(KCWeb web);
 /**
  * Get content type string
  * @param web Pointer to KCWeb structure
  * @return String of content type
  */
-KCString kc_web_get_content_type_string(KCWeb * web);
+KCString kc_web_get_content_type_string(KCWeb web);
 /**
  * Get content type
  * @param str String to parse
@@ -162,31 +154,31 @@ KCString kc_web_convert_value_string(const char *value, size_t length);
  * @param web Pointer to KCWeb structure
  * @return Linked parameter list
  */
-KCLinkedList *kc_web_get_parameter_list(KCWeb *web);
+KCLinkedList *kc_web_get_parameter_list(KCWeb web);
 /**
  * Get parameter item from string
  * @param web Pointer to KCWeb structure
  * @param search_string Key string to search for
  * @return Pointer to item or NULL when not found
  */
-KCWebParameter *kc_web_parameter_get(KCWeb *web, KCString search_string);
+KCWebParameter *kc_web_parameter_get(KCWeb web, KCString search_string);
 /**
 * Get key from KCWebParameter item
 * @param item Pointer to KCWebParameter object
 * @return Pointer to key
 */
-KCString kc_web_parameter_get_key(KCWebParameter *item);
+KCString kc_web_parameter_get_key(KCWebParameter * item);
 /**
 * Get value from KCWebParameter item
 * @param item Pointer to KCWebParameter object
 * @return Pointer to value
 */
-KCString kc_web_parameter_get_value(KCWebParameter *item);
+KCString kc_web_parameter_get_value(KCWebParameter * item);
 /**
 * Get type from KCWebParameter item
 * @param item Pointer to KCWebParameter object
 * @return Parameter type
 */
-KCWebParameterType kc_web_parameter_get_type(KCWebParameter *item);
+KCWebParameterType kc_web_parameter_get_type(KCWebParameter * item);
 
-#endif /* __KC_WEB_H__ */
+#endif                          /* __KC_WEB_H__ */
