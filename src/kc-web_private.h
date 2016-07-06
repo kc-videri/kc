@@ -54,6 +54,15 @@ typedef struct kc_web_content_type_def {
 } KCWebContentTypeDef;
 
 /**
+ * Structure KCWebParameter: Structure to save received parameter item
+ */
+struct kc_web_parameter {
+    KCWebParameterType type;    ///< On which way does the parameter come
+    KCString key;               ///< Key of a parameter
+    KCString value;             ///< Value of a parameter
+};
+
+/**
  * Structure KCWeb: Structure to save all important web information
  */
 struct kc_web {
@@ -61,7 +70,7 @@ struct kc_web {
     char *uri;                  ///< URI
     char *get_query_string;     ///< Get query string
 #endif
-    KCLinkedList parameter;    ///< parameter list
+    KCLinkedList parameter;     ///< parameter list
     KCWebRequestType request_type;  ///< request type
     KCWebContentTypeDef *content_type;  ///< Content type structure
 };
@@ -122,7 +131,7 @@ int kc_web_parse_query_string(KCWeb web, const char *query_string,
  * Create a new KCWebParameter
  * @return Item or NULL on error
  */
-KCWebParameter *kc_web_parameter_new();
+KCWebParameter kc_web_parameter_new();
 /**
  * Create a new KCWebParameter
  * @param string String to check
@@ -130,7 +139,7 @@ KCWebParameter *kc_web_parameter_new();
  * @param type Type to set
  * @return Item or NULL on error
  */
-KCWebParameter *kc_web_parameter_new_from_string(KCString string,
+KCWebParameter kc_web_parameter_new_from_string(KCString string,
                                                  size_t length,
                                                  KCWebParameterType type);
 /**
@@ -138,28 +147,28 @@ KCWebParameter *kc_web_parameter_new_from_string(KCString string,
  * @param item Item to free
  * @return 0 => successful
  */
-int kc_web_parameter_free(KCWebParameter * item);
+int kc_web_parameter_free(KCWebParameter item);
 /**
  * Set key
  * @param item KCWebParameter pointer item
  * @param key Key to set
  * @return 0 => successful
  */
-int kc_web_parameter_set_key(KCWebParameter * item, KCString key);
+int kc_web_parameter_set_key(KCWebParameter item, KCString key);
 /**
  * Set value
  * @param item KCWebParameter pointer item
  * @param value Value to set
  * @return 0 => successful
  */
-int kc_web_parameter_set_value(KCWebParameter * item, KCString value);
+int kc_web_parameter_set_value(KCWebParameter item, KCString value);
 /**
  * Set type
  * @param item KCWebParameter pointer item
  * @param type Type to set
  * @return 0 => successful
  */
-int kc_web_parameter_set_type(KCWebParameter * item,
+int kc_web_parameter_set_type(KCWebParameter item,
                               KCWebParameterType type);
 /**
  * Add item to parameter list
@@ -167,6 +176,6 @@ int kc_web_parameter_set_type(KCWebParameter * item,
  * @param item Parameter item to add
  * @return 0 => successfull
  */
-int kc_web_parameter_list_add_item(KCWeb web, KCWebParameter * item);
+int kc_web_parameter_list_add_item(KCWeb web, KCWebParameter item);
 
 #endif                          /* __KC_WEB_PRIVATE_H__ */

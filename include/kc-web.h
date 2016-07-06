@@ -56,19 +56,12 @@ typedef enum {
     KC_WEB_CONTENT_UNDEF        ///< Last element or undefined type
 } KCWebContentType;
 
-/**
- * Structure KCWebParameter: Structure to save received parameter item
- */
-typedef struct kc_web_parameter {
-    KCWebParameterType type;    ///< On which way does the parameter come
-    KCString key;               ///< Key of a parameter
-    KCString value;             ///< Value of a parameter
-} KCWebParameter;
-
 // forward declaration
 struct kc_web;
+struct kc_web_parameter;
 
-typedef struct kc_web* KCWeb;
+typedef struct kc_web *KCWeb;
+typedef struct kc_web_parameter *KCWebParameter;
 
 /**
  * Initialise the KCWeb structure for a HTML document
@@ -152,24 +145,24 @@ KCLinkedList kc_web_get_parameter_list(KCWeb web);
  * @param search_string Key string to search for
  * @return Pointer to item or NULL when not found
  */
-KCWebParameter *kc_web_parameter_get(KCWeb web, KCString search_string);
+KCWebParameter kc_web_parameter_get(KCWeb web, KCString search_string);
 /**
 * Get key from KCWebParameter item
 * @param item Pointer to KCWebParameter object
 * @return Pointer to key
 */
-KCString kc_web_parameter_get_key(KCWebParameter * item);
+KCString kc_web_parameter_get_key(KCWebParameter item);
 /**
 * Get value from KCWebParameter item
 * @param item Pointer to KCWebParameter object
 * @return Pointer to value
 */
-KCString kc_web_parameter_get_value(KCWebParameter * item);
+KCString kc_web_parameter_get_value(KCWebParameter item);
 /**
 * Get type from KCWebParameter item
 * @param item Pointer to KCWebParameter object
 * @return Parameter type
 */
-KCWebParameterType kc_web_parameter_get_type(KCWebParameter * item);
+KCWebParameterType kc_web_parameter_get_type(KCWebParameter item);
 
 #endif                          /* __KC_WEB_H__ */
