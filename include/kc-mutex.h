@@ -22,6 +22,10 @@
 #ifndef __KC_MUTEX_H__
 #define __KC_MUTEX_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <pthread.h>
 
 typedef struct kc_mutex_item {
@@ -54,5 +58,9 @@ int kc_mutex_item_lock(KCMutexItem *item);
  * @return
  */
 int kc_mutex_item_unlock(KCMutexItem *item);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __KC_MUTEX_H__ */

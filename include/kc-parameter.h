@@ -22,10 +22,22 @@
 #ifndef __KC_PARAMETER_H__
 #define __KC_PARAMETER_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct parameter {
     char *key;
     char *value;
     KCParameter *next;
 } KCParameter;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif                          // __KC_PARAMETER_H__

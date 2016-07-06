@@ -24,6 +24,10 @@
 
 #include <kc.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef kcchar* KCString;                      ///< Definition KCString
 
 /**
@@ -39,5 +43,9 @@ KCString kc_string_create(const char *value, size_t length);
  * @return 0 => successful
  */
 int kc_string_free(KCString string);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __KC_STRING_H__ */

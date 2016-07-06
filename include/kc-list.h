@@ -22,6 +22,10 @@
 #ifndef __KC_LIST_H__
 #define __KC_LIST_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct kc_list {
     void *data;
     struct kc_list *next;
@@ -36,5 +40,9 @@ int kc_list_clear(KCList *list);
 KCList *kc_list_get_first(KCList *list);
 KCList *kc_list_get_next(KCList *element);
 void *kc_list_element_get_data(KCList *element);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __KC_LIST_H__ */

@@ -22,6 +22,10 @@
 #ifndef __KC_LINKED_LIST_H__
 #define __KC_LINKED_LIST_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <kc-mutex.h>
 #include <kc.h>
 
@@ -99,5 +103,9 @@ KCLinkedListIterator kc_linked_list_item_get_next(KCLinkedListIterator
  * @return Pointer to data
  */
 void *kc_linked_list_item_get_data(KCLinkedListIterator iterator);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif                          /* __KC_LINKED_LIST_H__ */

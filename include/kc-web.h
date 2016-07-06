@@ -22,6 +22,10 @@
 #ifndef __KC_WEB_H__
 #define __KC_WEB_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <kc-linked-list.h>
 #include <kc-string.h>
 
@@ -164,5 +168,9 @@ KCString kc_web_parameter_get_value(KCWebParameter item);
 * @return Parameter type
 */
 KCWebParameterType kc_web_parameter_get_type(KCWebParameter item);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif                          /* __KC_WEB_H__ */

@@ -29,32 +29,33 @@ extern "C" {
 /**
  * Class KCEnvironment
  */
-    typedef struct environment KCEnvironment;
+typedef struct environment KCEnvironment;
 
 /**
  * Initialise KCEnvironment
  * @return Object of KCEnvironment or NULL if error
  */
-    KCEnvironment *kc_environment_new();
+KCEnvironment *kc_environment_new();
 /**
  * Free KCEnvironment
  * @param environment Object of KCEnvironment
  */
-    void kc_environment_free(KCEnvironment * environment);
+void kc_environment_free(KCEnvironment * environment);
 /**
  * Get local host name
  * @param environment Object of KCEnvironment
  * @return Local host name
  */
-    char *kc_environment_get_username(KCEnvironment * environment);
+char *kc_environment_get_username(KCEnvironment * environment);
 /**
  * Get user name
  * @param environment Object of KCEnvironment
  * @return User name
  */
-    char *kc_environment_get_hostname(KCEnvironment * environment);
+char *kc_environment_get_hostname(KCEnvironment * environment);
 
 #ifdef __cplusplus
 }
 #endif
+
 #endif                          // __KC_ENVIRONMENT_H__

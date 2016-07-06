@@ -1,9 +1,9 @@
- /**
+/**
  * @file        kc-json.h
  * @brief       A simple class to handle json structure
- * @author      K-C Videri <kc.videri@gmail.com>
+ * @author      Michael Ott <michael@king-coder.de>
  *
- * copyright:   (C) 2016 by K-C Videri
+ * copyright:   (C) 2016 by Michael Ott
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,27 +22,13 @@
 #ifndef __KC_JSON_H__
 #define __KC_JSON_H__
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <json.h>
 
 #include <kc-string.h>
 
-// Forward declaration
-struct kc_json;
+typedef struct kc_json {
+} KCJson;
 
-/**
- * Structure KCWeb: Structure to save all important web information
- */
-typedef struct kc_json* KCJson;
-
-KCJson kc_json_new();
-KCJson kc_json_new_from_string(KCString json_string);
-
-int kc_json_get_counter(KCJson json);
-
-#ifdef __cplusplus
-}
-#endif
+KCJson *kc_json_new_from_string(KCString json);
 
 #endif /* __KC_JSON_H__ */
