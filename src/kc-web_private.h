@@ -44,6 +44,28 @@ struct kc_web_content_type {
     KCString endings[3];        ///< String to send to define type
 };
 
+/**
+ * Structure struct kc_web_content_type: Structure to handle different content types
+ */
+typedef struct kc_web_content_type_def {
+    KCWebContentType type;      ///< Content type
+    KCString type_string;       ///< String to send to define type
+    KCString endings[3];        ///< String to send to define type
+} KCWebContentTypeDef;
+
+/**
+ * Structure KCWeb: Structure to save all important web information
+ */
+struct kc_web {
+#if 0
+    char *uri;                  ///< URI
+    char *get_query_string;     ///< Get query string
+#endif
+    KCLinkedList parameter;    ///< parameter list
+    KCWebRequestType request_type;  ///< request type
+    KCWebContentTypeDef *content_type;  ///< Content type structure
+};
+
 /*
  * Private variable declaration
  * */
@@ -79,19 +101,6 @@ char *kc_web_http_keys[] = {
     "HTTP_COOKIE",
     "HTTP_CONNECTION",
     NULL,
-};
-
-/**
- * Structure KCWeb: Structure to save all important web information
- */
-struct kc_web {
-#if 0
-    char *uri;                  ///< URI
-    char *get_query_string;     ///< Get query string
-#endif
-    KCLinkedList *parameter;    ///< parameter list
-    KCWebRequestType request_type;  ///< request type
-    KCWebContentTypeDef *content_type;  ///< Content type structure
 };
 
 /*

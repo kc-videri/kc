@@ -25,6 +25,7 @@
 #include <kc.h>
 
 typedef kcchar* KCString;                      ///< Definition KCString
+
 /**
  * Create a string
  * @param value Value to copy into created string

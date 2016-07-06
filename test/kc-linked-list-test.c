@@ -38,12 +38,13 @@
 #define BUFFER_2 "qwer"
 #define BUFFER_3 1234
 
-void print_content(KCLinkedList *list, kcbool content);
+void print_content(KCLinkedList list, kcbool content);
+
 /**
  * Main function of testing environment
  */
 int main(void) {
-	KCLinkedList *list;
+	KCLinkedList list;
 	int retval, i, buffer3;
 	char *buffer1, buffer2[BUFFER_LENGTH];
 
@@ -80,7 +81,7 @@ int main(void) {
 	return (EXIT_SUCCESS);
 }
 
-void print_content(KCLinkedList *list, kcbool content)
+void print_content(KCLinkedList list, kcbool content)
 {
 	KCLinkedListIterator iterator;
 	int i;

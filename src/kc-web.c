@@ -57,7 +57,7 @@ KCWeb kc_web_init_type(KCWebContentType type)
     kcbool found_one;
     int i;
 
-    result = (KCWeb) malloc(sizeof(KCWeb));
+    result = (KCWeb) malloc(sizeof(struct kc_web));
     if (result == NULL) {
         return NULL;
     }
@@ -158,7 +158,7 @@ KCWeb kc_web_init_from_ending()
 
 int kc_web_free(KCWeb web)
 {
-    KCLinkedList *list;
+    KCLinkedList list;
     KCLinkedListIterator iterator;
     KCWebParameter *parameter;
 
@@ -332,14 +332,14 @@ KCString kc_web_convert_value_string(const char *value, size_t length)
     return result;
 }
 
-KCLinkedList *kc_web_get_parameter_list(KCWeb web)
+KCLinkedList kc_web_get_parameter_list(KCWeb web)
 {
     return web->parameter;
 }
 
 KCWebParameter *kc_web_parameter_get(KCWeb web, KCString search_string)
 {
-    KCLinkedList *list;
+    KCLinkedList list;
     KCLinkedListIterator iterator;
     KCWebParameter *parameter;
 

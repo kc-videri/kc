@@ -57,15 +57,6 @@ typedef enum {
 } KCWebContentType;
 
 /**
- * Structure struct kc_web_content_type: Structure to handle different content types
- */
-typedef struct kc_web_content_type_def {
-    KCWebContentType type;      ///< Content type
-    KCString type_string;       ///< String to send to define type
-    KCString endings[3];        ///< String to send to define type
-} KCWebContentTypeDef;
-
-/**
  * Structure KCWebParameter: Structure to save received parameter item
  */
 typedef struct kc_web_parameter {
@@ -154,7 +145,7 @@ KCString kc_web_convert_value_string(const char *value, size_t length);
  * @param web Pointer to KCWeb structure
  * @return Linked parameter list
  */
-KCLinkedList *kc_web_get_parameter_list(KCWeb web);
+KCLinkedList kc_web_get_parameter_list(KCWeb web);
 /**
  * Get parameter item from string
  * @param web Pointer to KCWeb structure

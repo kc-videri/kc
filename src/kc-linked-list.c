@@ -23,13 +23,14 @@
 
 #include <kc.h>
 #include <kc-linked-list.h>
+#include <kc-linked-list_private.h>
 #include <kc-mutex.h>
 
-KCLinkedList *kc_linked_list_new()
+KCLinkedList kc_linked_list_new()
 {
-    KCLinkedList *result = NULL;
+    KCLinkedList result = NULL;
 
-    result = (KCLinkedList *) malloc(sizeof(KCLinkedList));
+    result = (KCLinkedList) malloc(sizeof(struct kc_linked_list));
     if (result != NULL) {
         if (kc_mutex_item_init((KCMutexItem *) result) != 0) {
             goto new_error;
@@ -43,10 +44,10 @@ KCLinkedList *kc_linked_list_new()
 
   new_error:
     free(result);
-    return (NULL);
+    return NULL;
 }
 
-int kc_linked_list_free(KCLinkedList * list)
+int kc_linked_list_free(KCLinkedList list)
 {
     int retval;
 
@@ -57,15 +58,14 @@ int kc_linked_list_free(KCLinkedList * list)
     return retval;
 }
 
-int kc_linked_list_add(KCLinkedList * list, void *element)
+int kc_linked_list_add(KCLinkedList list, void *element)
 {
     int retval = 0;
     kc_mutex_item_lock((KCMutexItem *) list);
 
     // Initialise list if not exists
     if (list->last == NULL) {
-        list->items =
-            (KCLinkedListItem *) malloc(sizeof(KCLinkedListItem));
+        list->items = (KCLinkedListItem) malloc(sizeof(KCLinkedListItem));
         if (list->items == NULL) {
             retval = -1;
             goto add_error;
@@ -73,7 +73,7 @@ int kc_linked_list_add(KCLinkedList * list, void *element)
         list->last = list->items;
     } else {
         list->last->next =
-            (KCLinkedListItem *) malloc(sizeof(KCLinkedListItem));
+            (KCLinkedListItem) malloc(sizeof(KCLinkedListItem));
         if (list->items->next == NULL) {
             retval = -1;
             goto add_error;
@@ -88,11 +88,11 @@ int kc_linked_list_add(KCLinkedList * list, void *element)
     return retval;
 }
 
-int kc_linked_list_remove(KCLinkedList * list, void *element)
+int kc_linked_list_remove(KCLinkedList list, void *element)
 {
     int retval;
     kcbool found_one = FALSE;
-    KCLinkedListItem *current, *last = list->items;
+    KCLinkedListItem current, last = list->items;
     KCLinkedListIterator iterator;
 
     kc_mutex_item_lock((KCMutexItem *) list);
@@ -100,9 +100,9 @@ int kc_linked_list_remove(KCLinkedList * list, void *element)
     for (iterator = kc_linked_list_item_get_first(list), retval = 0;
          !kc_linked_list_item_is_last(list, iterator);
          iterator = kc_linked_list_item_get_next(iterator), retval++) {
-        current = (KCLinkedListItem *) iterator.data;
+        current = (KCLinkedListItem) iterator.data;
         if (kc_linked_list_item_get_data(iterator) == element) {
-            if (((KCLinkedListItem *) iterator.data)->next == NULL) {
+            if (((KCLinkedListItem) iterator.data)->next == NULL) {
                 last->next = NULL;
             } else {
                 last->next = current->next;
@@ -123,10 +123,10 @@ int kc_linked_list_remove(KCLinkedList * list, void *element)
     return retval;
 }
 
-int kc_linked_list_clear(KCLinkedList * list)
+int kc_linked_list_clear(KCLinkedList list)
 {
     int retval = 0;
-    KCLinkedListItem *current, *next;
+    KCLinkedListItem current, next;
 
     kc_mutex_item_lock((KCMutexItem *) list);
 
@@ -142,7 +142,7 @@ int kc_linked_list_clear(KCLinkedList * list)
     return retval;
 }
 
-KCLinkedListIterator kc_linked_list_item_get_first(KCLinkedList * list)
+KCLinkedListIterator kc_linked_list_item_get_first(KCLinkedList list)
 {
     KCLinkedListIterator result;
 
@@ -151,7 +151,7 @@ KCLinkedListIterator kc_linked_list_item_get_first(KCLinkedList * list)
     return result;
 }
 
-KCLinkedListIterator kc_linked_list_item_get_last(KCLinkedList * list)
+KCLinkedListIterator kc_linked_list_item_get_last(KCLinkedList list)
 {
     KCLinkedListIterator iterator;
 
@@ -160,7 +160,8 @@ KCLinkedListIterator kc_linked_list_item_get_last(KCLinkedList * list)
 
 }
 
-kcbool kc_linked_list_item_is_last(KCLinkedList * list, KCLinkedListIterator iterator)
+kcbool kc_linked_list_item_is_last(KCLinkedList list,
+                                   KCLinkedListIterator iterator)
 {
     if (iterator.data == NULL) {
         return TRUE;
@@ -170,16 +171,17 @@ kcbool kc_linked_list_item_is_last(KCLinkedList * list, KCLinkedListIterator ite
 
 }
 
-KCLinkedListIterator kc_linked_list_item_get_next(KCLinkedListIterator iterator)
+KCLinkedListIterator kc_linked_list_item_get_next(KCLinkedListIterator
+                                                  iterator)
 {
     KCLinkedListIterator result;
 
-    result.data = ((KCLinkedListItem *) iterator.data)->next;
+    result.data = ((KCLinkedListItem) iterator.data)->next;
 
     return result;
 }
 
 void *kc_linked_list_item_get_data(KCLinkedListIterator iterator)
 {
-    return ((KCLinkedListItem *) iterator.data)->data;
+    return ((KCLinkedListItem) iterator.data)->data;
 }
