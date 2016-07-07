@@ -7,8 +7,9 @@ AM_CPPFLAGS = \
 	$(KC_CFLAGS)
 
 AM_CFLAGS =\
-	 -Wall\
-	 -g
+	`pkg-config --cflags json-c` \
+	-Wall\
+	-g
 
 lib_LTLIBRARIES = libkc.la libkcweb.la
 
@@ -22,7 +23,9 @@ libkc_la_SOURCES = \
 
 libkc_la_LDFLAGS = 
 
-libkc_la_LIBADD = $(KC_LIBS)
+libkc_la_LIBADD = \
+	-ljson-c \
+	$(KC_LIBS)
 
 libkcweb_la_SOURCES = \
 	kc-web.c

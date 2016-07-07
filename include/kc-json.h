@@ -36,10 +36,30 @@ struct kc_json;
  */
 typedef struct kc_json* KCJson;
 
+/**
+ * Create a new empty JSON object
+ * @return Pointer to object or NULL on error
+ */
 KCJson kc_json_new();
-KCJson kc_json_new_from_string(KCString json_string);
-
-int kc_json_get_counter(KCJson json);
+/**
+ * Create a json object from a string
+ * @param obj Empty pointer to fill
+ * @param json_string String to parse
+ * @return 0 => successful, -1 => no memory; > 0 => handled by error function
+ */
+int kc_json_new_from_string(KCJson *obj, KCString json_string);
+/**
+ * Get error code
+ * @param obj JSON object
+ * @return Error code
+ */
+int kc_json_get_error_no(KCJson obj);
+/**
+ * Get error description from error code
+ * @param obj JSON object
+ * @return Error description
+ */
+KCString kc_json_get_error_description(KCJson obj);
 
 #ifdef __cplusplus
 }

@@ -22,12 +22,17 @@
 #ifndef __KC_JSON_PRIVATE_H__
 #define __KC_JSON_PRIVATE_H__
 
+#include <json.h>
+
 /**
  * Structure KCWeb: Structure to save all important web information
  */
 struct kc_json {
-    int counter;
-
+    json_object *object;                        ///< JSON object
+    enum json_tokener_error error_no;           ///< Error number
+    KCString error_desc;                        ///< Error description
 };
+
+kcbool kc_json_new_obj(KCJson *obj);
 
 #endif /* __KC_JSON_PRIVATE_H__ */

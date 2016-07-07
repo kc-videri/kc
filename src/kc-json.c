@@ -20,37 +20,72 @@
  ***************************************************************************/
 
 #include <stdlib.h>
+#include <stdio.h>
 
 #include <kc-json.h>
 #include <kc-json_private.h>
 
+/*
+ * Private function definition
+ * */
+
 KCJson kc_json_new()
 {
-    KCJson result;
+    KCJson obj;
 
-    result = (KCJson)malloc(sizeof(struct kc_json));
-    if (result == NULL) {
-        return result;
+    obj = (KCJson) malloc(sizeof(struct kc_json));
+#if 0
+    if (obj == NULL) {
+        return obj;
     }
+#endif
+    obj->error_no = json_tokener_success;
+    obj->error_desc = (KCString) json_tokener_error_desc(obj->error_no);
 
-    result->counter = 1;
-
-    return result;
+    return obj;
 }
 
-KCJson kc_json_new_from_string(KCString json_string)
+int kc_json_new_from_string(KCJson * obj, KCString json_string)
 {
-    KCJson result;
-
-    result = kc_json_new();
-    if (result == NULL) {
-        return result;
+    if (kc_json_new_obj(obj) == FALSE) {
+        return -1;
     }
 
-    return result;
+    (*obj)->object =
+        json_tokener_parse_verbose(json_string, &(*obj)->error_no);
+    if ((*obj)->object == NULL) {
+        (*obj)->error_desc =
+            (KCString) json_tokener_error_desc((*obj)->error_no);
+        fprintf(stderr, "Cannot parse content: %s (%d)\n",
+                json_tokener_error_desc((*obj)->error_no),
+                (*obj)->error_no);
+    }
+
+    return (*obj)->error_no;
 }
 
-int kc_json_get_counter(KCJson json)
+int kc_json_get_error_no(KCJson obj)
 {
-    return json->counter;
+    return obj->error_no;
+}
+
+KCString kc_json_get_error_description(KCJson obj)
+{
+    return obj->error_desc;
+}
+
+/*
+ * Private function definition
+ * */
+kcbool kc_json_new_obj(KCJson * obj)
+{
+    *obj = (KCJson) malloc(sizeof(struct kc_json));
+    if (*obj == NULL) {
+        return FALSE;
+    }
+    (*obj)->error_no = json_tokener_success;
+    (*obj)->error_desc =
+        (KCString) json_tokener_error_desc((*obj)->error_no);
+
+    return TRUE;
 }

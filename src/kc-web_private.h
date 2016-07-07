@@ -24,6 +24,7 @@
 
 #include <kc-linked-list.h>
 #include <kc-string.h>
+#include <kc-json.h>
 
 /*
  * Private define declaration
@@ -39,18 +40,18 @@
  * Structure struct kc_web_content_type: Structure to handle different content types
  */
 struct kc_web_content_type {
-    KCWebContentType type;      ///< Content type
-    KCString type_string;       ///< String to send to define type
-    KCString endings[3];        ///< String to send to define type
+    KCWebContentType type;                      ///< Content type
+    KCString type_string;                       ///< String to send to define type
+    KCString endings[3];                        ///< String to send to define type
 };
 
 /**
  * Structure struct kc_web_content_type: Structure to handle different content types
  */
 struct kc_web_content_type_def {
-    KCWebContentType type;      ///< Content type
-    KCString type_string;       ///< String to send to define type
-    KCString endings[3];        ///< String to send to define type
+    KCWebContentType type;                      ///< Content type
+    KCString type_string;                       ///< String to send to define type
+    KCString endings[3];                        ///< String to send to define type
 };
 
 typedef struct kc_web_content_type_def *KCWebContentTypeDef;
@@ -59,9 +60,9 @@ typedef struct kc_web_content_type_def *KCWebContentTypeDef;
  * Structure KCWebParameter: Structure to save received parameter item
  */
 struct kc_web_parameter {
-    KCWebParameterType type;    ///< On which way does the parameter come
-    KCString key;               ///< Key of a parameter
-    KCString value;             ///< Value of a parameter
+    KCWebParameterType type;                    ///< On which way does the parameter come
+    KCString key;                               ///< Key of a parameter
+    KCString value;                             ///< Value of a parameter
 };
 
 /**
@@ -69,12 +70,13 @@ struct kc_web_parameter {
  */
 struct kc_web {
 #if 0
-    char *uri;                  ///< URI
-    char *get_query_string;     ///< Get query string
+    char *uri;                                  ///< URI
+    char *get_query_string;                     ///< Get query string
 #endif
-    KCLinkedList parameter;     ///< parameter list
-    KCWebRequestType request_type;  ///< request type
-    KCWebContentTypeDef content_type;  ///< Content type structure
+    KCLinkedList parameter;                     ///< parameter list
+    KCWebRequestType request_type;              ///< request type
+    KCWebContentTypeDef content_type;           ///< Content type structure
+    KCJson json;                                ///< JSON object
 };
 
 /*

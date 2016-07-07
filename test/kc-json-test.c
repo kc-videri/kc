@@ -24,12 +24,24 @@
 
 #include <kc-json.h>
 
+#define JSON_STRING \
+    "{\"sitename\":\"joys of programming\",\"tags\":[\"c\",[\"c\",\"c++\"]," \
+    "\"java\",\"PHP\"],\"author-details\":{\"name\":\"Joys of Programming\"," \
+    "\"Number of Posts\":10},\"price\":7.99,\"orderable\":true,}"
+#define JSON_STRING_NOT_WORKING "asdf"
+
 int main(int argc, char **argv)
 {
-    KCJson json;
+    int retval;
+    KCJson json = NULL;
 
-    json = kc_json_new();
-    printf("counter: %d\n", kc_json_get_counter(json));
+    retval = kc_json_new_from_string(&json, JSON_STRING);
+    retval = kc_json_new_from_string(&json, JSON_STRING_NOT_WORKING);
+    if (retval > 0) {
+        fprintf(stderr, "Cannot parse content: %s (%d)\n",
+                kc_json_get_error_description(json),
+                kc_json_get_error_no(json));
+    }
 
     return EXIT_SUCCESS;
 }

@@ -33,31 +33,31 @@ extern "C" {
  * Enumeration for different types of giving parameter
  */
 typedef enum {
-    KC_WEB_PARAMETER_GET,       ///< Parameter comes using GET
-    KC_WEB_PARAMETER_POST,      ///< Parameter comes using POST
-    KC_WEB_PARAMETER_HTTP,      ///< Parameter comes using HTTP
+    KC_WEB_PARAMETER_GET,                       ///< Parameter comes using GET
+    KC_WEB_PARAMETER_POST,                      ///< Parameter comes using POST
+    KC_WEB_PARAMETER_HTTP,                      ///< Parameter comes using HTTP
 } KCWebParameterType;
 
 /**
  * Enumeration for different types of receiving data
  */
 typedef enum {
-    KC_WEB_REQUEST_GET,         ///< Request type GET
-    KC_WEB_REQUEST_POST,        ///< Request type POST
-    KC_WEB_REQUEST_PUT,         ///< Request type PUT
-    KC_WEB_REQUEST_DELETE,      ///< Request type DELETE
+    KC_WEB_REQUEST_GET,                         ///< Request type GET
+    KC_WEB_REQUEST_POST,                        ///< Request type POST
+    KC_WEB_REQUEST_PUT,                         ///< Request type PUT
+    KC_WEB_REQUEST_DELETE,                      ///< Request type DELETE
 } KCWebRequestType;
 
 /**
  * Enumeration for different types of receiving data
  */
 typedef enum {
-    KC_WEB_CONTENT_HTML = 0,    ///< Content type text/html
-    KC_WEB_CONTENT_XHTML,       ///< Content type text/xhtml
-    KC_WEB_CONTENT_JSON,        ///< Content type application/json
-    KC_WEB_CONTENT_TEXT,        ///< Content type text
-    KC_WEB_CONTENT_ICO,         ///< Content type favicon
-    KC_WEB_CONTENT_UNDEF        ///< Last element or undefined type
+    KC_WEB_CONTENT_HTML = 0,                    ///< Content type text/html
+    KC_WEB_CONTENT_XHTML,                       ///< Content type text/xhtml
+    KC_WEB_CONTENT_JSON,                        ///< Content type application/json
+    KC_WEB_CONTENT_TEXT,                        ///< Content type text
+    KC_WEB_CONTENT_ICO,                         ///< Content type favicon
+    KC_WEB_CONTENT_UNDEF                        ///< Last element or undefined type
 } KCWebContentType;
 
 // forward declaration
@@ -151,22 +151,22 @@ KCLinkedList kc_web_get_parameter_list(KCWeb web);
  */
 KCWebParameter kc_web_parameter_get(KCWeb web, KCString search_string);
 /**
-* Get key from KCWebParameter item
-* @param item Pointer to KCWebParameter object
-* @return Pointer to key
-*/
+ * Get key from KCWebParameter item
+ * @param item Pointer to KCWebParameter object
+ * @return Pointer to key
+ */
 KCString kc_web_parameter_get_key(KCWebParameter item);
 /**
-* Get value from KCWebParameter item
-* @param item Pointer to KCWebParameter object
-* @return Pointer to value
-*/
+ * Get value from KCWebParameter item
+ * @param item Pointer to KCWebParameter object
+ * @return Pointer to value
+ */
 KCString kc_web_parameter_get_value(KCWebParameter item);
 /**
-* Get type from KCWebParameter item
-* @param item Pointer to KCWebParameter object
-* @return Parameter type
-*/
+ * Get type from KCWebParameter item
+ * @param item Pointer to KCWebParameter object
+ * @return Parameter type
+ */
 KCWebParameterType kc_web_parameter_get_type(KCWebParameter item);
 
 #ifdef __cplusplus
