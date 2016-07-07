@@ -34,30 +34,30 @@ typedef struct kc_mutex_item {
 
 /**
  * Initialise mutex
- * @param item Mutex item to initialise
+ * @param obj Mutex item to initialise
  * @return 0 => success, ! 0 => errno is set
  */
-int kc_mutex_item_init(KCMutexItem *item);
+int kc_mutex_item_init(KCMutexItem *obj);
 /**
  * Destroy mutex
- * @param item Mutex item to destroy
+ * @param obj Mutex item to destroy
  * @return 0 => success, ! 0 => errno is set
  */
-int kc_mutex_item_destroy(KCMutexItem *item);
+int kc_mutex_item_destroy(KCMutexItem *obj);
 /**
  * Lock mutext
- * @param item Mutex item to lock
+ * @param obj Mutex item to lock
  * @return 0 => success
  * @return
  */
-int kc_mutex_item_lock(KCMutexItem *item);
+int kc_mutex_item_lock(KCMutexItem *obj);
 /**
  * Unlock mutext
- * @param item Mutex item to lock
+ * @param obj Mutex item to lock
  * @return 0 => success
  * @return
  */
-int kc_mutex_item_unlock(KCMutexItem *item);
+int kc_mutex_item_unlock(KCMutexItem *obj);
 
 #ifdef __cplusplus
 }

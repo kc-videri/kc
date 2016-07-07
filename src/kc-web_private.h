@@ -122,13 +122,13 @@ char *kc_web_http_keys[] = {
 
 /**
  * Parse a received string (query (get), content (post), ...)
- * @param web Pointer to KC Web structure
+ * @param obj KCWeb object
  * @param query_string String to parse
  * @param length Length of the value
  * @param type Type of request
  * @return
  */
-int kc_web_parse_query_string(KCWeb web, const char *query_string,
+int kc_web_parse_query_string(KCWeb obj, const char *query_string,
                               KCWebParameterType type);
 
 /**
@@ -148,38 +148,38 @@ KCWebParameter kc_web_parameter_new_from_string(KCString string,
                                                  KCWebParameterType type);
 /**
  * Free parameter entry
- * @param item Item to free
+ * @param obj Object to free
  * @return 0 => successful
  */
-int kc_web_parameter_free(KCWebParameter item);
+int kc_web_parameter_free(KCWebParameter obj);
 /**
  * Set key
- * @param item KCWebParameter pointer item
+ * @param obj KCWebParameter pointer object
  * @param key Key to set
  * @return 0 => successful
  */
-int kc_web_parameter_set_key(KCWebParameter item, KCString key);
+int kc_web_parameter_set_key(KCWebParameter obj, KCString key);
 /**
  * Set value
- * @param item KCWebParameter pointer item
+ * @param obj KCWebParameter pointer Object
  * @param value Value to set
  * @return 0 => successful
  */
-int kc_web_parameter_set_value(KCWebParameter item, KCString value);
+int kc_web_parameter_set_value(KCWebParameter obj, KCString value);
 /**
  * Set type
- * @param item KCWebParameter pointer item
+ * @param obj KCWebParameter pointer Object
  * @param type Type to set
  * @return 0 => successful
  */
-int kc_web_parameter_set_type(KCWebParameter item,
+int kc_web_parameter_set_type(KCWebParameter obj,
                               KCWebParameterType type);
 /**
  * Add item to parameter list
- * @param web Pointer to KCWeb structure
+ * @param obj KCWeb object
  * @param item Parameter item to add
  * @return 0 => successfull
  */
-int kc_web_parameter_list_add_item(KCWeb web, KCWebParameter item);
+int kc_web_parameter_list_add_item(KCWeb obj, KCWebParameter item);
 
 #endif                          /* __KC_WEB_PRIVATE_H__ */

@@ -53,42 +53,42 @@ KCLinkedList kc_linked_list_new();
  * @param list Linked list
  * @return 0 => successful
  */
-int kc_linked_list_free(KCLinkedList list);
+int kc_linked_list_free(KCLinkedList obj);
 
 /**
  * Add new element on the end of the list
- * @param list Linked list
+ * @param obj Linked obj
  * @param element Data to add
  * @return 0 => successful
  */
-int kc_linked_list_add(KCLinkedList list, void *element);
+int kc_linked_list_add(KCLinkedList obj, void *element);
 /**
  * Remove first element which will found or do nothing
- * @param list Linked list
+ * @param obj Linked list
  * @param element Data to remove
  * @return >= 0 => position in array, -1 => cannot find element
  */
-int kc_linked_list_remove(KCLinkedList list, void *element);
+int kc_linked_list_remove(KCLinkedList obj, void *element);
 /**
  * Clear and free the current existing list; do not free data
- * @param list Linked list
+ * @param obj Linked list
  * @return 0 => successful
  */
-int kc_linked_list_clear(KCLinkedList list);
+int kc_linked_list_clear(KCLinkedList obj);
 
 /**
  * Get first item of the list (not thread saved)
- * @param list Linked list
+ * @param obj Linked list
  * @return First item in list
  */
-KCLinkedListIterator kc_linked_list_item_get_first(KCLinkedList list);
+KCLinkedListIterator kc_linked_list_item_get_first(KCLinkedList obj);
 /**
  * Is this iterator the last item in the list (not thread saved)
- * @param list Linked list
+ * @param obj Linked list
  * @param iterator
  * @return TRUE -> is last
  */
-kcbool kc_linked_list_item_is_last(KCLinkedList list,
+kcbool kc_linked_list_item_is_last(KCLinkedList obj,
                                    KCLinkedListIterator iterator);
 /**
  * Get next item in list (not thread saved);

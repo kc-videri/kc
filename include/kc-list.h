@@ -32,14 +32,14 @@ typedef struct kc_list {
 } KCList;
 
 KCList *kc_list_new();
-int kc_list_free(KCList *list);
-int kc_list_add(KCList *list, void *data);
-int kc_list_remove(KCList *list, KCList *element);
-int kc_list_clear(KCList *list);
+int kc_list_free(KCList *obj);
+int kc_list_add(KCList *obj, void *data);
+int kc_list_remove(KCList *obj, KCList *element);
+int kc_list_clear(KCList *obj);
 
-KCList *kc_list_get_first(KCList *list);
-KCList *kc_list_get_next(KCList *element);
-void *kc_list_element_get_data(KCList *element);
+KCList *kc_list_get_first(KCList *obj);
+KCList *kc_list_get_next(KCList *obj);
+void *kc_list_element_get_data(KCList *obj);
 
 #ifdef __cplusplus
 }

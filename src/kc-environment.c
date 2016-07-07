@@ -39,8 +39,8 @@
  * Private environment structure
  */
 struct environment {
-    char *hostname; 				/**< Local host name */
-    char *username; 				/**< User name */
+    char *hostname; /**< Local host name */
+    char *username; /**< User name */
 };
 
 // private
@@ -49,75 +49,76 @@ struct environment {
  * @param environment Object of KCEnvironment
  * @return 0 == success
  */
-int get_hostname(KCEnvironment * environment);
+int get_hostname(KCEnvironment * obj);
 /**
  * Private function to get user name
- * @param environment Object of KCEnvironment
+ * @param obj Object of KCEnvironment
  * @return 0 == success
  */
-int get_username(KCEnvironment * environment);
+int get_username(KCEnvironment * obj);
 #if (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
 int convert_wchar_multibyte(TCHAR * msg, char *value);
 #endif
 
 KCEnvironment *kc_environment_new()
 {
-    KCEnvironment *environment;
+    KCEnvironment *obj;
 
-    environment = (KCEnvironment *) malloc(sizeof(KCEnvironment));
-    if (environment == NULL) {
-        return (environment);
+    obj = (KCEnvironment *) malloc(sizeof(KCEnvironment));
+    if (obj == NULL) {
+        return (obj);
     }
 
-    if (get_hostname(environment) != 0) {
+    if (get_hostname(obj) != 0) {
         goto kc_environment_new_failed;
     }
 
-    if (get_username(environment) != 0) {
+    if (get_username(obj) != 0) {
         goto kc_environment_username_failed;
     }
 
-    return (environment);
+    return (obj);
 
-  kc_environment_username_failed:free(environment->hostname);
+  kc_environment_username_failed:
+    free(obj->hostname);
 
-  kc_environment_new_failed:free(environment);
-    environment = NULL;
-    return (environment);
+  kc_environment_new_failed:
+    free(obj);
+    obj = NULL;
+    return (obj);
 }
 
-void kc_environment_free(KCEnvironment * environment)
+void kc_environment_free(KCEnvironment * obj)
 {
-    free(environment->username);
-    free(environment->hostname);
-    free(environment);
+    free(obj->username);
+    free(obj->hostname);
+    free(obj);
 
     return;
 }
 
-char *kc_environment_get_hostname(KCEnvironment * environment)
+char *kc_environment_get_hostname(KCEnvironment * obj)
 {
-    return (environment->hostname);
+    return (obj->hostname);
 }
 
-char *kc_environment_get_username(KCEnvironment * environment)
+char *kc_environment_get_username(KCEnvironment * obj)
 {
-    return (environment->username);
+    return (obj->username);
 }
 
-int get_hostname(KCEnvironment * environment)
+int get_hostname(KCEnvironment * obj)
 {
 #if (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
     WSADATA WSAData;
 #endif
 
-    environment->hostname =
-        (char *) malloc((BUFFER_LENGTH + 1) * sizeof(char));
-    if (environment->hostname == NULL) {
+    obj->hostname = (char *) malloc((BUFFER_LENGTH + 1) * sizeof(char));
+    if (obj->hostname == NULL) {
         return (-1);
     }
 #if defined(__linux__)
-    gethostname(environment->hostname, BUFFER_LENGTH);
+    gethostname(obj->hostname, BUFFER_LENGTH);
     // TODO MOT: Error handling
 
 #elif (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
@@ -126,7 +127,7 @@ int get_hostname(KCEnvironment * environment)
         // TODO MOT: Error handling
     }
     // Get local host name
-    if (gethostname(environment->hostname, BUFFER_LENGTH - 1)) {
+    if (gethostname(obj->hostname, BUFFER_LENGTH - 1)) {
         // Error -> call 'WSAGetLastError()'
     }
     // Cleanup
@@ -136,18 +137,17 @@ int get_hostname(KCEnvironment * environment)
     return (0);
 }
 
-int get_username(KCEnvironment * environment)
+int get_username(KCEnvironment * obj)
 {
     int retval;
 
-    environment->username =
-        (char *) malloc((BUFFER_LENGTH + 1) * sizeof(char));
-    if (environment->username == NULL) {
+    obj->username = (char *) malloc((BUFFER_LENGTH + 1) * sizeof(char));
+    if (obj->username == NULL) {
         return (-1);
     }
 #if defined(__linux__)
-    //gethostname(environment->hostname, BUFFER_LENGTH);
-    retval = getlogin_r(environment->username, BUFFER_LENGTH);
+    //gethostname(obj->hostname, BUFFER_LENGTH);
+    retval = getlogin_r(obj->username, BUFFER_LENGTH);
     // TODO MOT: Error handling
 
     return (0);
@@ -156,12 +156,11 @@ int get_username(KCEnvironment * environment)
     DWORD length;
 
     length = BUFFER_LENGTH;
-    retval =
-        GetUserName((TCHAR *) environment->username,
+    retval = GetUserName((TCHAR *) obj->username,
 //                    (LPDWORD) ((int *) &length));
-                    (LPDWORD) &length);
+                         (LPDWORD) & length);
     if (retval) {
-        //retval = convert_wchar_multibyte(buffer, environment->username);
+        //retval = convert_wchar_multibyte(buffer, obj->username);
 
         return (0);
     } else {
