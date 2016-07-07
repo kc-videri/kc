@@ -79,6 +79,12 @@ KCWeb kc_web_init();
  */
 KCWeb kc_web_init_type(KCWebContentType type);
 /**
+ * Initialise the KCWeb object from content type
+ * Using CONTENT_TYPE value
+ * @return KCWeb object or NULL on error
+ */
+KCWeb kc_web_init_from_content_type();
+/**
  * Initialise the KCWeb object for a HTML document
  * Using SCRIPT_NAME value
  * @return KCWeb object or NULL on error

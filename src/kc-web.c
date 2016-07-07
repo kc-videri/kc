@@ -142,6 +142,18 @@ KCWeb kc_web_init_type(KCWebContentType type)
     return NULL;
 }
 
+KCWeb kc_web_init_from_content_type()
+{
+    KCWebContentType type;
+
+    type = kc_web_parse_content_type();
+    if (type == KC_WEB_CONTENT_UNDEF) {
+        return NULL;
+    }
+
+    return kc_web_init_type(type);
+}
+
 KCWeb kc_web_init_from_ending()
 {
     KCString buffer;

@@ -40,3 +40,15 @@ Makefile
 Makefile.in
 config.*
 configure
+
+*~
+doc/*
+aclocal
+autom4te.cache/*
+install-sh
+intltool*
+libtool
+ltmain.sh
+missing
+src/.deps/*
+
