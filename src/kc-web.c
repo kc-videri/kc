@@ -29,6 +29,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include <kc-object.h>
 #include <kc-web.h>
 #include <kc-web_private.h>
 #include <kc-string.h>
@@ -138,7 +139,7 @@ KCWeb kc_web_init_type(KCWebContentType type)
     return obj;
 
   kc_web_init_failed_memory:
-    free(obj);
+    kc_object_free((KCObject) obj);
     return NULL;
 }
 
@@ -493,7 +494,7 @@ int kc_web_parameter_free(KCWebParameter item)
     if (item->value != NULL) {
         free(item->value);
     }
-    free(item);
+    kc_object_free((KCObject) item);
 
     return 0;
 }

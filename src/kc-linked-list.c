@@ -22,15 +22,16 @@
 #include <stdlib.h>
 
 #include <kc.h>
+#include <kc-object.h>
 #include <kc-linked-list.h>
 #include <kc-linked-list_private.h>
 #include <kc-mutex.h>
 
 KCLinkedList kc_linked_list_new()
 {
-    KCLinkedList obj = NULL;
+    KCLinkedList obj;
 
-    obj = (KCLinkedList) malloc(sizeof(struct kc_linked_list));
+    obj = (KCLinkedList) kc_object_new(sizeof(struct kc_linked_list));
     if (obj != NULL) {
         if (kc_mutex_item_init((KCMutexItem) obj) != 0) {
             goto new_error;
@@ -43,7 +44,7 @@ KCLinkedList kc_linked_list_new()
     return obj;
 
   new_error:
-    free(obj);
+    kc_object_free((KCObject) obj);
     return NULL;
 }
 
@@ -65,7 +66,7 @@ int kc_linked_list_add(KCLinkedList obj, void *element)
 
     // Initialise list if not exists
     if (obj->last == NULL) {
-        obj->items = (KCLinkedListItem) malloc(sizeof(KCLinkedListItem));
+        obj->items = (KCLinkedListItem) kc_object_new(sizeof(KCLinkedListItem));
         if (obj->items == NULL) {
             retval = -1;
             goto add_error;
@@ -73,7 +74,7 @@ int kc_linked_list_add(KCLinkedList obj, void *element)
         obj->last = obj->items;
     } else {
         obj->last->next =
-            (KCLinkedListItem) malloc(sizeof(KCLinkedListItem));
+            (KCLinkedListItem) kc_object_new(sizeof(KCLinkedListItem));
         if (obj->items->next == NULL) {
             retval = -1;
             goto add_error;
@@ -108,7 +109,7 @@ int kc_linked_list_remove(KCLinkedList obj, void *element)
                 last->next = current->next;
             }
 
-            free(current);
+            kc_object_free((KCObject) current);
             found_one = TRUE;
 
             break;
@@ -133,7 +134,7 @@ int kc_linked_list_clear(KCLinkedList obj)
     current = obj->items;
     while (current) {
         next = current->next;
-        free(current);
+        kc_object_free((KCObject) current);
         current = next;
     }
 

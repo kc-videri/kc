@@ -31,7 +31,8 @@
 
 #endif
 
-#include "../include/kc-environment.h"
+#include <kc-object.h>
+#include <kc-environment.h>
 
 #define BUFFER_LENGTH 255           /**< Length of the buffer */
 
@@ -92,7 +93,7 @@ void kc_environment_free(KCEnvironment * obj)
 {
     free(obj->username);
     free(obj->hostname);
-    free(obj);
+    kc_object_free((KCObject) obj);
 
     return;
 }

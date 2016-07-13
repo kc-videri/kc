@@ -1,6 +1,6 @@
 /**
- * @file        kc_string.c
- * @brief       Implementation for all string operations
+ * @file        kc-object.h
+ * @brief       Main object (Header file)
  * @author      K-C Videri <kc.videri@gmail.com>
  *
  * copyright:   (C) 2016 by K-C Videri
@@ -19,32 +19,37 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#ifndef __KC_OBJECT_H__
+#define __KC_OBJECT_H__
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#include <kc-object.h>
 #include <kc-string.h>
 
-// TODO MOT: test application
-KCString kc_string_create(const char *value, size_t length)
-{
-    char *obj;
+// Forward declaration
+struct kc_object;
 
-    obj = (char *) kc_object_new((length + 1) * sizeof(char));
-    if (obj == NULL) {
-        goto kc_sting_create_exit;
-    }
-    memcpy(obj, value, length);
-    obj[length] = '\0';
+/**
+ * Structure KCObject: Main class
+ */
+typedef struct kc_object* KCObject;
 
-  kc_sting_create_exit:
-    return obj;
+/**
+ * Create a new KC object
+ * @param size Size of the object
+ * @return KCObject or NULL on error
+ */
+KCObject kc_object_new(size_t size);
+/**
+ * Free object
+ * @param obj Object to free
+ * @return 0 => successful
+ */
+int kc_object_free(KCObject obj);
+
+#ifdef __cplusplus
 }
+#endif
 
-int kc_string_free(KCString string)
-{
-    kc_object_free((KCObject) string);
-
-    return 0;
-}
+#endif                          /* __KC_OBJECT_H__ */
