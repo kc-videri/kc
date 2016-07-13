@@ -112,7 +112,6 @@ int kc_web_print_image(KCWeb obj, KCString file_name);
 
 /**
  * Get content type
- * @param obj KCWeb object
  * @return Content type
  */
 KCWebContentType kc_web_parse_content_type();

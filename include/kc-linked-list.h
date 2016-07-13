@@ -50,7 +50,7 @@ typedef struct kc_linked_list_iterator KCLinkedListIterator;
 KCLinkedList kc_linked_list_new();
 /**
  * Free linked list, no linked element will be freed
- * @param list Linked list
+ * @param obj Linked list
  * @return 0 => successful
  */
 int kc_linked_list_free(KCLinkedList obj);
@@ -99,7 +99,7 @@ KCLinkedListIterator kc_linked_list_item_get_next(KCLinkedListIterator
                                                   iterator);
 /**
  * Get data from the current element
- * @param element Linked list item
+ * @param iterator Iterator object
  * @return Pointer to data
  */
 void *kc_linked_list_item_get_data(KCLinkedListIterator iterator);

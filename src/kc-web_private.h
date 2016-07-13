@@ -127,7 +127,6 @@ char *kc_web_http_keys[] = {
  * Parse a received string (query (get), content (post), ...)
  * @param obj KCWeb object
  * @param query_string String to parse
- * @param length Length of the value
  * @param type Type of request
  * @return
  */
