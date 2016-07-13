@@ -26,41 +26,40 @@
 extern "C" {
 #endif
 
-#include <pthread.h>
+// Forward declaration
+struct kc_mutex_item;
 
-typedef struct kc_mutex_item {
-    pthread_mutex_t mutex;
-} KCMutexItem;
+typedef struct kc_mutex_item *KCMutexItem;
 
 /**
  * Initialise mutex
  * @param obj Mutex item to initialise
  * @return 0 => success, ! 0 => errno is set
  */
-int kc_mutex_item_init(KCMutexItem *obj);
+int kc_mutex_item_init(KCMutexItem obj);
 /**
  * Destroy mutex
  * @param obj Mutex item to destroy
  * @return 0 => success, ! 0 => errno is set
  */
-int kc_mutex_item_destroy(KCMutexItem *obj);
+int kc_mutex_item_destroy(KCMutexItem obj);
 /**
  * Lock mutext
  * @param obj Mutex item to lock
  * @return 0 => success
  * @return
  */
-int kc_mutex_item_lock(KCMutexItem *obj);
+int kc_mutex_item_lock(KCMutexItem obj);
 /**
  * Unlock mutext
  * @param obj Mutex item to lock
  * @return 0 => success
  * @return
  */
-int kc_mutex_item_unlock(KCMutexItem *obj);
+int kc_mutex_item_unlock(KCMutexItem obj);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __KC_MUTEX_H__ */
+#endif                          /* __KC_MUTEX_H__ */

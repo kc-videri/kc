@@ -32,7 +32,7 @@ KCLinkedList kc_linked_list_new()
 
     obj = (KCLinkedList) malloc(sizeof(struct kc_linked_list));
     if (obj != NULL) {
-        if (kc_mutex_item_init((KCMutexItem *) obj) != 0) {
+        if (kc_mutex_item_init((KCMutexItem) obj) != 0) {
             goto new_error;
 
         }
@@ -53,7 +53,7 @@ int kc_linked_list_free(KCLinkedList obj)
 
     kc_linked_list_clear(obj);
 
-    retval = kc_mutex_item_unlock((KCMutexItem *) obj);
+    retval = kc_mutex_item_unlock((KCMutexItem) obj);
 
     return retval;
 }
@@ -61,7 +61,7 @@ int kc_linked_list_free(KCLinkedList obj)
 int kc_linked_list_add(KCLinkedList obj, void *element)
 {
     int retval = 0;
-    kc_mutex_item_lock((KCMutexItem *) obj);
+    kc_mutex_item_lock((KCMutexItem) obj);
 
     // Initialise list if not exists
     if (obj->last == NULL) {
@@ -84,7 +84,7 @@ int kc_linked_list_add(KCLinkedList obj, void *element)
     obj->last->data = element;
 
   add_error:
-    kc_mutex_item_unlock((KCMutexItem *) obj);
+    kc_mutex_item_unlock((KCMutexItem) obj);
     return retval;
 }
 
@@ -95,7 +95,7 @@ int kc_linked_list_remove(KCLinkedList obj, void *element)
     KCLinkedListItem current, last = obj->items;
     KCLinkedListIterator iterator;
 
-    kc_mutex_item_lock((KCMutexItem *) obj);
+    kc_mutex_item_lock((KCMutexItem) obj);
 
     for (iterator = kc_linked_list_item_get_first(obj), retval = 0;
          !kc_linked_list_item_is_last(obj, iterator);
@@ -116,7 +116,7 @@ int kc_linked_list_remove(KCLinkedList obj, void *element)
         last = current;
     }
 
-    kc_mutex_item_unlock((KCMutexItem *) obj);
+    kc_mutex_item_unlock((KCMutexItem) obj);
     if (found_one == FALSE) {
         retval = -1;
     }
@@ -128,7 +128,7 @@ int kc_linked_list_clear(KCLinkedList obj)
     int retval = 0;
     KCLinkedListItem current, next;
 
-    kc_mutex_item_lock((KCMutexItem *) obj);
+    kc_mutex_item_lock((KCMutexItem) obj);
 
     current = obj->items;
     while (current) {
@@ -137,7 +137,7 @@ int kc_linked_list_clear(KCLinkedList obj)
         current = next;
     }
 
-    kc_mutex_item_unlock((KCMutexItem *) obj);
+    kc_mutex_item_unlock((KCMutexItem) obj);
 
     return retval;
 }

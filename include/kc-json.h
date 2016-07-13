@@ -42,12 +42,12 @@ typedef struct kc_json* KCJson;
  */
 KCJson kc_json_new();
 /**
- * Create a json object from a string
- * @param obj Empty pointer to fill
+ * Create a json object from a string; testing if the string conversation
+ * works using kc_json_get_error_no(obj) == 0
  * @param json_string String to parse
- * @return 0 => successful, -1 => no memory; > 0 => handled by error function
+ * @return NULL when memory allocation failed,
  */
-int kc_json_new_from_string(KCJson *obj, KCString json_string);
+KCJson kc_json_new_from_string(KCString json_string);
 /**
  * Get error code
  * @param obj JSON object

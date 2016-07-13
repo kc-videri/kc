@@ -19,14 +19,14 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#include "../include/kc-mutex.h"
-
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
 
+#include <kc-mutex.h>
+#include <kc-mutex_private.h>
 
-int kc_mutex_item_init(KCMutexItem * obj)
+int kc_mutex_item_init(KCMutexItem obj)
 {
     int retval;
 
@@ -40,7 +40,7 @@ int kc_mutex_item_init(KCMutexItem * obj)
     return retval;
 }
 
-int kc_mutex_item_destroy(KCMutexItem *obj)
+int kc_mutex_item_destroy(KCMutexItem obj)
 {
     int retval;
 
@@ -54,14 +54,15 @@ int kc_mutex_item_destroy(KCMutexItem *obj)
     return retval;
 
 }
-int kc_mutex_item_lock(KCMutexItem *obj)
+
+int kc_mutex_item_lock(KCMutexItem obj)
 {
     pthread_mutex_lock(&(obj->mutex));
 
     return 0;
 }
 
-int kc_mutex_item_unlock(KCMutexItem *obj)
+int kc_mutex_item_unlock(KCMutexItem obj)
 {
     pthread_mutex_unlock(&(obj->mutex));
 

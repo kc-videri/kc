@@ -24,15 +24,16 @@
 
 #include <json.h>
 
+#include <kc-object.h>
+
 /**
  * Structure KCWeb: Structure to save all important web information
  */
 struct kc_json {
-    json_object *object;                        ///< JSON object
+    KCObject object;                            ///< Parent object
+    struct json_object *json_object;            ///< JSON object
     enum json_tokener_error error_no;           ///< Error number
     KCString error_desc;                        ///< Error description
 };
-
-kcbool kc_json_new_obj(KCJson *obj);
 
 #endif /* __KC_JSON_PRIVATE_H__ */

@@ -57,7 +57,7 @@ KCWeb kc_web_init_type(KCWebContentType type)
     kcbool found_one;
     int i;
 
-    obj = (KCWeb) malloc(sizeof(struct kc_web));
+    obj = (KCWeb) kc_object_new(sizeof(struct kc_web));
     if (obj == NULL) {
         return NULL;
     }
@@ -175,7 +175,7 @@ int kc_web_free(KCWeb obj)
     KCWebParameter parameter;
 
     list = kc_web_get_parameter_list(obj);
-    kc_mutex_item_lock((KCMutexItem *) list);
+    kc_mutex_item_lock((KCMutexItem) list);
     for (iterator = kc_linked_list_item_get_first(list);
          kc_linked_list_item_is_last(list, iterator);
          iterator = kc_linked_list_item_get_next(iterator)) {
@@ -183,7 +183,7 @@ int kc_web_free(KCWeb obj)
             (KCWebParameter) kc_linked_list_item_get_data(iterator);
         kc_web_parameter_free(parameter);
     }
-    kc_mutex_item_unlock((KCMutexItem *) obj->parameter);
+    kc_mutex_item_unlock((KCMutexItem) obj->parameter);
     kc_linked_list_free(obj->parameter);
 
     return 0;
@@ -356,20 +356,20 @@ KCWebParameter kc_web_parameter_get(KCWeb obj, KCString search_string)
     KCWebParameter parameter;
 
     list = kc_web_get_parameter_list(obj);
-    kc_mutex_item_lock((KCMutexItem *) list);
+    kc_mutex_item_lock((KCMutexItem) list);
     for (iterator = kc_linked_list_item_get_first(list);
          kc_linked_list_item_is_last(list, iterator);
          iterator = kc_linked_list_item_get_next(iterator)) {
         parameter =
             (KCWebParameter) kc_linked_list_item_get_data(iterator);
         if (!strcmp(search_string, kc_web_parameter_get_key(parameter))) {
-            kc_mutex_item_unlock((KCMutexItem *) obj->parameter);
+            kc_mutex_item_unlock((KCMutexItem) obj->parameter);
 
             return parameter;
         }
     }
 
-    kc_mutex_item_unlock((KCMutexItem *) obj->parameter);
+    kc_mutex_item_unlock((KCMutexItem) obj->parameter);
 
     return NULL;
 }
@@ -441,7 +441,7 @@ KCWebParameter kc_web_parameter_new()
 {
     KCWebParameter obj;
 
-    obj = (KCWebParameter) malloc(sizeof(KCWebParameter));
+    obj = (KCWebParameter) kc_object_new(sizeof(struct kc_web_parameter));
     if (obj != NULL) {
         obj->key = NULL;
         obj->value = NULL;
@@ -451,8 +451,8 @@ KCWebParameter kc_web_parameter_new()
 }
 
 KCWebParameter kc_web_parameter_new_from_string(KCString string,
-                                                 size_t length,
-                                                 KCWebParameterType type)
+                                                size_t length,
+                                                KCWebParameterType type)
 {
     KCWebParameter obj = NULL;
     int i;
@@ -512,8 +512,7 @@ int kc_web_parameter_set_value(KCWebParameter item, KCString value)
     return 0;
 }
 
-int kc_web_parameter_set_type(KCWebParameter item,
-                              KCWebParameterType type)
+int kc_web_parameter_set_type(KCWebParameter item, KCWebParameterType type)
 {
     item->type = type;
 

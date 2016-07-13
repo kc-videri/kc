@@ -1,6 +1,6 @@
 /**
- * @file        kc-json-test.c
- * @brief       Test the simple JSON wrapper
+ * @file        kc-object.c
+ * @brief       Main object
  * @author      K-C Videri <kc.videri@gmail.com>
  *
  * copyright:   (C) 2016 by K-C Videri
@@ -19,28 +19,23 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#include <stdio.h>
 #include <stdlib.h>
 
-#include <kc-json.h>
+#include <kc-object.h>
+#include <kc-object_private.h>
 
-#define JSON_STRING \
-    "{\"sitename\":\"joys of programming\",\"tags\":[\"c\",[\"c\",\"c++\"]," \
-    "\"java\",\"PHP\"],\"author-details\":{\"name\":\"Joys of Programming\"," \
-    "\"Number of Posts\":10},\"price\":7.99,\"orderable\":true,}"
-#define JSON_STRING_NOT_WORKING "asdf"
-
-int main(int argc, char **argv)
+KCObject kc_object_new(size_t size)
 {
-    KCJson json = NULL;
+    KCObject obj;
 
-    json = kc_json_new_from_string(JSON_STRING);
-    json = kc_json_new_from_string(JSON_STRING_NOT_WORKING);
-    if (kc_json_get_error_no(json) != 0) {
-        fprintf(stderr, "Cannot parse content: %s (%d)\n",
-                kc_json_get_error_description(json),
-                kc_json_get_error_no(json));
-    }
+    obj = (KCObject)malloc(size);
 
-    return EXIT_SUCCESS;
+    return obj;
+}
+
+int kc_object_free(KCObject obj)
+{
+    free(obj);
+
+    return 0;
 }

@@ -14,6 +14,7 @@ AM_CFLAGS =\
 lib_LTLIBRARIES = libkc.la libkcweb.la
 
 libkc_la_SOURCES = \
+	kc-object.c \
 	kc-environment.c \
 	kc-string.c \
 	kc-linked-list.c \
