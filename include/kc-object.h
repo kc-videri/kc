@@ -21,6 +21,7 @@
 
 #ifndef __KC_OBJECT_H__
 #define __KC_OBJECT_H__
+
 #ifdef __cplusplus
 extern "C" {
 #endif

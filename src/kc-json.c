@@ -73,6 +73,17 @@ KCString kc_json_get_error_description(KCJson obj)
     return obj->error_desc;
 }
 
+KCString kc_json_get_json_string(KCJson obj, kcbool nice)
+{
+    int flag = 0;
+
+    if (nice == TRUE) {
+        flag = JSON_C_TO_STRING_SPACED | JSON_C_TO_STRING_PRETTY;
+    }
+
+    return (KCString)json_object_to_json_string_ext(obj->json_object, flag);
+}
+
 /*
  * Private function definition
  * */

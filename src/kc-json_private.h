@@ -36,4 +36,8 @@ struct kc_json {
     KCString error_desc;                        ///< Error description
 };
 
+struct kc_json_object {
+    struct json_object *json_object;            ///< JSON object
+};
+
 #endif /* __KC_JSON_PRIVATE_H__ */

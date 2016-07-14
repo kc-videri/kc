@@ -35,6 +35,8 @@ int main(int argc, char **argv)
     KCJson json = NULL;
 
     json = kc_json_new_from_string(JSON_STRING);
+    printf("Output nice:\n%s\n", kc_json_get_json_string(json, TRUE));
+    printf("Output not nice:\n%s\n", kc_json_get_json_string(json, FALSE));
     json = kc_json_new_from_string(JSON_STRING_NOT_WORKING);
     if (kc_json_get_error_no(json) != 0) {
         fprintf(stderr, "Cannot parse content: %s (%d)\n",

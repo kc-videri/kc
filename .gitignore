@@ -51,4 +51,7 @@ libtool
 ltmain.sh
 missing
 src/.deps/*
+src/.libs/*
+test/.deps/*
+test/.libs/*
 

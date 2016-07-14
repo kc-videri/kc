@@ -1,6 +1,6 @@
  /**
  * @file        kc-json.h
- * @brief       A simple class to handle json structure
+ * @brief       A simple class to handle JSON structure
  * @author      K-C Videri <kc.videri@gmail.com>
  *
  * copyright:   (C) 2016 by K-C Videri
@@ -42,7 +42,7 @@ typedef struct kc_json* KCJson;
  */
 KCJson kc_json_new();
 /**
- * Create a json object from a string; testing if the string conversation
+ * Create a JSON object from a string; testing if the string conversation
  * works using kc_json_get_error_no(obj) == 0
  * @param json_string String to parse
  * @return NULL when memory allocation failed,
@@ -60,6 +60,13 @@ int kc_json_get_error_no(KCJson obj);
  * @return Error description
  */
 KCString kc_json_get_error_description(KCJson obj);
+/**
+ * Get JSON string from JSON object
+ * @param obj JSON object
+ * @param nice Nice outlook of the string
+ * @return JSON object as string
+ */
+KCString kc_json_get_json_string(KCJson obji, kcbool nice);
 
 #ifdef __cplusplus
 }
