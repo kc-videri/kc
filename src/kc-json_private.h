@@ -25,6 +25,7 @@
 #include <json.h>
 
 #include <kc-object.h>
+#include <kc-json.h>
 
 /**
  * Structure KCWeb: Structure to save all important web information
@@ -37,7 +38,14 @@ struct kc_json {
 };
 
 struct kc_json_object {
+    KCObject object;                            ///< Parent object
     struct json_object *json_object;            ///< JSON object
 };
+
+/**
+ * Create a new JSON object
+ * @return JSON object or NULL on error
+ */
+KCJsonObject kc_json_object_new();
 
 #endif /* __KC_JSON_PRIVATE_H__ */

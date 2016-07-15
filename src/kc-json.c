@@ -30,7 +30,7 @@
  * */
 
 KCJson kc_json_new()
-{
+{ 
     KCJson obj;
 
     obj = (KCJson) kc_object_new(sizeof(struct kc_json));
@@ -84,6 +84,49 @@ KCString kc_json_get_json_string(KCJson obj, kcbool nice)
     return (KCString)json_object_to_json_string_ext(obj->json_object, flag);
 }
 
+KCJsonObject kc_json_new_string(const KCString str)
+{
+    KCJsonObject obj;
+
+    obj = kc_json_object_new();
+    if (obj == NULL) {
+        return obj;
+    }
+
+    obj->json_object = json_object_new_string(str);
+    
+    return obj;
+}
+
+int kc_json_add_object(KCJson obj, const KCString key, KCJsonObject value)
+{
+
+    return 0;
+}
+
+KCJsonObject kc_json_new_string_len(const KCString str, int len)
+{
+    KCJsonObject obj;
+
+    obj = kc_json_object_new();
+    if (obj == NULL) {
+        return obj;
+    }
+    
+    obj->json_object = json_object_new_string_len(str, len);
+
+    return obj;
+}
+
 /*
  * Private function definition
  * */
+
+KCJsonObject kc_json_object_new()
+{
+    KCJsonObject obj;
+
+    obj = (KCJsonObject) kc_object_new(sizeof(struct kc_json_object));
+
+    return obj;
+}
