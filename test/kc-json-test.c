@@ -33,16 +33,74 @@
 int main(int argc, char **argv)
 {
     KCJson json = NULL;
+    KCJsonObject value;
 
     json = kc_json_new_from_string(JSON_STRING);
     printf("Output nice:\n%s\n", kc_json_get_json_string(json, TRUE));
     printf("Output not nice:\n%s\n", kc_json_get_json_string(json, FALSE));
+    kc_json_free(json);
     json = kc_json_new_from_string(JSON_STRING_NOT_WORKING);
     if (kc_json_get_error_no(json) != 0) {
         fprintf(stderr, "Cannot parse content: %s (%d)\n",
                 kc_json_get_error_description(json),
                 kc_json_get_error_no(json));
     }
+    kc_json_free(json);
+
+    json = kc_json_new();
+    fprintf(stderr, "%d: inside\n", __LINE__); // DELETE 
+#if 0
+    json_object *obj, *value, *array, *array_2;
+
+    /*Creating a json object */
+    obj = json_object_new_object();
+
+    /* Creating a json array */
+    array = json_object_new_array();
+    array_2 = json_object_new_array();
+
+    /* Creating json strings */
+    value = json_object_new_string("c");
+    /* Adding the above created json strings to the array */
+    json_object_array_add(array, value);
+    json_object_array_add(array_2, value);
+    value = json_object_new_string("c++");
+    json_object_array_add(array_2, value);
+    json_object_array_add(array, array_2);
+    value = json_object_new_string("php");
+    json_object_array_add(array, value);
+
+    /* Form the json object */
+    /* Each of these is like a key value pair */
+#endif
+
+    /* Creating a json string */
+#if 0
+    value = json_object_new_string("Joys of Programming");
+    json_object_object_add(obj, "Site Name", value);
+#endif
+    fprintf(stderr, "%d: inside\n", __LINE__); // DELETE 
+    value = kc_json_new_string("Joys of Programming");
+    fprintf(stderr, "%d: inside\n", __LINE__); // DELETE 
+    kc_json_add_object(json, "Site Name", value);
+    fprintf(stderr, "%d: inside\n", __LINE__); // DELETE 
+
+#if 0
+    /* Creating a json boolean */
+    value = json_object_new_boolean(1);
+    json_object_object_add(obj, "Technical blog", value);
+
+    /* Creating a json double */
+    value = json_object_new_double(2.14);
+    json_object_object_add(obj, "Average posts per day", value);
+
+    /* Creating a json integer */
+    value = json_object_new_int(10);
+    json_object_object_add(obj, "Number of posts", value);
+
+    json_object_object_add(obj, "Categories", array);
+#endif
+    printf("Output nice:\n%s\n", kc_json_get_json_string(json, TRUE));
 
     return EXIT_SUCCESS;
 }

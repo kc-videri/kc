@@ -53,6 +53,12 @@ KCJson kc_json_new();
  * @return NULL when memory allocation failed,
  */
 KCJson kc_json_new_from_string(KCString json_string);
+/**
+ * Free allocated memory
+ * @param obj object to free
+ * @return 0 => successful
+ */
+int kc_json_free(KCJson obj);
 
 /**
  * Get error code

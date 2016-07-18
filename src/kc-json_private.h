@@ -47,5 +47,17 @@ struct kc_json_object {
  * @return JSON object or NULL on error
  */
 KCJsonObject kc_json_object_new();
+/**
+ * Free JSON object and all children
+ * @param obj
+ * @return
+ */
+int kc_json_object_free(KCJsonObject obj);
+/**
+ * Free only the header of the JSON object
+ * @param obj
+ * @return
+ */
+int kc_json_object_free_header(KCJsonObject obj);
 
 #endif /* __KC_JSON_PRIVATE_H__ */

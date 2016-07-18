@@ -39,6 +39,7 @@ KCJson kc_json_new()
     }
     obj->error_no = json_tokener_success;
     obj->error_desc = (KCString) json_tokener_error_desc(obj->error_no);
+    obj->json_object = NULL;
 
     return obj;
 }
@@ -63,6 +64,13 @@ KCJson kc_json_new_from_string(KCString json_string)
     return obj;
 }
 
+int kc_json_free(KCJson obj)
+{
+    fprintf(stderr, "// TODO MOT: to implement\n");
+
+    return 0;
+}
+
 int kc_json_get_error_no(KCJson obj)
 {
     return obj->error_no;
@@ -76,6 +84,9 @@ KCString kc_json_get_error_description(KCJson obj)
 KCString kc_json_get_json_string(KCJson obj, kcbool nice)
 {
     int flag = 0;
+    if (obj->json_object == NULL) {
+        return NULL;
+    }
 
     if (nice == TRUE) {
         flag = JSON_C_TO_STRING_SPACED | JSON_C_TO_STRING_PRETTY;
@@ -100,6 +111,8 @@ KCJsonObject kc_json_new_string(const KCString str)
 
 int kc_json_add_object(KCJson obj, const KCString key, KCJsonObject value)
 {
+    fprintf(stderr, "// TODO MOT: to implement\n"); 
+    json_object_object_add(obj, "Technical blog", value);
 
     return 0;
 }
@@ -129,4 +142,18 @@ KCJsonObject kc_json_object_new()
     obj = (KCJsonObject) kc_object_new(sizeof(struct kc_json_object));
 
     return obj;
+}
+
+int kc_json_object_free(KCJsonObject obj)
+{
+    fprintf(stderr, "// TODO MOT: to implement\n");
+
+    return 0;
+}
+
+int kc_json_object_free_header(KCJsonObject obj)
+{
+    fprintf(stderr, "// TODO MOT: to implement\n");
+
+    return 0;
 }
