@@ -1,5 +1,5 @@
 /**
- * @file        environment_test.c
+ * @file        kc-linked-list-test.c
  * @brief       Class to get environment variables (testing)
  * @author      K-C Videri <kc.videri@gmail.com>
  *

@@ -79,10 +79,10 @@ KCString kc_json_get_error_description(KCJson obj);
  * @param nice Nice outlook of the string
  * @return JSON object as string
  */
-KCString kc_json_get_json_string(KCJson obji, kcbool nice);
+KCString kc_json_get_json_string(KCJson obj, kcbool nice);
 
 #if 0
-struct lh_table * json_object_get_object(KCJsonObject obj);
+struct lh_table * kc_json_get_object(KCJsonObject obj);
 int json_object_object_length(KCJsonObject obj);
 #endif
 /**
@@ -97,23 +97,23 @@ int kc_json_add_object(KCJson obj, const KCString key, KCJsonObject value);
 kcbool json_object_object_get_ex(KCJsonObject obj, const KCString key,
                                  KCJsonObject value);
 void json_object_object_del(KCJsonObject obj, const KCString key);
-KCJsonObject json_object_new_array(void);
-struct array_list * json_object_get_array(KCJsonObject obj);
+KCJsonObject kc_json_new_array(void);
+struct array_list * kc_json_get_array(KCJsonObject obj);
 int json_object_array_length(KCJsonObject obj);
 void json_object_array_sort(KCJsonObject jso,
                             int (*sort_fn)(const void *, const void *));
 int json_object_array_add(KCJsonObject obj, KCJsonObject val);
 int json_object_array_put_idx(KCJsonObject obj, int idx, KCJsonObject val);
 KCJsonObject json_object_array_get_idx(KCJsonObject obj, int idx);
-KCJsonObject json_object_new_boolean(kcbool b);
-kcbool json_object_get_boolean(KCJsonObject obj);
-KCJsonObject json_object_new_int(int32_t i);
-KCJsonObject json_object_new_int64(int64_t i);
-int32_t json_object_get_int(KCJsonObject obj);
-int64_t json_object_get_int64(KCJsonObject obj);
-KCJsonObject json_object_new_double(double d);
-KCJsonObject json_object_new_double_s(double d, const KCString ds);
-double json_object_get_double(KCJsonObject obj);
+KCJsonObject kc_json_new_boolean(kcbool b);
+kcbool kc_json_get_boolean(KCJsonObject obj);
+KCJsonObject kc_json_new_int(int32_t i);
+KCJsonObject kc_json_new_int64(int64_t i);
+int32_t kc_json_get_int(KCJsonObject obj);
+int64_t kc_json_get_int64(KCJsonObject obj);
+KCJsonObject kc_json_new_double(double d);
+KCJsonObject kc_json_new_double_s(double d, const KCString ds);
+double kc_json_get_double(KCJsonObject obj);
 #endif 
 /**
  * Create a JSON object from string
@@ -130,10 +130,20 @@ KCJsonObject kc_json_new_string(const KCString str);
  * @return JSON object or NULL on error
  */
 KCJsonObject kc_json_new_string_len(const KCString str, int len);
-#if 0
-const KCString  json_object_get_string(KCJsonObject obj);
-int json_object_get_string_len(KCJsonObject obj);
-#endif
+/**
+ * Get the string value of a JSON object
+ * @param obj JSON object
+ * @return String; If the passed object is not of type string then the JSON
+ * representation of the object is returned; The returned string memory is
+ * managed by the json_object
+ */
+const KCString kc_json_get_string(KCJsonObject obj);
+/**
+ * Get the string length of a JSON object
+ * @param obj JSON object
+ * @return Length or 0 if the passed object is not of type string
+ */
+int kc_json_get_string_len(KCJsonObject obj);
 
 #ifdef __cplusplus
 }

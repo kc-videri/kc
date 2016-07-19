@@ -1,5 +1,5 @@
 /**
- * @file        kc_parameter.h
+ * @file        kc-parameter.h
  * @brief       Header file for working with parameter
  * @author      K-C Videri <kc.videri@gmail.com>
  *

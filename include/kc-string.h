@@ -1,5 +1,5 @@
 /**
- * @file        kc_string.h
+ * @file        kc-string.h
  * @brief       Header file for all string operations
  * @author      K-C Videri <kc.videri@gmail.com>
  *

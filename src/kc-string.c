@@ -1,5 +1,5 @@
 /**
- * @file        kc_string.c
+ * @file        kc-string.c
  * @brief       Implementation for all string operations
  * @author      K-C Videri <kc.videri@gmail.com>
  *

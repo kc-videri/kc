@@ -1,5 +1,5 @@
 /**
- * @file        kc_mutex_private.h
+ * @file        kc-mutex_private.h
  * @brief       Mutex implemenation for KC framework (Private header
  *              file)
  * @author      K-C Videri <kc.videri@gmail.com>

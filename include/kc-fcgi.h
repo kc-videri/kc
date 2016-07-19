@@ -1,5 +1,5 @@
 /**
- * @file        fcgi.h
+ * @file        kc-fcgi.h
  * @brief       Header file for FastCGI applications
  * @author      K-C Videri <kc.videri@gmail.com>
  *

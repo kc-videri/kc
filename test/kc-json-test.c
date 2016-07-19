@@ -82,6 +82,8 @@ int main(int argc, char **argv)
     fprintf(stderr, "%d: inside\n", __LINE__); // DELETE 
     value = kc_json_new_string("Joys of Programming");
     fprintf(stderr, "%d: inside\n", __LINE__); // DELETE 
+    printf("Value: %s; Length: %d\n", kc_json_get_string(value),
+           kc_json_get_string_len(value));
     kc_json_add_object(json, "Site Name", value);
     fprintf(stderr, "%d: inside\n", __LINE__); // DELETE 
 

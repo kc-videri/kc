@@ -1,5 +1,5 @@
 /**
- * @file        environment.c
+ * @file        kc-environment.c
  * @brief       Class to get environment variables (implementation)
  * @author      K-C Videri <kc.videri@gmail.com>
  *

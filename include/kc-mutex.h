@@ -1,5 +1,5 @@
 /**
- * @file        kc_mutex.h
+ * @file        kc-mutex.h
  * @brief       Mutex implemenation for KC framework (Header file)
  * @author      K-C Videri <kc.videri@gmail.com>
  *

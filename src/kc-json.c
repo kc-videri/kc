@@ -66,7 +66,7 @@ KCJson kc_json_new_from_string(KCString json_string)
 
 int kc_json_free(KCJson obj)
 {
-    fprintf(stderr, "// TODO MOT: to implement\n");
+    fprintf(stderr, "%s::%s(%d): // TODO MOT: to implement\n", __FILE__, __FUNCTION__, __LINE__);
 
     return 0;
 }
@@ -95,6 +95,18 @@ KCString kc_json_get_json_string(KCJson obj, kcbool nice)
     return (KCString)json_object_to_json_string_ext(obj->json_object, flag);
 }
 
+int kc_json_add_object(KCJson obj, const KCString key, KCJsonObject value)
+{
+    if (obj->json_object == NULL) {
+        obj->json_object = json_object_new_object();
+    }
+
+    json_object_object_add(obj->json_object, key, value->json_object);
+    kc_json_object_free_header(value);
+
+    return 0;
+}
+
 KCJsonObject kc_json_new_string(const KCString str)
 {
     KCJsonObject obj;
@@ -107,14 +119,6 @@ KCJsonObject kc_json_new_string(const KCString str)
     obj->json_object = json_object_new_string(str);
     
     return obj;
-}
-
-int kc_json_add_object(KCJson obj, const KCString key, KCJsonObject value)
-{
-    fprintf(stderr, "// TODO MOT: to implement\n"); 
-    json_object_object_add(obj, "Technical blog", value);
-
-    return 0;
 }
 
 KCJsonObject kc_json_new_string_len(const KCString str, int len)
@@ -131,6 +135,16 @@ KCJsonObject kc_json_new_string_len(const KCString str, int len)
     return obj;
 }
 
+const KCString kc_json_get_string(KCJsonObject obj)
+{
+    return (const KCString)json_object_get_string(obj->json_object);
+}
+
+int kc_json_get_string_len(KCJsonObject obj)
+{
+    return json_object_get_string_len(obj->json_object);
+}
+
 /*
  * Private function definition
  * */
@@ -140,20 +154,25 @@ KCJsonObject kc_json_object_new()
     KCJsonObject obj;
 
     obj = (KCJsonObject) kc_object_new(sizeof(struct kc_json_object));
+    if (obj == NULL) {
+        return obj;
+    }
+
+    obj->json_object = NULL;
 
     return obj;
 }
 
 int kc_json_object_free(KCJsonObject obj)
 {
-    fprintf(stderr, "// TODO MOT: to implement\n");
+    fprintf(stderr, "%s::%s(%d): // TODO MOT: to implement\n", __FILE__, __FUNCTION__, __LINE__);
 
     return 0;
 }
 
 int kc_json_object_free_header(KCJsonObject obj)
 {
-    fprintf(stderr, "// TODO MOT: to implement\n");
+    kc_object_free((KCObject)obj);
 
     return 0;
 }
