@@ -42,6 +42,11 @@ struct kc_json_object {
     struct json_object *json_object;            ///< JSON object
 };
 
+struct kc_json_array {
+    KCObject object;                            ///< Parent object
+    struct array_list *array;                   ///< Array List
+};
+
 /**
  * Create a new JSON object
  * @return JSON object or NULL on error
@@ -50,14 +55,21 @@ KCJsonObject kc_json_object_new();
 /**
  * Free JSON object and all children
  * @param obj
- * @return
+ * @return Created JSON object
  */
 int kc_json_object_free(KCJsonObject obj);
 /**
  * Free only the header of the JSON object
  * @param obj
- * @return
+ * @return 0 => successful
  */
 int kc_json_object_free_header(KCJsonObject obj);
+
+/**
+ * Free JSON array header
+ * @param obj
+ * @return 0 => successful
+ */
+int kc_json_array_free(KCJsonArray obj);
 
 #endif /* __KC_JSON_PRIVATE_H__ */

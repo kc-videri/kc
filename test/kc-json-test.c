@@ -33,7 +33,7 @@
 int main(int argc, char **argv)
 {
     KCJson json = NULL;
-    KCJsonObject value;
+    KCJsonObject value, array, array_2;
 
     json = kc_json_new_from_string(JSON_STRING);
     printf("Output nice:\n%s\n", kc_json_get_json_string(json, TRUE));
@@ -48,60 +48,39 @@ int main(int argc, char **argv)
     kc_json_free(json);
 
     json = kc_json_new();
-    fprintf(stderr, "%d: inside\n", __LINE__); // DELETE 
-#if 0
-    json_object *obj, *value, *array, *array_2;
 
-    /*Creating a json object */
-    obj = json_object_new_object();
+    array = kc_json_array_new();
+    array_2 = kc_json_array_new();
 
-    /* Creating a json array */
-    array = json_object_new_array();
-    array_2 = json_object_new_array();
+    value = kc_json_new_string("c");
+    kc_json_array_add(array, value);
+    kc_json_array_add(array_2, value);
+    value = kc_json_new_string("c++");
+    kc_json_array_add(array_2, value);
+    value = kc_json_new_string("php");
+    kc_json_array_add(array, value);
+    value = kc_json_new_string("java");
+    kc_json_array_add(array, value);
 
-    /* Creating json strings */
-    value = json_object_new_string("c");
-    /* Adding the above created json strings to the array */
-    json_object_array_add(array, value);
-    json_object_array_add(array_2, value);
-    value = json_object_new_string("c++");
-    json_object_array_add(array_2, value);
-    json_object_array_add(array, array_2);
-    value = json_object_new_string("php");
-    json_object_array_add(array, value);
-
-    /* Form the json object */
-    /* Each of these is like a key value pair */
-#endif
-
-    /* Creating a json string */
-#if 0
-    value = json_object_new_string("Joys of Programming");
-    json_object_object_add(obj, "Site Name", value);
-#endif
-    fprintf(stderr, "%d: inside\n", __LINE__); // DELETE 
     value = kc_json_new_string("Joys of Programming");
-    fprintf(stderr, "%d: inside\n", __LINE__); // DELETE 
     printf("Value: %s; Length: %d\n", kc_json_get_string(value),
            kc_json_get_string_len(value));
     kc_json_add_object(json, "Site Name", value);
-    fprintf(stderr, "%d: inside\n", __LINE__); // DELETE 
 
-#if 0
-    /* Creating a json boolean */
-    value = json_object_new_boolean(1);
-    json_object_object_add(obj, "Technical blog", value);
+    value = kc_json_new_boolean(1);
+    printf("Value: %s\n", kc_json_get_boolean(value) == TRUE ? "true" : "false");
+    kc_json_add_object(json, "Technical blog", value);
 
-    /* Creating a json double */
-    value = json_object_new_double(2.14);
-    json_object_object_add(obj, "Average posts per day", value);
+    value = kc_json_new_double(2.14);
+    printf("Value: %f\n", kc_json_get_double(value));
+    kc_json_add_object(json, "Average posts per day", value);
 
-    /* Creating a json integer */
-    value = json_object_new_int(10);
-    json_object_object_add(obj, "Number of posts", value);
+    value = kc_json_new_int(10);
+    printf("Value: %d\n", kc_json_get_int(value));
+    kc_json_add_object(json, "Number of posts", value);
 
-    json_object_object_add(obj, "Categories", array);
-#endif
+    kc_json_add_object(json, "Categories", array);
+
     printf("Output nice:\n%s\n", kc_json_get_json_string(json, TRUE));
 
     return EXIT_SUCCESS;

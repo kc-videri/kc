@@ -107,7 +107,7 @@ int kc_json_add_object(KCJson obj, const KCString key, KCJsonObject value)
     return 0;
 }
 
-KCJsonObject kc_json_new_string(const KCString str)
+KCJsonObject kc_json_array_new(void)
 {
     KCJsonObject obj;
 
@@ -116,12 +116,148 @@ KCJsonObject kc_json_new_string(const KCString str)
         return obj;
     }
 
-    obj->json_object = json_object_new_string(str);
+    obj->json_object = json_object_new_array();
+
+    return obj;
+}
+
+KCJsonArray kc_json_array_get(KCJsonObject obj)
+{
+    KCJsonArray result;
+
+    result = (KCJsonArray)kc_object_new(sizeof(KCJsonObject));
+    if (result == NULL) {
+        return result;
+    }
+
+    result->array = json_object_get_array(obj->json_object);
+
+    return  result;
+}
+
+int kc_json_array_add(KCJsonObject obj, KCJsonObject value)
+{
+    int retval;
+
+    retval = json_object_array_add(obj->json_object, value->json_object);
+
+    return retval;
+}
+
+int kc_json_array_put_index(KCJsonObject obj, int index, KCJsonObject value)
+{
+    int retval;
+
+    retval = json_object_array_put_idx(obj->json_object, index, value->json_object);
+
+    return retval;
+}
+
+KCJsonObject kc_json_array_get_index(KCJsonObject obj, int index)
+{
+    KCJsonObject result;
+
+    result = kc_json_object_new();
+    if (result == NULL) {
+        return result;
+    }
+
+    result->json_object = json_object_array_get_idx(obj->json_object, index);
+
+    return result;
+}
+
+KCJsonObject kc_json_new_boolean(kcbool value)
+{
+    KCJsonObject obj;
+
+    obj = kc_json_object_new();
+    if (obj == NULL) {
+        return obj;
+    }
+
+    obj->json_object = json_object_new_boolean(value);
     
     return obj;
 }
 
-KCJsonObject kc_json_new_string_len(const KCString str, int len)
+kcbool kc_json_get_boolean(KCJsonObject obj)
+{
+    return json_object_get_boolean(obj->json_object);
+}
+
+KCJsonObject kc_json_new_int(int32_t value)
+{
+    KCJsonObject obj;
+
+    obj = kc_json_object_new();
+    if (obj == NULL) {
+        return obj;
+    }
+
+    obj->json_object = json_object_new_int(value);
+    
+    return obj;
+}
+
+KCJsonObject kc_json_new_int64(int64_t value)
+{
+    KCJsonObject obj;
+
+    obj = kc_json_object_new();
+    if (obj == NULL) {
+        return obj;
+    }
+
+    obj->json_object = json_object_new_int64(value);
+    
+    return obj;
+}
+
+int32_t kc_json_get_int(KCJsonObject obj)
+{
+    return json_object_get_int(obj->json_object);
+}
+
+int64_t kc_json_get_int64(KCJsonObject obj)
+{
+    return json_object_get_int64(obj->json_object);
+}
+
+KCJsonObject kc_json_new_double(double value)
+{
+    KCJsonObject obj;
+
+    obj = kc_json_object_new();
+    if (obj == NULL) {
+        return obj;
+    }
+
+    obj->json_object = json_object_new_double(value);
+    
+    return obj;
+}
+
+double kc_json_get_double(KCJsonObject obj)
+{
+    return json_object_get_double(obj->json_object);
+}
+
+KCJsonObject kc_json_new_string(const KCString value)
+{
+    KCJsonObject obj;
+
+    obj = kc_json_object_new();
+    if (obj == NULL) {
+        return obj;
+    }
+
+    obj->json_object = json_object_new_string(value);
+    
+    return obj;
+}
+
+KCJsonObject kc_json_new_string_len(const KCString value, int len)
 {
     KCJsonObject obj;
 
@@ -130,7 +266,7 @@ KCJsonObject kc_json_new_string_len(const KCString str, int len)
         return obj;
     }
     
-    obj->json_object = json_object_new_string_len(str, len);
+    obj->json_object = json_object_new_string_len(value, len);
 
     return obj;
 }
@@ -173,6 +309,13 @@ int kc_json_object_free(KCJsonObject obj)
 int kc_json_object_free_header(KCJsonObject obj)
 {
     kc_object_free((KCObject)obj);
+
+    return 0;
+}
+
+int kc_json_array_free(KCJsonArray obj)
+{
+    free(obj);
 
     return 0;
 }

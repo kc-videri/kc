@@ -31,6 +31,7 @@ extern "C" {
 // Forward declaration
 struct kc_json;
 struct kc_json_object;
+struct kc_json_array;
 
 /**
  * Structure KCJson: Structure to handle JSON stuff
@@ -40,6 +41,10 @@ typedef struct kc_json* KCJson;
  * Structure KCJsonObject: JSON object
  */
 typedef struct kc_json_object* KCJsonObject;
+/**
+ * Structure KCJsonArray: JSON array list
+ */
+typedef struct kc_json_array* KCJsonArray;
 
 /**
  * Create a new empty JSON object
@@ -97,39 +102,113 @@ int kc_json_add_object(KCJson obj, const KCString key, KCJsonObject value);
 kcbool json_object_object_get_ex(KCJsonObject obj, const KCString key,
                                  KCJsonObject value);
 void json_object_object_del(KCJsonObject obj, const KCString key);
-KCJsonObject kc_json_new_array(void);
-struct array_list * kc_json_get_array(KCJsonObject obj);
-int json_object_array_length(KCJsonObject obj);
-void json_object_array_sort(KCJsonObject jso,
-                            int (*sort_fn)(const void *, const void *));
-int json_object_array_add(KCJsonObject obj, KCJsonObject val);
-int json_object_array_put_idx(KCJsonObject obj, int idx, KCJsonObject val);
-KCJsonObject json_object_array_get_idx(KCJsonObject obj, int idx);
-KCJsonObject kc_json_new_boolean(kcbool b);
-kcbool kc_json_get_boolean(KCJsonObject obj);
-KCJsonObject kc_json_new_int(int32_t i);
-KCJsonObject kc_json_new_int64(int64_t i);
-int32_t kc_json_get_int(KCJsonObject obj);
-int64_t kc_json_get_int64(KCJsonObject obj);
-KCJsonObject kc_json_new_double(double d);
-KCJsonObject kc_json_new_double_s(double d, const KCString ds);
-double kc_json_get_double(KCJsonObject obj);
-#endif 
+#endif
 /**
- * Create a JSON object from string
- * A copy of the string is made and the memory is managed by the class
- * @param str String to use
+ * Create a new empty JSON array
  * @return JSON object or NULL on error
  */
-KCJsonObject kc_json_new_string(const KCString str);
+KCJsonObject kc_json_array_new(void);
+/**
+ * Get the arraylist
+ * @param obj JSON object
+ * @return Array list
+ */
+KCJsonArray kc_json_array_get(KCJsonObject obj);
+/**
+ * Get the length of the array
+ * @param obj JSON object
+ * @return Length of the array
+ */
+int kc_json_array_get_length(KCJsonObject obj);
+#if 0
+void kc_json_array_sort(KCJsonObject jso,
+                            int (*sort_fn)(const void *, const void *));
+#endif
+/**
+ * Add an element to the end of the array
+ * @param obj JSON object
+ * @param value Element to add
+ * @return
+ */
+int kc_json_array_add(KCJsonObject obj, KCJsonObject value);
+/**
+ * Insert or replace an element at a specified index in an array
+ * @param obj JSON object
+ * @param index Array index where the element have to set
+ * @param value Element to set
+ * @return 0 => successful
+ */
+int kc_json_array_put_index(KCJsonObject obj, int index, KCJsonObject value);
+/**
+ *
+ * @param obj JSON object
+ * @param index Array index where the element have to set
+ * @return JSON object or NULL on error
+ */
+KCJsonObject kc_json_array_get_index(KCJsonObject obj, int index);
+/**
+ * Create a JSON object from boolean
+ * @param value Boolean value
+ * @return JSON object or NULL on error
+ */
+KCJsonObject kc_json_new_boolean(kcbool value);
+/**
+ * Get the boolean value of the object
+ * @param obj JSON object
+ * @return Boolean value
+ */
+kcbool kc_json_get_boolean(KCJsonObject obj);
+/**
+ * Create a JSON object from int32
+ * @param value Int32 value
+ * @return JSON object or NULL on error
+ */
+KCJsonObject kc_json_new_int(int32_t value);
+/**
+ * Create a JSON object from int64
+ * @param value Int64 value
+ * @return JSON object or NULL on error
+ */
+KCJsonObject kc_json_new_int64(int64_t value);
+/**
+ * Get the int32 value of the object
+ * @param obj JSON object
+ * @return Int32 value or errno in error
+ */
+int32_t kc_json_get_int(KCJsonObject obj);
+/**
+ * Get the int64 value of the object
+ * @param obj JSON object
+ * @return Int64 value or errno in error
+ */
+int64_t kc_json_get_int64(KCJsonObject obj);
+/**
+ * Create a JSON object from double
+ * @param value Double value
+ * @return JSON object or NULL on error
+ */
+KCJsonObject kc_json_new_double(double value);
+/**
+ * Get the double value of the object
+ * @param obj JSON object
+ * @return Double value or errno in error
+ */
+double kc_json_get_double(KCJsonObject obj);
 /**
  * Create a JSON object from string
  * A copy of the string is made and the memory is managed by the class
- * @param str String to use
+ * @param value String to use
+ * @return JSON object or NULL on error
+ */
+KCJsonObject kc_json_new_string(const KCString value);
+/**
+ * Create a JSON object from string
+ * A copy of the string is made and the memory is managed by the class
+ * @param value String to use
  * @param len Length of the string
  * @return JSON object or NULL on error
  */
-KCJsonObject kc_json_new_string_len(const KCString str, int len);
+KCJsonObject kc_json_new_string_len(const KCString value, int len);
 /**
  * Get the string value of a JSON object
  * @param obj JSON object
