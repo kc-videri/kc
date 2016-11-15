@@ -1,9 +1,9 @@
 /**
  * @file        kc.h
  * @brief       Default header file for KC framework
- * @author      Michael Ott <michael@king-coder.de>
+ * @author      K-C Videri <kc.videri@gmail.com>
  *
- * copyright:   (C) 2016 by Michael Ott
+ * copyright:   (C) 2016 by K-C Videri
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,6 +22,10 @@
 #ifndef __KC_H__
 #define __KC_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <stdint.h>
 
 #include "kc-mutex.h"
@@ -29,8 +33,12 @@
 #define TRUE        1                           ///< TRUE
 #define FALSE       0                           ///< FALSE
 
-typedef uint32_t        kcbool;                    ///< Basic type boolean
-typedef char            kcchar;                    ///< Basic type kc_char
-typedef unsigned char   kcuchar;                   ///< Basic type kc_uchar
+typedef uint32_t kcbool;                        ///< Basic type boolean
+typedef char kcchar;                            ///< Basic type kc_char
+typedef unsigned char kcuchar;  ///< Basic type kc_uchar
 
-#endif /* __KC_H__ */
+#ifdef __cplusplus
+}
+#endif
+
+#endif                          /* __KC_H__ */

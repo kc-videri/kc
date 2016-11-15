@@ -1,9 +1,9 @@
 /**
  * @file        kc-linked-list.h
  * @brief       Functions for a linked list (Header file)
- * @author      Michael Ott <michael@king-coder.de>
+ * @author      K-C Videri <kc.videri@gmail.com>
  *
- * copyright:   (C) 2016 by Michael Ott
+ * copyright:   (C) 2016 by K-C Videri
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,69 +22,90 @@
 #ifndef __KC_LINKED_LIST_H__
 #define __KC_LINKED_LIST_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <kc-mutex.h>
+#include <kc.h>
 
-typedef struct kc_linked_list_item {
+// Forward declaration
+struct kc_linked_list_item;
+struct kc_linked_list;
+/**
+ * Iterator for the linked List
+ */
+struct kc_linked_list_iterator {
     void *data;
-    struct kc_linked_list_item *next;
-} KCLinkedListItem;
+};
 
-typedef struct kc_linked_list {
-    KCMutexItem mutex_item;
-    KCLinkedListItem *items;
-    KCLinkedListItem *last;
-} KCLinkedList;
+typedef struct kc_linked_list_item* KCLinkedListItem;
+typedef struct kc_linked_list* KCLinkedList;
+typedef struct kc_linked_list_iterator KCLinkedListIterator;
 
 /**
  * Create a new linked list
  * @return New linked list or NULL on error
  */
-KCLinkedList *kc_linked_list_new();
+KCLinkedList kc_linked_list_new();
 /**
  * Free linked list, no linked element will be freed
- * @param list Linked list
+ * @param obj Linked list
  * @return 0 => successful
  */
-int kc_linked_list_free(KCLinkedList *list);
+int kc_linked_list_free(KCLinkedList obj);
 
 /**
  * Add new element on the end of the list
- * @param list Linked list
+ * @param obj Linked obj
  * @param element Data to add
  * @return 0 => successful
  */
-int kc_linked_list_add(KCLinkedList *list, void *element);
+int kc_linked_list_add(KCLinkedList obj, void *element);
 /**
  * Remove first element which will found or do nothing
- * @param list Linked list
+ * @param obj Linked list
  * @param element Data to remove
  * @return >= 0 => position in array, -1 => cannot find element
  */
-int kc_linked_list_remove(KCLinkedList *list, void *element);
+int kc_linked_list_remove(KCLinkedList obj, void *element);
 /**
  * Clear and free the current existing list; do not free data
- * @param list Linked list
+ * @param obj Linked list
  * @return 0 => successful
  */
-int kc_linked_list_clear(KCLinkedList *list);
+int kc_linked_list_clear(KCLinkedList obj);
 
 /**
  * Get first item of the list (not thread saved)
- * @param list Linked list
+ * @param obj Linked list
  * @return First item in list
  */
-KCLinkedListItem *kc_linked_list_get_first(KCLinkedList * list);
+KCLinkedListIterator kc_linked_list_item_get_first(KCLinkedList obj);
+/**
+ * Is this iterator the last item in the list (not thread saved)
+ * @param obj Linked list
+ * @param iterator
+ * @return TRUE -> is last
+ */
+kcbool kc_linked_list_item_is_last(KCLinkedList obj,
+                                   KCLinkedListIterator iterator);
 /**
  * Get next item in list (not thread saved);
- * @param item Linked list item
+ * @param iterator Current iterator
  * @return Next item in list
  */
-KCLinkedListItem *kc_linked_list_get_next(KCLinkedListItem * item);
+KCLinkedListIterator kc_linked_list_item_get_next(KCLinkedListIterator
+                                                  iterator);
 /**
  * Get data from the current element
- * @param element Linked list item
+ * @param iterator Iterator object
  * @return Pointer to data
  */
-void *kc_linked_list_element_get_data(KCLinkedListItem * element);
+void *kc_linked_list_item_get_data(KCLinkedListIterator iterator);
 
-#endif /* __KC_LINKED_LIST_H__ */
+#ifdef __cplusplus
+}
+#endif
+
+#endif                          /* __KC_LINKED_LIST_H__ */

@@ -1,9 +1,9 @@
 /**
- * @file        kc_parameter.h
+ * @file        kc-parameter.h
  * @brief       Header file for working with parameter
- * @author      Michael Ott <michael@king-coder.de>
+ * @author      K-C Videri <kc.videri@gmail.com>
  *
- * copyright:   (C) 2016 by Michael Ott
+ * copyright:   (C) 2016 by K-C Videri
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as 
@@ -22,10 +22,22 @@
 #ifndef __KC_PARAMETER_H__
 #define __KC_PARAMETER_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct parameter {
     char *key;
     char *value;
     KCParameter *next;
 } KCParameter;
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif                          // __KC_PARAMETER_H__

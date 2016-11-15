@@ -1,9 +1,9 @@
 /**
- * @file        environment_test.c
+ * @file        kc-linked-list-test.c
  * @brief       Class to get environment variables (testing)
- * @author      Michael Ott <michael@king-coder.de>
+ * @author      K-C Videri <kc.videri@gmail.com>
  *
- * copyright:   (C) 2013 by Michael Ott
+ * copyright:   (C) 2013 by K-C Videri
  *
  * Description : Uses shared library to print greeting
  * To run the resulting executable the LD_LIBRARY_PATH must be
@@ -38,13 +38,13 @@
 #define BUFFER_2 "qwer"
 #define BUFFER_3 1234
 
-void print_content(KCLinkedList *list, kcbool content);
+void print_content(KCLinkedList list, kcbool content);
+
 /**
  * Main function of testing environment
  */
 int main(void) {
-	KCLinkedList *list;
-	KCLinkedListItem *item;
+	KCLinkedList list;
 	int retval, i, buffer3;
 	char *buffer1, buffer2[BUFFER_LENGTH];
 
@@ -81,21 +81,23 @@ int main(void) {
 	return (EXIT_SUCCESS);
 }
 
-void print_content(KCLinkedList *list, kcbool content)
+void print_content(KCLinkedList list, kcbool content)
 {
-	KCLinkedListItem *item;
+	KCLinkedListIterator iterator;
 	int i;
 
-	for (item = kc_linked_list_get_first(list), i = 0; item; item = kc_linked_list_get_next(item), i++) {
-	    printf("%.2d: 0x%.8x: ", i, item->data);
+	for (iterator = kc_linked_list_item_get_first(list), i = 0;
+	     ! kc_linked_list_item_is_last(list, iterator);
+	     iterator = kc_linked_list_item_get_next(iterator), i++) {
+	    printf("%.2d: 0x%.8x: ", i, kc_linked_list_item_get_data(iterator));
 	    if (content == TRUE) {
 	    if ((i % 3) != 2) {
-                printf("%s", (char *)kc_linked_list_element_get_data(item));
+                printf("%s", (char *)kc_linked_list_item_get_data(iterator));
 	    } else {
-                printf("%d", *((int *)kc_linked_list_element_get_data(item)));
+                printf("%d", *((int *)kc_linked_list_item_get_data(iterator)));
             }
 	    } else {
-	        printf("%s", (char *)item->data);
+            printf("%s", (char *)kc_linked_list_item_get_data(iterator));
 	    }
 
 	    printf("\n");

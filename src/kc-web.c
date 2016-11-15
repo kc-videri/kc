@@ -1,9 +1,9 @@
 /**
  * @file        kc-web.c
- * @brief       
- * @author      Michael Ott <michael@king-coder.de>
+ * @brief       Some web stuff (Implementation)
+ * @author      K-C Videri <kc.videri@gmail.com>
  *
- * copyright:   (C) 2016 by Michael Ott
+ * copyright:   (C) 2016 by K-C Videri
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -29,80 +29,137 @@
 #include <fcntl.h>
 #include <unistd.h>
 
+#include <kc-object.h>
 #include <kc-web.h>
+#include <kc-web_private.h>
 #include <kc-string.h>
 
 /**
- * Structure struct kc_web_content_type: Structure to handle different content types
+ * Private variable declaration
  */
-struct kc_web_content_type {
-    KCWebContentType type;      ///< Content type
-    KCString type_string;       ///< String to send to define type
-    KCString endings[3];        ///< String to send to define type
-};
 
-// TODO: add all useful content types
-KCWebContentTypeDef content_types[] = {
-    {KC_WEB_CONTENT_HTML, "text/html", {"htm", "html", NULL}},
-    {KC_WEB_CONTENT_XHTML, "text/xhtml", {"xhtml", NULL}},
-    {KC_WEB_CONTENT_JSON, "application/json", {NULL}},
-    {KC_WEB_CONTENT_TEXT, "text/text", {"txt", NULL}},
-    {KC_WEB_CONTENT_ICO, "image/x-icon", {"ico", NULL}},
-    {KC_WEB_CONTENT_UNDEF, NULL, {NULL}}
-};
+extern char **environ;
 
 /**
- * Parse a received string (query, content, ...)
- * @param web Pointer to KC Web structure
- * @param query_string String to parse
- * @param length Length of the value
- * @param type Type of request
- * @return
- */
-int kc_web_parse_query_string(KCWeb * web, const char *query_string,
-                              KCWebRequestType type);
+ * Public function definition
+ * */
 
-KCWeb *kc_web_init()
+KCWeb kc_web_init()
 {
     return kc_web_init_type(KC_WEB_CONTENT_HTML);
 }
 
-KCWeb *kc_web_init_type(KCWebContentType type)
+KCWeb kc_web_init_type(KCWebContentType type)
 {
-    KCWeb *result;
-    KCWebContentTypeDef *content_type;
+    KCWeb obj;
+    KCWebContentTypeDef content_type;
+    KCString buffer;
+    char **env, **key;
+    kcbool found_one;
+    int i;
 
-    result = (KCWeb *)malloc(sizeof(KCWeb));
-    if (result == NULL) {
+    obj = (KCWeb) kc_object_new(sizeof(struct kc_web));
+    if (obj == NULL) {
         return NULL;
     }
-    // Default settings
-    result->content_type = NULL;
 
-    result->parameter = kc_linked_list_new();
-    if (result->parameter == NULL) {
+    // Default settings
+    obj->content_type = NULL;
+
+    obj->parameter = kc_linked_list_new();
+    if (obj->parameter == NULL) {
         goto kc_web_init_failed_memory;
     }
 
     for (content_type = content_types;
          content_type->type != KC_WEB_CONTENT_UNDEF; content_type++) {
         if (type == content_type->type) {
-            result->content_type = content_type;
+            obj->content_type = content_type;
         }
     }
-    if (result->content_type == NULL) {
-        printf("Content type not implemented yet");
+    if (obj->content_type == NULL) {
+        fprintf(stderr, "%s(%d): Content type not implemented yet\n",
+                __func__, __LINE__);
         goto kc_web_init_failed_memory;
     }
-    // TODO Handle POST and GET variables
-    printf("Handle POST and GET variables\n");  // DELETE
-    return result;
 
-  kc_web_init_failed_memory:free(result);
+    // GET parameter
+    buffer = getenv("QUERY_STRING");
+    if (buffer != NULL && strlen(buffer) > 0) {
+        kc_web_parse_query_string(obj, buffer, KC_WEB_PARAMETER_GET);
+    }
+
+    // POST parameter
+    buffer = getenv("CONTENT_LENGTH");
+    if (buffer != NULL) {
+        size_t post_length;
+        char *post_content;
+
+        post_length = atoi(buffer);
+        if (post_length != 0) {
+            post_content =
+                (char *) malloc((post_length + 1) * sizeof(char));
+            if (post_content != NULL) {
+                fgets(post_content, post_length + 1, stdin);
+
+                kc_web_parse_query_string(obj, post_content,
+                                          KC_WEB_PARAMETER_POST);
+            }
+        }
+    }
+
+    // HTTP variables
+    for (env = environ; *env; ++env) {
+        if (!strncmp(*env, KC_WEB_HTTP_PREFIX, strlen(KC_WEB_HTTP_PREFIX))) {
+            found_one = FALSE;
+            for (key = kc_web_http_keys; *key; key++) {
+                if (!strncmp(*key, *env, strlen(*key))) {
+                    found_one = TRUE;
+                    break;
+                }
+            }
+
+            if (found_one == FALSE) {
+                KCWebParameter item;
+
+                item =
+                    kc_web_parameter_new_from_string(*env +
+                                                     strlen
+                                                     (KC_WEB_HTTP_PREFIX),
+                                                     strlen(*env), type);
+                if (item != NULL) {
+                    KCString buffer;
+
+                    buffer = kc_web_parameter_get_key(item);
+                    for (i = 0; buffer[i]; i++) {
+                        buffer[i] = tolower(buffer[i]);
+                    }
+                    kc_web_parameter_list_add_item(obj, item);
+                }
+            }
+        }
+    }
+
+    return obj;
+
+  kc_web_init_failed_memory:
+    kc_object_free((KCObject) obj);
     return NULL;
 }
 
-KCWeb *kc_web_init_from_ending()
+KCWeb kc_web_init_from_content_type()
+{
+    KCWebContentType type;
+
+    type = kc_web_parse_content_type();
+    if (type == KC_WEB_CONTENT_UNDEF) {
+        return NULL;
+    }
+
+    return kc_web_init_type(type);
+}
+
+KCWeb kc_web_init_from_ending()
 {
     KCString buffer;
     KCWebContentType type;
@@ -116,13 +173,34 @@ KCWeb *kc_web_init_from_ending()
     return kc_web_init_type(type);
 }
 
-void kc_web_print_content_type(KCWeb * web)
+int kc_web_free(KCWeb obj)
 {
-    printf("Content-type: %s\r\n\r\n",
-           kc_web_get_content_type_string(web));
+    KCLinkedList list;
+    KCLinkedListIterator iterator;
+    KCWebParameter parameter;
+
+    list = kc_web_get_parameter_list(obj);
+    kc_mutex_item_lock((KCMutexItem) list);
+    for (iterator = kc_linked_list_item_get_first(list);
+         kc_linked_list_item_is_last(list, iterator);
+         iterator = kc_linked_list_item_get_next(iterator)) {
+        parameter =
+            (KCWebParameter) kc_linked_list_item_get_data(iterator);
+        kc_web_parameter_free(parameter);
+    }
+    kc_mutex_item_unlock((KCMutexItem) obj->parameter);
+    kc_linked_list_free(obj->parameter);
+
+    return 0;
 }
 
-int kc_web_print_image(KCWeb * web, KCString file_name)
+void kc_web_print_content_type(KCWeb obj)
+{
+    printf("Content-type: %s\r\n\r\n",
+           kc_web_get_content_type_string(obj));
+}
+
+int kc_web_print_image(KCWeb obj, KCString file_name)
 {
     int file;
     size_t length = 1024;
@@ -131,7 +209,8 @@ int kc_web_print_image(KCWeb * web, KCString file_name)
 
     file = open(file_name, O_RDONLY);
     if (file == -1) {
-        printf("Cannot read file: %s (%d)\n", strerror(errno), errno);
+        fprintf(stderr, "%s(%d): Cannot read file: %s (%d)\n",
+                __func__, __LINE__, strerror(errno), errno);
         return errno;
     }
 #if 0
@@ -148,14 +227,44 @@ int kc_web_print_image(KCWeb * web, KCString file_name)
     return 0;
 }
 
-KCWebContentType kc_web_get_content_type(KCWeb * web)
+KCWebContentType kc_web_parse_content_type()
 {
-    return web->content_type->type;
+    KCWebContentType type = KC_WEB_CONTENT_UNDEF;
+    KCString buffer;
+    kcbool found_one = FALSE;
+    KCWebContentTypeDef content_type;
+
+    buffer = getenv("CONTENT_TYPE");
+    if (buffer == NULL) {
+        fprintf(stderr, "%s(%d): Cannot find content-type\n",
+                __func__, __LINE__);
+        return KC_WEB_CONTENT_TEXT;
+    }
+
+    for (content_type = content_types;
+         content_type->type_string != NULL; content_type++) {
+        if (!strcmp(buffer, content_type->type_string)) {
+            type = content_type->type;
+            found_one = TRUE;
+            break;
+        }
+    }
+    if (type == KC_WEB_CONTENT_UNDEF || found_one == FALSE) {
+        fprintf(stderr, "%s(%d): Unknown content type: %s\n",
+                __func__, __LINE__, buffer);
+    }
+
+    return type;
 }
 
-KCString kc_web_get_content_type_string(KCWeb * web)
+KCWebContentType kc_web_get_content_type(KCWeb obj)
 {
-    return content_types[kc_web_get_content_type(web)].type_string;
+    return obj->content_type->type;
+}
+
+KCString kc_web_get_content_type_string(KCWeb obj)
+{
+    return content_types[kc_web_get_content_type(obj)].type_string;
 }
 
 KCWebContentType kc_web_get_content_type_from_ending(KCString str)
@@ -163,15 +272,20 @@ KCWebContentType kc_web_get_content_type_from_ending(KCString str)
     KCWebContentType type = KC_WEB_CONTENT_UNDEF;
     KCString buffer;
     KCString *ending;
+    KCWebContentTypeDef content_type;
+
+    if (str == NULL) {
+        return type;
+    }
 
     buffer = rindex(str, '.');
     if (buffer == NULL || strlen(buffer) < 2) {
-        printf("Cannot find ending");
+        fprintf(stderr, "%s(%d): Cannot find ending\n", __func__,
+                __LINE__);
         return type;
     }
     buffer++;
 
-    KCWebContentTypeDef *content_type;
     for (content_type = content_types;
          content_type->type != KC_WEB_CONTENT_UNDEF; content_type++) {
         for (ending = content_type->endings; *ending != NULL; ending++) {
@@ -181,103 +295,43 @@ KCWebContentType kc_web_get_content_type_from_ending(KCString str)
         }
     }
     if (type == KC_WEB_CONTENT_UNDEF) {
-        printf("Unknown content type");
+        fprintf(stderr, "%s(%d): Unknown content type\n", __func__,
+                __LINE__);
     }
 
     return type;
 }
 
-int kc_web_parse_query_string(KCWeb * web, const char *query_string,
-                              KCWebRequestType type)
-{
-    int result = 0;
-    char *buffer;
-    size_t string_length;
-    size_t current_length;
-    int i;
-
-    buffer = (char *) query_string;
-    while (1) {
-        KCWebParameter *item;
-
-        item = kc_web_parameter_new();
-        if (item == NULL) {
-            return -1;
-        }
-        kc_web_parameter_set_type(item, type);
-
-        string_length = strlen(buffer);
-
-        for (current_length = 0; current_length < strlen(buffer);
-             current_length++) {
-            if (buffer[current_length] == '&') {
-                break;
-            }
-        }
-
-        for (i = 0; i < current_length; i++) {
-            if (buffer[i] == '=') {
-                break;
-            }
-        }
-
-        if (i > 0) {
-            kc_web_parameter_set_key(item, kc_string_create(buffer, i));
-            if (i == current_length) {
-                goto parse_query_string_error;
-            }
-
-            if (i != current_length) {
-                kc_web_parameter_set_value(item,
-                                           kc_web_convert_value_string
-                                           (buffer + i + 1,
-                                            current_length - i - 1));
-
-            }
-        }
-
-        if (current_length == string_length) {
-            break;
-        }
-
-      parse_query_string_error:buffer += current_length;
-        buffer++;
-    }
-
-    return result;
-}
-
 KCString kc_web_convert_value_string(const char *value, size_t length)
 {
-    char *result;
+    char *obj;
     size_t _length;
     size_t i, j;
 
-    result = kc_string_create(value, length);
-    if (result == NULL) {
+    obj = kc_string_create(value, length);
+    if (obj == NULL) {
         return NULL;
     }
 
     _length = length;
 
     for (i = 0; i < _length; i++) {
-        switch (result[i]) {
+        switch (obj[i]) {
         case '+':
-            result[i] = ' ';
+            obj[i] = ' ';
             break;
         case '%':
-            if (isxdigit(result[i + 1]) && isxdigit(result[i + 2])) {
+            if (isxdigit(obj[i + 1]) && isxdigit(obj[i + 2])) {
                 char buffer[3], c;
 
-                buffer[0] = result[i + 1];
-                buffer[1] = result[i + 2];
+                buffer[0] = obj[i + 1];
+                buffer[1] = obj[i + 2];
                 buffer[2] = '\0';
 
-                c = (uint8_t)strtol(buffer, NULL, 16);
-                printf("c: %c (%.2x)<br />\n", c, c); // DELETE
-                result[i] = c;
+                c = (uint8_t) strtol(buffer, NULL, 16);
+                obj[i] = c;
                 for (j = i + 1; j < _length - 2; j++) {
-                    result[j] = result[j + 2];
+                    obj[j] = obj[j + 2];
                 }
                 _length -= 2;
             } else {
@@ -290,24 +344,153 @@ KCString kc_web_convert_value_string(const char *value, size_t length)
             break;
         }
     }
+    obj[_length] = '\0';
 
-    return result;
+    return obj;
 }
 
-KCWebParameter *kc_web_parameter_new()
+KCLinkedList kc_web_get_parameter_list(KCWeb obj)
 {
-    KCWebParameter *result;
+    return obj->parameter;
+}
 
-    result = (KCWebParameter*)malloc(sizeof(KCWebParameter));
-    if (result != NULL) {
-        result->key = NULL;
-        result->value = NULL;
+KCWebParameter kc_web_parameter_get(KCWeb obj, KCString search_string)
+{
+    KCLinkedList list;
+    KCLinkedListIterator iterator;
+    KCWebParameter parameter;
+
+    list = kc_web_get_parameter_list(obj);
+    kc_mutex_item_lock((KCMutexItem) list);
+    for (iterator = kc_linked_list_item_get_first(list);
+         kc_linked_list_item_is_last(list, iterator);
+         iterator = kc_linked_list_item_get_next(iterator)) {
+        parameter =
+            (KCWebParameter) kc_linked_list_item_get_data(iterator);
+        if (!strcmp(search_string, kc_web_parameter_get_key(parameter))) {
+            kc_mutex_item_unlock((KCMutexItem) obj->parameter);
+
+            return parameter;
+        }
+    }
+
+    kc_mutex_item_unlock((KCMutexItem) obj->parameter);
+
+    return NULL;
+}
+
+KCString kc_web_parameter_get_key(KCWebParameter item)
+{
+    return item->key;
+}
+
+KCString kc_web_parameter_get_value(KCWebParameter item)
+{
+    if (item->value == NULL) {
+        return "";
+    } else {
+        return item->value;
+    }
+}
+
+KCWebParameterType kc_web_parameter_get_type(KCWebParameter item)
+{
+    return item->type;
+}
+
+/**
+ * Private function definition
+ * */
+
+int kc_web_parse_query_string(KCWeb obj,
+                              const char *query_string,
+                              KCWebParameterType type)
+{
+    int result = 0;
+    char *buffer;
+    size_t string_length;
+    size_t current_length;
+    //int i;
+
+    buffer = (char *) query_string;
+    while (1) {
+        KCWebParameter item;
+
+        string_length = strlen(buffer);
+
+        for (current_length = 0; current_length < strlen(buffer);
+             current_length++) {
+            if (buffer[current_length] == '&') {
+                break;
+            }
+        }
+
+        item =
+            kc_web_parameter_new_from_string(buffer, current_length, type);
+        if (item != NULL) {
+            kc_web_parameter_list_add_item(obj, item);
+        }
+
+        if (current_length == string_length) {
+            break;
+        }
+
+        buffer += current_length;
+        buffer++;
     }
 
     return result;
 }
 
-int kc_web_parameter_free(KCWebParameter *item)
+KCWebParameter kc_web_parameter_new()
+{
+    KCWebParameter obj;
+
+    obj = (KCWebParameter) kc_object_new(sizeof(struct kc_web_parameter));
+    if (obj != NULL) {
+        obj->key = NULL;
+        obj->value = NULL;
+    }
+
+    return obj;
+}
+
+KCWebParameter kc_web_parameter_new_from_string(KCString string,
+                                                size_t length,
+                                                KCWebParameterType type)
+{
+    KCWebParameter obj = NULL;
+    int i;
+
+    for (i = 0; i < length; i++) {
+        if (string[i] == '=') {
+            break;
+        }
+    }
+
+    if (i > 0) {
+        obj = kc_web_parameter_new();
+        if (obj == NULL) {
+            return obj;
+        }
+        kc_web_parameter_set_type(obj, type);
+
+        kc_web_parameter_set_key(obj, kc_string_create(string, i));
+
+        if (i != length) {
+            KCString value;
+
+            value =
+                kc_web_convert_value_string(string + i + 1,
+                                            length - i - 1);
+            kc_web_parameter_set_value(obj, value);
+        }
+    }
+
+    return obj;
+}
+
+int kc_web_parameter_free(KCWebParameter item)
 {
     if (item->key != NULL) {
         free(item->key);
@@ -315,43 +498,35 @@ int kc_web_parameter_free(KCWebParameter *item)
     if (item->value != NULL) {
         free(item->value);
     }
-    free(item);
+    kc_object_free((KCObject) item);
 
     return 0;
 }
 
-int kc_web_parameter_set_key(KCWebParameter *item, KCString key)
+int kc_web_parameter_set_key(KCWebParameter item, KCString key)
 {
     item->key = key;
 
     return 0;
 }
 
-KCString kc_web_parameter_get_key(KCWebParameter *item)
-{
-    return item->key;
-}
-
-int kc_web_parameter_set_value(KCWebParameter *item, KCString value)
+int kc_web_parameter_set_value(KCWebParameter item, KCString value)
 {
     item->value = value;
 
     return 0;
 }
 
-KCString kc_web_parameter_get_value(KCWebParameter *item)
-{
-    return item->value;
-}
-
-int kc_web_parameter_set_type(KCWebParameter *item, KCWebRequestType type)
+int kc_web_parameter_set_type(KCWebParameter item, KCWebParameterType type)
 {
     item->type = type;
 
     return 0;
 }
 
-KCWebRequestType kc_web_parameter_get_type(KCWebParameter *item)
+int kc_web_parameter_list_add_item(KCWeb obj, KCWebParameter item)
 {
-    return item->type;
+    kc_linked_list_add(obj->parameter, item);
+
+    return 0;
 }

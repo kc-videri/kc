@@ -1,9 +1,9 @@
 /**
- * @file        kc_mutex.c
+ * @file        kc-mutex.c
  * @brief       Mutex implemenation for KC framework
- * @author      Michael Ott <michael@king-coder.de>
+ * @author      K-C Videri <kc.videri@gmail.com>
  *
- * copyright:   (C) 2016 by Michael Ott
+ * copyright:   (C) 2016 by K-C Videri
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -19,18 +19,18 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#include "../include/kc-mutex.h"
-
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
 
+#include <kc-mutex.h>
+#include <kc-mutex_private.h>
 
-int kc_mutex_item_init(KCMutexItem * item)
+int kc_mutex_item_init(KCMutexItem obj)
 {
     int retval;
 
-    retval = pthread_mutex_init(&(item->mutex), NULL);
+    retval = pthread_mutex_init(&(obj->mutex), NULL);
     if (retval) {
         fprintf(stderr, "%s::%s(%d): Cannot initialise mutex: %s (%d)\n",
                 __FILE__, __func__, __LINE__, strerror(errno), errno);
@@ -40,11 +40,11 @@ int kc_mutex_item_init(KCMutexItem * item)
     return retval;
 }
 
-int kc_mutex_item_destroy(KCMutexItem *item)
+int kc_mutex_item_destroy(KCMutexItem obj)
 {
     int retval;
 
-    retval = pthread_mutex_destroy(&(item->mutex));
+    retval = pthread_mutex_destroy(&(obj->mutex));
     if (retval) {
         fprintf(stderr, "%s::%s(%d): Cannot initialise mutex: %s (%d)\n",
                 __FILE__, __func__, __LINE__, strerror(errno), errno);
@@ -54,16 +54,17 @@ int kc_mutex_item_destroy(KCMutexItem *item)
     return retval;
 
 }
-int kc_mutex_item_lock(KCMutexItem *item)
+
+int kc_mutex_item_lock(KCMutexItem obj)
 {
-    pthread_mutex_lock(&(item->mutex));
+    pthread_mutex_lock(&(obj->mutex));
 
     return 0;
 }
 
-int kc_mutex_item_unlock(KCMutexItem *item)
+int kc_mutex_item_unlock(KCMutexItem obj)
 {
-    pthread_mutex_unlock(&(item->mutex));
+    pthread_mutex_unlock(&(obj->mutex));
 
     return 0;
 }

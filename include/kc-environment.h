@@ -1,9 +1,9 @@
 /**
  * @file        kc-environment.h
  * @brief       Class to get environment variables (header file)
- * @author      Michael Ott <michael@king-coder.de>
+ * @author      K-C Videri <kc.videri@gmail.com>
  *
- * copyright:   (C) 2013 by Michael Ott
+ * copyright:   (C) 2013 by K-C Videri
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -29,32 +29,33 @@ extern "C" {
 /**
  * Class KCEnvironment
  */
-    typedef struct environment KCEnvironment;
+typedef struct environment KCEnvironment;
 
 /**
  * Initialise KCEnvironment
  * @return Object of KCEnvironment or NULL if error
  */
-    KCEnvironment *kc_environment_new();
+KCEnvironment *kc_environment_new();
 /**
  * Free KCEnvironment
  * @param environment Object of KCEnvironment
  */
-    void kc_environment_free(KCEnvironment * environment);
+void kc_environment_free(KCEnvironment * environment);
 /**
  * Get local host name
  * @param environment Object of KCEnvironment
  * @return Local host name
  */
-    char *kc_environment_get_username(KCEnvironment * environment);
+char *kc_environment_get_username(KCEnvironment * environment);
 /**
  * Get user name
  * @param environment Object of KCEnvironment
  * @return User name
  */
-    char *kc_environment_get_hostname(KCEnvironment * environment);
+char *kc_environment_get_hostname(KCEnvironment * environment);
 
 #ifdef __cplusplus
 }
 #endif
+
 #endif                          // __KC_ENVIRONMENT_H__

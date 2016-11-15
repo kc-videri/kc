@@ -1,9 +1,9 @@
 /**
- * @file        kc_mutex.h
+ * @file        kc-mutex.h
  * @brief       Mutex implemenation for KC framework (Header file)
- * @author      Michael Ott <michael@king-coder.de>
+ * @author      K-C Videri <kc.videri@gmail.com>
  *
- * copyright:   (C) 2016 by Michael Ott
+ * copyright:   (C) 2016 by K-C Videri
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,37 +22,44 @@
 #ifndef __KC_MUTEX_H__
 #define __KC_MUTEX_H__
 
-#include <pthread.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-typedef struct kc_mutex_item {
-    pthread_mutex_t mutex;
-} KCMutexItem;
+// Forward declaration
+struct kc_mutex_item;
+
+typedef struct kc_mutex_item *KCMutexItem;
 
 /**
  * Initialise mutex
- * @param item Mutex item to initialise
+ * @param obj Mutex item to initialise
  * @return 0 => success, ! 0 => errno is set
  */
-int kc_mutex_item_init(KCMutexItem *item);
+int kc_mutex_item_init(KCMutexItem obj);
 /**
  * Destroy mutex
- * @param item Mutex item to destroy
+ * @param obj Mutex item to destroy
  * @return 0 => success, ! 0 => errno is set
  */
-int kc_mutex_item_destroy(KCMutexItem *item);
+int kc_mutex_item_destroy(KCMutexItem obj);
 /**
  * Lock mutext
- * @param item Mutex item to lock
+ * @param obj Mutex item to lock
  * @return 0 => success
  * @return
  */
-int kc_mutex_item_lock(KCMutexItem *item);
+int kc_mutex_item_lock(KCMutexItem obj);
 /**
  * Unlock mutext
- * @param item Mutex item to lock
+ * @param obj Mutex item to lock
  * @return 0 => success
  * @return
  */
-int kc_mutex_item_unlock(KCMutexItem *item);
+int kc_mutex_item_unlock(KCMutexItem obj);
 
-#endif /* __KC_MUTEX_H__ */
+#ifdef __cplusplus
+}
+#endif
+
+#endif                          /* __KC_MUTEX_H__ */

@@ -1,9 +1,9 @@
 /**
- * @file        fcgi.h
+ * @file        kc-fcgi.h
  * @brief       Header file for FastCGI applications
- * @author      Michael Ott <michael@king-coder.de>
+ * @author      K-C Videri <kc.videri@gmail.com>
  *
- * copyright:   (C) 2016 by Michael Ott
+ * copyright:   (C) 2016 by K-C Videri
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as 

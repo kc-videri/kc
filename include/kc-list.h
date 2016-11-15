@@ -1,9 +1,9 @@
 /**
  * @file        kc-list.h
  * @brief       
- * @author      Michael Ott <michael@king-coder.de>
+ * @author      K-C Videri <kc.videri@gmail.com>
  *
- * copyright:   (C) 2016 by Michael Ott
+ * copyright:   (C) 2016 by K-C Videri
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -22,19 +22,27 @@
 #ifndef __KC_LIST_H__
 #define __KC_LIST_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct kc_list {
     void *data;
     struct kc_list *next;
 } KCList;
 
 KCList *kc_list_new();
-int kc_list_free(KCList *list);
-int kc_list_add(KCList *list, void *data);
-int kc_list_remove(KCList *list, KCList *element);
-int kc_list_clear(KCList *list);
+int kc_list_free(KCList *obj);
+int kc_list_add(KCList *obj, void *data);
+int kc_list_remove(KCList *obj, KCList *element);
+int kc_list_clear(KCList *obj);
 
-KCList *kc_list_get_first(KCList *list);
-KCList *kc_list_get_next(KCList *element);
-void *kc_list_element_get_data(KCList *element);
+KCList *kc_list_get_first(KCList *obj);
+KCList *kc_list_get_next(KCList *obj);
+void *kc_list_element_get_data(KCList *obj);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __KC_LIST_H__ */

@@ -1,9 +1,9 @@
 /**
- * @file        kc_string.h
+ * @file        kc-string.h
  * @brief       Header file for all string operations
- * @author      Michael Ott <michael@king-coder.de>
+ * @author      K-C Videri <kc.videri@gmail.com>
  *
- * copyright:   (C) 2016 by Michael Ott
+ * copyright:   (C) 2016 by K-C Videri
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -24,7 +24,12 @@
 
 #include <kc.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef kcchar* KCString;                      ///< Definition KCString
+
 /**
  * Create a string
  * @param value Value to copy into created string
@@ -32,5 +37,15 @@ typedef kcchar* KCString;                      ///< Definition KCString
  * @return New created string or NULL on error
  */
 KCString kc_string_create(const char *value, size_t length);
+/**
+ * Free string
+ * @param string String to free
+ * @return 0 => successful
+ */
+int kc_string_free(KCString string);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __KC_STRING_H__ */

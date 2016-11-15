@@ -1,6 +1,7 @@
 /**
- * @file        kc.c
- * @brief       Default source file for KC framework
+ * @file        kc-mutex_private.h
+ * @brief       Mutex implemenation for KC framework (Private header
+ *              file)
  * @author      K-C Videri <kc.videri@gmail.com>
  *
  * copyright:   (C) 2016 by K-C Videri
@@ -19,8 +20,16 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#include <errno.h>
-#include <stdio.h>
-#include <string.h>
+#ifndef __KC_MUTEX_PRIVATE_H__
+#define __KC_MUTEX_PRIVATE_H__
 
-#include <kc.h>
+#include <pthread.h>
+
+#include <kc-object.h>
+
+struct kc_mutex_item {
+    KCObject object;
+    pthread_mutex_t mutex;
+};
+
+#endif                          /* __KC_MUTEX_PRIVATE_H__ */

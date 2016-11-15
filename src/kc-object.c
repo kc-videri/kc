@@ -1,6 +1,6 @@
 /**
- * @file        kc.c
- * @brief       Default source file for KC framework
+ * @file        kc-object.c
+ * @brief       Main object
  * @author      K-C Videri <kc.videri@gmail.com>
  *
  * copyright:   (C) 2016 by K-C Videri
@@ -19,8 +19,23 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#include <errno.h>
-#include <stdio.h>
-#include <string.h>
+#include <stdlib.h>
 
-#include <kc.h>
+#include <kc-object.h>
+#include <kc-object_private.h>
+
+KCObject kc_object_new(size_t size)
+{
+    KCObject obj;
+
+    obj = (KCObject)malloc(size);
+
+    return obj;
+}
+
+int kc_object_free(KCObject obj)
+{
+    free(obj);
+
+    return 0;
+}

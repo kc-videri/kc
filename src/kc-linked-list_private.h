@@ -1,6 +1,6 @@
 /**
- * @file        kc.c
- * @brief       Default source file for KC framework
+ * @file        kc-linked-list_private.h
+ * @brief       Functions for a linked list (Private header file)
  * @author      K-C Videri <kc.videri@gmail.com>
  *
  * copyright:   (C) 2016 by K-C Videri
@@ -19,8 +19,27 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#include <errno.h>
-#include <stdio.h>
-#include <string.h>
+#ifndef __KC_LINKED_LIST_PRIVATE_H__
+#define __KC_LINKED_LIST_PRIVATE_H__
 
-#include <kc.h>
+#include <kc-mutex_private.h>
+#include <kc-linked-list.h>
+
+/**
+ * structure KCLinkedListItem: Structure for a list item
+ */
+struct kc_linked_list_item {
+    void *data;                         ///< Linked data
+    KCLinkedListItem next;              ///< Next item
+};
+
+/**
+ * Structure KCLinkedList: Structure for a linked list
+ */
+struct kc_linked_list {
+    struct kc_mutex_item mutex_item;    ///< Mutex item for the thread save part of the linked list
+    KCLinkedListItem items;             ///< Linked Items
+    KCLinkedListItem last;              ///< Last element in list
+};
+
+#endif /* __KC_LINKED_LIST_PRIVATE_H__ */

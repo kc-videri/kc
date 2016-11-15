@@ -1,6 +1,6 @@
 /**
- * @file        kc.c
- * @brief       Default source file for KC framework
+ * @file        kc-object.h
+ * @brief       Main object (Header file)
  * @author      K-C Videri <kc.videri@gmail.com>
  *
  * copyright:   (C) 2016 by K-C Videri
@@ -19,8 +19,38 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#include <errno.h>
-#include <stdio.h>
-#include <string.h>
+#ifndef __KC_OBJECT_H__
+#define __KC_OBJECT_H__
 
-#include <kc.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <kc-string.h>
+
+// Forward declaration
+struct kc_object;
+
+/**
+ * Structure KCObject: Main class
+ */
+typedef struct kc_object* KCObject;
+
+/**
+ * Create a new KC object
+ * @param size Size of the object
+ * @return KCObject or NULL on error
+ */
+KCObject kc_object_new(size_t size);
+/**
+ * Free object
+ * @param obj Object to free
+ * @return 0 => successful
+ */
+int kc_object_free(KCObject obj);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif                          /* __KC_OBJECT_H__ */

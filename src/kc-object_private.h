@@ -1,6 +1,6 @@
 /**
- * @file        kc.c
- * @brief       Default source file for KC framework
+ * @file        kc-object_private.h
+ * @brief       Main object (Private header)
  * @author      K-C Videri <kc.videri@gmail.com>
  *
  * copyright:   (C) 2016 by K-C Videri
@@ -19,8 +19,11 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#include <errno.h>
-#include <stdio.h>
-#include <string.h>
+#ifndef __KC_OBJECT_PRIVATE_H__
+#define __KC_OBJECT_PRIVATE_H__
 
-#include <kc.h>
+struct kc_object {
+
+};
+
+#endif /* __KC_OBJECT_PRIVATE_H__ */

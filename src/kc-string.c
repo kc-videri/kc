@@ -1,9 +1,9 @@
 /**
- * @file        kc_string.c
+ * @file        kc-string.c
  * @brief       Implementation for all string operations
- * @author      Michael Ott <michael@king-coder.de>
+ * @author      K-C Videri <kc.videri@gmail.com>
  *
- * copyright:   (C) 2016 by Michael Ott
+ * copyright:   (C) 2016 by K-C Videri
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as
@@ -21,21 +21,30 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
+#include <kc-object.h>
 #include <kc-string.h>
 
-// TODO test application
+// TODO MOT: test application
 KCString kc_string_create(const char *value, size_t length)
 {
-    char *result;
+    char *obj;
 
-    result = (char *) malloc((length + 3) * sizeof(char));
-    if (result == NULL) {
+    obj = (char *) kc_object_new((length + 1) * sizeof(char));
+    if (obj == NULL) {
         goto kc_sting_create_exit;
     }
-    memcpy(result, value, length);
-    result[length] = '\0';
+    memcpy(obj, value, length);
+    obj[length] = '\0';
 
   kc_sting_create_exit:
-    return result;
+    return obj;
+}
+
+int kc_string_free(KCString string)
+{
+    kc_object_free((KCObject) string);
+
+    return 0;
 }
