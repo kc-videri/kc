@@ -24,26 +24,26 @@
 
 #include <json.h>
 
-#include <kc-object.h>
+#include <kc-object_private.h>
 #include <kc-json.h>
 
 /**
  * Structure KCWeb: Structure to save all important web information
  */
 struct kc_json {
-    KCObject object;                            ///< Parent object
+    struct kc_object object;                    ///< Parent object
     struct json_object *json_object;            ///< JSON object
     enum json_tokener_error error_no;           ///< Error number
     KCString error_desc;                        ///< Error description
 };
 
 struct kc_json_object {
-    KCObject object;                            ///< Parent object
+    struct kc_object object;                    ///< Parent object
     struct json_object *json_object;            ///< JSON object
 };
 
 struct kc_json_array {
-    KCObject object;                            ///< Parent object
+    struct kc_object object;                    ///< Parent object
     struct array_list *array;                   ///< Array List
 };
 

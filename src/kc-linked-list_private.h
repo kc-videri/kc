@@ -22,7 +22,7 @@
 #ifndef __KC_LINKED_LIST_PRIVATE_H__
 #define __KC_LINKED_LIST_PRIVATE_H__
 
-#include <kc-mutex.h>
+#include <kc-mutex_private.h>
 #include <kc-linked-list.h>
 
 /**
@@ -37,7 +37,7 @@ struct kc_linked_list_item {
  * Structure KCLinkedList: Structure for a linked list
  */
 struct kc_linked_list {
-    KCMutexItem mutex_item;             ///< Mutex item for the thread save part of the linked list
+    struct kc_mutex_item mutex_item;    ///< Mutex item for the thread save part of the linked list
     KCLinkedListItem items;             ///< Linked Items
     KCLinkedListItem last;              ///< Last element in list
 };

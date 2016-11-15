@@ -20,6 +20,7 @@
  ***************************************************************************/
 
 #include <stdlib.h>
+#include <stdio.h>
 
 #include <kc.h>
 #include <kc-object.h>

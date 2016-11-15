@@ -24,6 +24,7 @@
 
 #include <kc-json.h>
 #include <kc-json_private.h>
+#include <kc-object.h>
 
 /*
  * Private function definition

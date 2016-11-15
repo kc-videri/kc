@@ -62,6 +62,7 @@ KCWeb kc_web_init_type(KCWebContentType type)
     if (obj == NULL) {
         return NULL;
     }
+
     // Default settings
     obj->content_type = NULL;
 
@@ -81,11 +82,13 @@ KCWeb kc_web_init_type(KCWebContentType type)
                 __func__, __LINE__);
         goto kc_web_init_failed_memory;
     }
+
     // GET parameter
     buffer = getenv("QUERY_STRING");
     if (buffer != NULL && strlen(buffer) > 0) {
         kc_web_parse_query_string(obj, buffer, KC_WEB_PARAMETER_GET);
     }
+
     // POST parameter
     buffer = getenv("CONTENT_LENGTH");
     if (buffer != NULL) {
@@ -104,6 +107,7 @@ KCWeb kc_web_init_type(KCWebContentType type)
             }
         }
     }
+
     // HTTP variables
     for (env = environ; *env; ++env) {
         if (!strncmp(*env, KC_WEB_HTTP_PREFIX, strlen(KC_WEB_HTTP_PREFIX))) {

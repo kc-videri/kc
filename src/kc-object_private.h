@@ -19,11 +19,11 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#ifndef __KC_OBJECT_H__
-#define __KC_OBJECT_H__
+#ifndef __KC_OBJECT_PRIVATE_H__
+#define __KC_OBJECT_PRIVATE_H__
 
 struct kc_object {
 
 };
 
-#endif /* __KC_OBJECT_H__ */
+#endif /* __KC_OBJECT_PRIVATE_H__ */

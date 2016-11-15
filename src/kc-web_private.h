@@ -22,7 +22,7 @@
 #ifndef __KC_WEB_PRIVATE_H__
 #define __KC_WEB_PRIVATE_H__
 
-#include <kc-object.h>
+#include <kc-object_private.h>
 #include <kc-linked-list.h>
 #include <kc-string.h>
 #include <kc-json.h>
@@ -61,7 +61,7 @@ typedef struct kc_web_content_type_def *KCWebContentTypeDef;
  * Structure KCWebParameter: Structure to save received parameter item
  */
 struct kc_web_parameter {
-    KCObject object;                            ///< Parent object
+    struct kc_object object;                    ///< Parent object
     KCWebParameterType type;                    ///< On which way does the parameter come
     KCString key;                               ///< Key of a parameter
     KCString value;                             ///< Value of a parameter
@@ -71,7 +71,7 @@ struct kc_web_parameter {
  * Structure KCWeb: Structure to save all important web information
  */
 struct kc_web {
-    KCObject object;                            ///< Parent object
+    struct kc_object object;                    ///< Parent object
 #if 0
     char *uri;                                  ///< URI
     char *get_query_string;                     ///< Get query string
