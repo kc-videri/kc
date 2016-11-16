@@ -45,9 +45,6 @@ libkc_la_LDFLAGS += -export-dynamic
 libkcweb_la_LDFLAGS += -export-dynamic
 endif
 
-#include_HEADERS = \
-#	kc.h
-
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = kc-0.0.1.pc kcweb-0.0.1.pc
 
