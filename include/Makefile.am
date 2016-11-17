@@ -4,12 +4,10 @@ include_HEADERS = \
     kc-object.h \
     kc-environment.h \
     kc-string.h \
-    kc-web.h \
+    kc-web-server.h \
     kc-linked-list.h \
     kc-list.h \
     kc-mutex.h \
-	kc-web.h \
-	kc-fcgi.h \
 	kc-parameter.h \
 	kc-json.h \
     kc.h

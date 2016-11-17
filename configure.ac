@@ -54,7 +54,7 @@ LT_INIT([win32-dll])
 AC_OUTPUT([
 Makefile
 src/kc-0.0.1.pc
-src/kcweb-0.0.1.pc
+src/kcwebserver-0.0.1.pc
 src/Makefile
 include/Makefile
 test/Makefile

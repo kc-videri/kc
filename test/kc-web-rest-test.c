@@ -8,46 +8,12 @@
 #include <stdint.h>
 #include <string.h>
 
-#include <kc-web.h>
+#include <kc-web-server.h>
 
 extern char **environ;
 #define HTTP_MAX_PARAMS 1024
 
 /* some of the HTTP variables we are interest in */
-#define MAX_VARS 31
-char *vars[MAX_VARS] = {
-    "SCRIPT_NAME",
-    "REQUEST_URI",
-    "CONTENT_LENGTH",
-    "DOCUMENT_ROOT",
-    "GATEWAY_INTERFACE",
-    "HTTP_ACCEPT",
-    "HTTP_ACCEPT_ENCODING",
-    "HTTP_ACCEPT_LANGUAGE",
-    "HTTP_CACHE_CONTROL",
-    "HTTP_CONNECTION",
-    "HTTP_HOST",
-    "HTTP_PRAGMA",
-    "HTTP_RANGE",
-    "HTTP_REFERER",
-    "HTTP_TE",
-    "HTTP_USER_AGENT",
-    "HTTP_X_FORWARDED_FOR",
-    "PATH",
-    "QUERY_STRING",
-    "REMOTE_ADDR",
-    "REMOTE_HOST",
-    "REMOTE_PORT",
-    "REQUEST_METHOD",
-    "SCRIPT_FILENAME",
-    "SERVER_ADDR",
-    "SERVER_ADMIN",
-    "SERVER_NAME",
-    "SERVER_PORT",
-    "SERVER_PROTOCOL",
-    "SERVER_SIGNATURE",
-    "SERVER_SOFTWARE"
-};
 
 int main(void)
 {
@@ -55,7 +21,7 @@ int main(void)
     char **env;
 
     while (FCGI_Accept() >= 0) {
-        int i;
+        int i = 0;
         KCWeb web;
         KCLinkedList list;
         KCLinkedListIterator iterator;
@@ -75,16 +41,6 @@ int main(void)
                    kc_web_parameter_get_type(entry),
                    kc_web_parameter_get_key(entry),
                    kc_web_parameter_get_value(entry));
-        }
-        printf("\n");
-
-        char *buffer;
-        for (i = 0; i < MAX_VARS; ++i) {
-            buffer = getenv(vars[i]);
-            if (buffer == NULL)
-                printf("%s\r\n", vars[i]);
-            else
-                printf("%s: %s\r\n", vars[i], buffer);
         }
         printf("\n");
 

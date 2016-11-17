@@ -11,7 +11,7 @@ noinst_PROGRAMS= \
     kc-environment-test \
     kc-linked-list-test \
     kc-json-test \
-	kc-web-rest-test.fcgi
+	kc-webserver-rest-test.fcgi
 
 kc_environment_test_SOURCES= kc-environment-test.c
 kc_environment_test_LDFLAGS = $(top_srcdir)/src/libkc.la $(AM_LDFLAGS)
@@ -22,6 +22,6 @@ kc_linked_list_test_CPPFLAGS = -I$(top_srcdir)/include
 kc_json_test_SOURCES= kc-json-test.c
 kc_json_test_LDFLAGS = $(top_srcdir)/src/libkc.la $(AM_LDFLAGS)
 kc_json_test_CPPFLAGS = -I$(top_srcdir)/include
-kc_web_rest_test_fcgi_SOURCES= kc-web-rest-test.c
-kc_web_rest_test_fcgi_LDFLAGS = -lfcgi $(AM_LDFLAGS) -static $(top_srcdir)/src/.libs/libkc.a $(top_srcdir)/src/.libs/libkcweb.a 
-kc_web_rest_test_fcgi_CPPFLAGS = -I$(top_srcdir)/include
+kc_webserver_rest_test_fcgi_SOURCES= kc-web-rest-test.c
+kc_webserver_rest_test_fcgi_LDFLAGS = -lkc -L../src/.libs/ -lkcwebserver -lfcgi $(AM_LDFLAGS) 
+kc_webserver_rest_test_fcgi_CPPFLAGS = -I$(top_srcdir)/include

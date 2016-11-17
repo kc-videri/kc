@@ -11,7 +11,7 @@ AM_CFLAGS =\
 	-Wall\
 	-g
 
-lib_LTLIBRARIES = libkc.la libkcweb.la
+lib_LTLIBRARIES = libkc.la libkcwebserver.la
 
 libkc_la_SOURCES = \
 	kc-object.c \
@@ -28,26 +28,26 @@ libkc_la_LIBADD = \
 	-ljson-c \
 	$(KC_LIBS)
 
-libkcweb_la_SOURCES = \
-	kc-web.c
+libkcwebserver_la_SOURCES = \
+	kc-web-server.c
 
-libkcweb_la_LDFLAGS = 
+libkcwebserver_la_LDFLAGS = 
 
-libkcweb_la_LIBADD = $(KC_LIBS) -lkc -lfcgi
+libkcwebserver_la_LIBADD = $(KC_LIBS) -lkc -lfcgi
 
 if PLATFORM_WIN32
 libkc_la_LDFLAGS += -no-undefined
-libkcweb_la_LDFLAGS += -no-undefined
+libkcwebserver_la_LDFLAGS += -no-undefined
 endif
 
 if NATIVE_WIN32
 libkc_la_LDFLAGS += -export-dynamic
-libkcweb_la_LDFLAGS += -export-dynamic
+libkcwebserver_la_LDFLAGS += -export-dynamic
 endif
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = kc-0.0.1.pc kcweb-0.0.1.pc
+pkgconfig_DATA = kc-0.0.1.pc kcwebserver-0.0.1.pc
 
 EXTRA_DIST = \
 	kc-0.0.1.pc.in \
-	kcweb-0.0.1.pc.in
+	kcwebserver-0.0.1.pc.in

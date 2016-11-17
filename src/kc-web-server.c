@@ -30,8 +30,8 @@
 #include <unistd.h>
 
 #include <kc-object.h>
-#include <kc-web.h>
-#include <kc-web_private.h>
+#include <kc-web-server.h>
+#include <kc-web-server_private.h>
 #include <kc-string.h>
 
 /**
@@ -111,6 +111,7 @@ KCWeb kc_web_init_type(KCWebContentType type)
     // HTTP variables
     for (env = environ; *env; ++env) {
         if (!strncmp(*env, KC_WEB_HTTP_PREFIX, strlen(KC_WEB_HTTP_PREFIX))) {
+            fprintf(stderr, "%s\n", *env); // DELETE 
             found_one = FALSE;
             for (key = kc_web_http_keys; *key; key++) {
                 if (!strncmp(*key, *env, strlen(*key))) {

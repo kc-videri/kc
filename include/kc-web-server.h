@@ -19,8 +19,8 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#ifndef __KC_WEB_H__
-#define __KC_WEB_H__
+#ifndef __KC_WEB_SERVER_H__
+#define __KC_WEB_SERVER_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -178,4 +178,4 @@ KCWebParameterType kc_web_parameter_get_type(KCWebParameter item);
 }
 #endif
 
-#endif                          /* __KC_WEB_H__ */
+#endif                          /* __KC_WEB_SERVER_H__ */

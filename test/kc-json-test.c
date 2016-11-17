@@ -24,6 +24,9 @@
 
 #include <kc-json.h>
 
+/* JSON string for testing
+{"sitename":"joys of programming","tags":["c",["c","c++"],"java","PHP"],"author-details":{"name":"Joys of Programming","Number of Posts":10},"price":7.99,"orderable":true,}
+*/
 #define JSON_STRING \
     "{\"sitename\":\"joys of programming\",\"tags\":[\"c\",[\"c\",\"c++\"]," \
     "\"java\",\"PHP\"],\"author-details\":{\"name\":\"Joys of Programming\"," \

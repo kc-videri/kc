@@ -19,8 +19,8 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#ifndef __KC_WEB_PRIVATE_H__
-#define __KC_WEB_PRIVATE_H__
+#ifndef __KC_WEB_SERVER_PRIVATE_H__
+#define __KC_WEB_SERVER_PRIVATE_H__
 
 #include <kc-object_private.h>
 #include <kc-linked-list.h>
@@ -184,4 +184,4 @@ int kc_web_parameter_set_type(KCWebParameter obj,
  */
 int kc_web_parameter_list_add_item(KCWeb obj, KCWebParameter item);
 
-#endif                          /* __KC_WEB_PRIVATE_H__ */
+#endif                          /* __KC_WEB_SERVER_PRIVATE_H__ */
