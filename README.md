@@ -24,7 +24,7 @@ or compile the libraries static in the application.
 For a web application add the following lines into your Makefile
 ```
 CFLAGS+=-I <your folder>/kc/source/include
-LIBS=-lfcgi -Wl,-Bstatic -lkcweb -lkc -L<your folder>kc/source/src/.libs -Wl,-Bdynamic
+LIBS=-lfcgi -Wl,-Bstatic -lkcwebserver -lkc -L<your folder>kc/source/src/.libs -Wl,-Bdynamic
 ```
 
 ## TODO or missing things
