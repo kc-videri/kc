@@ -1,6 +1,6 @@
 /**
- * @file        kc-web-server.c
- * @brief       Some web server cgi stuff (Implementation)
+ * @file        kc-web-client .c
+ * @brief       Some web client stuff (Implementation)
  * @author      K-C Videri <kc.videri@gmail.com>
  *
  * copyright:   (C) 2016 by K-C Videri
@@ -19,7 +19,8 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#include <fcgi_stdio.h>
+#include <stdio.h>
+
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -30,8 +31,8 @@
 #include <unistd.h>
 
 #include <kc-object.h>
-#include <kc-web-server.h>
-#include <kc-web-server_private.h>
+#include <kc-web-client.h>
+#include <kc-web-client_private.h>
 #include <kc-string.h>
 
 /**

@@ -1,6 +1,6 @@
 /**
- * @file        kc-web-server.h
- * @brief       Some web server CGI stuff (Header file)
+ * @file        kc-web-client.h
+ * @brief       Some web client stuff (Header file)
  * @author      K-C Videri <kc.videri@gmail.com>
  *
  * copyright:   (C) 2016 by K-C Videri
@@ -19,8 +19,8 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#ifndef __KC_WEB_SERVER_H__
-#define __KC_WEB_SERVER_H__
+#ifndef __KC_WEB_CLIENT_H__
+#define __KC_WEB_CLIENT_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -178,4 +178,4 @@ KCWebParameterType kc_web_parameter_get_type(KCWebParameter item);
 }
 #endif
 
-#endif                          /* __KC_WEB_SERVER_H__ */
+#endif                          /* __KC_WEB_CLIENT_H__ */
