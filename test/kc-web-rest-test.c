@@ -43,15 +43,15 @@ int main(void)
 
     while (FCGI_Accept() >= 0) {
         int i = 0;
-        KCWeb web;
+        KCWebServer web;
         KCLinkedList list;
         KCLinkedListIterator iterator;
 
-        web = kc_web_init_type(KC_WEB_CONTENT_JSON);
-        kc_web_print_content_type(web);
+        web = kc_web_server_init_type(KC_WEB_CONTENT_JSON);
+        kc_web_server_print_content_type(web);
 
         printf("\r\n== DEBUG ==\r\n");
-        list = kc_web_get_parameter_list(web);
+        list = kc_web_server_get_parameter_list(web);
         for (iterator = kc_linked_list_item_get_first(list);
              !kc_linked_list_item_is_last(list, iterator);
              iterator = kc_linked_list_item_get_next(iterator)) {
@@ -59,9 +59,9 @@ int main(void)
             entry =
                 (KCWebParameter) kc_linked_list_item_get_data(iterator);
             printf("%02x: type: %02x; key: %-20s; value: %s\n", i++,
-                   kc_web_parameter_get_type(entry),
-                   kc_web_parameter_get_key(entry),
-                   kc_web_parameter_get_value(entry));
+                   kc_web_server_parameter_get_type(entry),
+                   kc_web_server_parameter_get_key(entry),
+                   kc_web_server_parameter_get_value(entry));
         }
         printf("\n");
 

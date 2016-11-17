@@ -41,45 +41,45 @@
  * Structure struct kc_web_content_type: Structure to handle different content types
  */
 struct kc_web_content_type {
-    KCWebContentType type;                      ///< Content type
-    KCString type_string;                       ///< String to send to define type
-    KCString endings[3];                        ///< String to send to define type
+    KCWebContentType type;      ///< Content type
+    KCString type_string;       ///< String to send to define type
+    KCString endings[3];        ///< String to send to define type
 };
 
 /**
  * Structure struct kc_web_content_type: Structure to handle different content types
  */
 struct kc_web_content_type_def {
-    KCWebContentType type;                      ///< Content type
-    KCString type_string;                       ///< String to send to define type
-    KCString endings[3];                        ///< String to send to define type
+    KCWebContentType type;      ///< Content type
+    KCString type_string;       ///< String to send to define type
+    KCString endings[3];        ///< String to send to define type
 };
 
 typedef struct kc_web_content_type_def *KCWebContentTypeDef;
 
 /**
- * Structure KCWebParameter: Structure to save received parameter item
+ * Structure KCWebServerParameter: Structure to save received parameter item
  */
-struct kc_web_parameter {
-    struct kc_object object;                    ///< Parent object
-    KCWebParameterType type;                    ///< On which way does the parameter come
-    KCString key;                               ///< Key of a parameter
-    KCString value;                             ///< Value of a parameter
+struct kc_web_server_parameter {
+    struct kc_object object;    ///< Parent object
+    KCWebParameterType type;    ///< On which way does the parameter come
+    KCString key;               ///< Key of a parameter
+    KCString value;             ///< Value of a parameter
 };
 
 /**
- * Structure KCWeb: Structure to save all important web information
+ * Structure KCWebServer: Structure to save all important web information
  */
-struct kc_web {
-    struct kc_object object;                    ///< Parent object
+struct kc_web_server {
+    struct kc_object object;    ///< Parent object
 #if 0
-    char *uri;                                  ///< URI
-    char *get_query_string;                     ///< Get query string
+    char *uri;                  ///< URI
+    char *get_query_string;     ///< Get query string
 #endif
-    KCLinkedList parameter;                     ///< parameter list
-    KCWebRequestType request_type;              ///< request type
-    KCWebContentTypeDef content_type;           ///< Content type structure
-    KCJson json;                                ///< JSON object
+    KCLinkedList parameter;     ///< parameter list
+    KCWebRequestType request_type;  ///< request type
+    KCWebContentTypeDef content_type;   ///< Content type structure
+    KCJson json;                ///< JSON object
 };
 
 /*
@@ -125,19 +125,20 @@ char *kc_web_http_keys[] = {
 
 /**
  * Parse a received string (query (get), content (post), ...)
- * @param obj KCWeb object
+ * @param obj KCWebServer object
  * @param query_string String to parse
  * @param type Type of request
  * @return
  */
-int kc_web_parse_query_string(KCWeb obj, const char *query_string,
-                              KCWebParameterType type);
+int kc_web_server_parse_query_string(KCWebServer obj,
+                                     const char *query_string,
+                                     KCWebParameterType type);
 
 /**
  * Create a new KCWebParameter
  * @return Item or NULL on error
  */
-KCWebParameter kc_web_parameter_new();
+KCWebParameter kc_web_server_parameter_new();
 /**
  * Create a new KCWebParameter
  * @param string String to check
@@ -145,43 +146,44 @@ KCWebParameter kc_web_parameter_new();
  * @param type Type to set
  * @return Item or NULL on error
  */
-KCWebParameter kc_web_parameter_new_from_string(KCString string,
-                                                 size_t length,
-                                                 KCWebParameterType type);
+KCWebParameter kc_web_server_parameter_new_from_string(KCString string,
+                                                       size_t length,
+                                                       KCWebParameterType type);
 /**
  * Free parameter entry
  * @param obj Object to free
  * @return 0 => successful
  */
-int kc_web_parameter_free(KCWebParameter obj);
+int kc_web_server_parameter_free(KCWebParameter obj);
 /**
  * Set key
  * @param obj KCWebParameter pointer object
  * @param key Key to set
  * @return 0 => successful
  */
-int kc_web_parameter_set_key(KCWebParameter obj, KCString key);
+int kc_web_server_parameter_set_key(KCWebParameter obj, KCString key);
 /**
  * Set value
  * @param obj KCWebParameter pointer Object
  * @param value Value to set
  * @return 0 => successful
  */
-int kc_web_parameter_set_value(KCWebParameter obj, KCString value);
+int kc_web_server_parameter_set_value(KCWebParameter obj, KCString value);
 /**
  * Set type
  * @param obj KCWebParameter pointer Object
  * @param type Type to set
  * @return 0 => successful
  */
-int kc_web_parameter_set_type(KCWebParameter obj,
-                              KCWebParameterType type);
+int kc_web_server_parameter_set_type(KCWebParameter obj,
+                                     KCWebParameterType type);
 /**
  * Add item to parameter list
- * @param obj KCWeb object
+ * @param obj KCWebServer object
  * @param item Parameter item to add
  * @return 0 => successfull
  */
-int kc_web_parameter_list_add_item(KCWeb obj, KCWebParameter item);
+int kc_web_server_parameter_list_add_item(KCWebServer obj,
+                                          KCWebParameter item);
 
 #endif                          /* __KC_WEB_SERVER_PRIVATE_H__ */
