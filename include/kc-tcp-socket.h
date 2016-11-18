@@ -1,6 +1,6 @@
 /**
- * @file        kc-webclient-rest-test.c
- * @brief       Test web client communication
+ * @file        kc-tcp-socket.h
+ * @brief       Header file for ipv4 tcp socket stuff
  * @author      K-C Videri <kc.videri@gmail.com>
  *
  * copyright:   (C) 2016 by K-C Videri
@@ -19,18 +19,23 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#include <stdlib.h>
+#ifndef __KC_TCP_SOCKET_H__
+#define __KC_TCP_SOCKET_H__
 
-#include <kc-web-client.h>
+#include <kc-socket.h>
 
-int main(void)
-{
-    KCWebClient client;
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-    client = kc_web_client_init();
-    if (client == NULL) {
-        return -1;
-    }
+/**
+ * Initialise the KCSocket object 
+ * @return KCSocket object or NULL on error
+ */
+KCSocket kc_tcp_socket_init();
 
-    return 0;
+#ifdef __cplusplus
 }
+#endif
+
+#endif                          /* __KC_TCP_SOCKET_H__ */

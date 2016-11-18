@@ -26,52 +26,22 @@
 extern "C" {
 #endif
 
+#if 0
 #include <kc-linked-list.h>
 #include <kc-string.h>
-
-/**
- * Enumeration for different types of giving parameter
- */
-typedef enum {
-    KC_WEB_PARAMETER_GET,                       ///< Parameter comes using GET
-    KC_WEB_PARAMETER_POST,                      ///< Parameter comes using POST
-    KC_WEB_PARAMETER_HTTP,                      ///< Parameter comes using HTTP
-} KCWebParameterType;
-
-/**
- * Enumeration for different types of receiving data
- */
-typedef enum {
-    KC_WEB_REQUEST_GET,                         ///< Request type GET
-    KC_WEB_REQUEST_POST,                        ///< Request type POST
-    KC_WEB_REQUEST_PUT,                         ///< Request type PUT
-    KC_WEB_REQUEST_DELETE,                      ///< Request type DELETE
-} KCWebRequestType;
-
-/**
- * Enumeration for different types of receiving data
- */
-typedef enum {
-    KC_WEB_CONTENT_HTML = 0,                    ///< Content type text/html
-    KC_WEB_CONTENT_XHTML,                       ///< Content type text/xhtml
-    KC_WEB_CONTENT_JSON,                        ///< Content type application/json
-    KC_WEB_CONTENT_TEXT,                        ///< Content type text
-    KC_WEB_CONTENT_ICO,                         ///< Content type favicon
-    KC_WEB_CONTENT_UNDEF                        ///< Last element or undefined type
-} KCWebContentType;
+#endif
 
 // forward declaration
-struct kc_web;
-struct kc_web_parameter;
+struct kc_web_client;
 
-typedef struct kc_web *KCWeb;
-typedef struct kc_web_parameter *KCWebParameter;
+typedef struct kc_web_client *KCWebClient;
 
 /**
- * Initialise the KCWeb object for a HTML document
- * @return KCWeb object or NULL on error
+ * Initialise the KCWebClient object for a HTML document
+ * @return KCWebClient object or NULL on error
  */
-KCWeb kc_web_init();
+KCWebClient kc_web_client_init();
+#if 0
 /**
  * Initialise the KCWeb object
  * @param type Content Type
@@ -173,6 +143,7 @@ KCString kc_web_parameter_get_value(KCWebParameter item);
  * @return Parameter type
  */
 KCWebParameterType kc_web_parameter_get_type(KCWebParameter item);
+#endif
 
 #ifdef __cplusplus
 }

@@ -11,7 +11,7 @@ AM_CFLAGS =\
 	-Wall\
 	-g
 
-lib_LTLIBRARIES = libkc.la libkcwebserver.la
+lib_LTLIBRARIES = libkc.la libkcnet.la libkcwebserver.la
 
 libkc_la_SOURCES = \
 	kc-object.c \
@@ -20,7 +20,6 @@ libkc_la_SOURCES = \
 	kc-linked-list.c \
 	kc-mutex.c \
 	kc-json.c \
-	kc-web-client.c \
 	kc.c
 
 libkc_la_LDFLAGS = 
@@ -28,6 +27,15 @@ libkc_la_LDFLAGS =
 libkc_la_LIBADD = \
 	-ljson-c \
 	$(KC_LIBS)
+
+libkcnet_la_SOURCES = \
+	kc-socket.c \
+	kc-tcp-socket.c \
+	kc-web-client.c
+
+libkcnet_la_LDFLAGS = 
+
+libkcnet_la_LIBADD = $(KC_LIBS) -lkc
 
 libkcwebserver_la_SOURCES = \
 	kc-web-server.c

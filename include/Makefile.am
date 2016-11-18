@@ -11,4 +11,6 @@ include_HEADERS = \
     kc-mutex.h \
 	kc-parameter.h \
 	kc-json.h \
+	kc-socket.h \
+	kc-tcp-socket.h \
     kc.h

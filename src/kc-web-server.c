@@ -62,6 +62,7 @@ KCWebServer kc_web_server_init_type(KCWebContentType type)
     if (obj == NULL) {
         return NULL;
     }
+
     // Default settings
     obj->content_type = NULL;
 

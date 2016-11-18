@@ -22,7 +22,9 @@
 #ifndef __KC_WEB_CLIENT_PRIVATE_H__
 #define __KC_WEB_CLIENT_PRIVATE_H__
 
-#include <kc-object_private.h>
+#include <kc-socket_private.h>
+
+#if 0
 #include <kc-linked-list.h>
 #include <kc-string.h>
 #include <kc-json.h>
@@ -32,11 +34,13 @@
  */
 
 #define KC_WEB_HTTP_PREFIX "HTTP_"
+#endif
 
 /*
  * Private structure declaration
  * */
 
+#if 0
 /**
  * Structure struct kc_web_content_type: Structure to handle different content types
  */
@@ -66,22 +70,16 @@ struct kc_web_parameter {
     KCString key;                               ///< Key of a parameter
     KCString value;                             ///< Value of a parameter
 };
+#endif
 
 /**
  * Structure KCWeb: Structure to save all important web information
  */
-struct kc_web {
-    struct kc_object object;                    ///< Parent object
-#if 0
-    char *uri;                                  ///< URI
-    char *get_query_string;                     ///< Get query string
-#endif
-    KCLinkedList parameter;                     ///< parameter list
-    KCWebRequestType request_type;              ///< request type
-    KCWebContentTypeDef content_type;           ///< Content type structure
-    KCJson json;                                ///< JSON object
+struct kc_web_client {
+    struct kc_socket object;                    ///< Parent object
 };
 
+#if 0
 /*
  * Private variable declaration
  * */
@@ -183,5 +181,6 @@ int kc_web_parameter_set_type(KCWebParameter obj,
  * @return 0 => successfull
  */
 int kc_web_parameter_list_add_item(KCWeb obj, KCWebParameter item);
+#endif
 
 #endif                          /* __KC_WEB_CLIENT_PRIVATE_H__ */

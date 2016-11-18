@@ -21,6 +21,26 @@
 
 #include <stdio.h>
 
+#include <kc-web-client.h>
+#include <kc-web-client_private.h>
+#include <kc-tcp-socket.h>
+
+KCWebClient kc_web_client_init()
+{
+    KCWebClient obj;
+
+    obj = (KCWebClient)kc_tcp_socket_init();
+    if (obj == NULL) {
+        return NULL;
+    }
+
+    // default values
+
+
+    return obj;
+}
+
+#if 0
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
@@ -532,3 +552,4 @@ int kc_web_parameter_list_add_item(KCWeb obj, KCWebParameter item)
 
     return 0;
 }
+#endif
