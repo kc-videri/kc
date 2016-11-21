@@ -48,172 +48,77 @@ typedef struct kc_web_client *KCWebClient;
 KCWebClient kc_web_client_init();
 /**
  * Set port
+ * @param obj KCWebClient object
  * @param port Port to use; default 80 / 443
  * @return 0 ==> successful
  */
-int kc_web_client_set_port(uint16_t port);
+int kc_web_client_set_port(KCWebClient obj, uint16_t port);
 /**
  * Use a secure connection
+ * @param obj KCWebClient object
  * @param secure TRUE => use secure communication; default: false
  * @return 0 ==> successful
  */
-int kc_web_client_set_secure(kcbool secure);
+int kc_web_client_set_secure(KCWebClient obj, kcbool secure);
 /**
  * Set host name
+ * @param obj KCWebClient object
  * @param host Host name to use
  * @return 0 ==> successful
  */
-int kc_web_client_set_host(char *host);
+int kc_web_client_set_host(KCWebClient obj, char *host);
 /**
  * Set path
+ * @param obj KCWebClient object
  * @param path Path to use; default: index.html
  * @return 0 ==> successful
  */
-int kc_web_client_set_path(char *path);
+int kc_web_client_set_path(KCWebClient obj, char *path);
 /**
  * Set query
+ * @param obj KCWebClient object
  * @param query Query to use; default: empty
  * @return 0 ==> successful
  */
-int kc_web_client_set_query(char *query);
+int kc_web_client_set_query(KCWebClient obj, char *query);
 /**
  * Set fragment
+ * @param obj KCWebClient object
  * @param fragment Fragment to use; default: empty
  * @return 0 ==> successful
  */
-int kc_web_client_set_fragment(char *fragment);
+int kc_web_client_set_fragment(KCWebClient obj, char *fragment);
 /**
  * Set request type
+ * @param obj KCWebClient object
  * @param request Request type to use; default: GET
  * @return 0 ==> successful
  */
-int kc_web_client_set_request(KCWebRequestType request);
+int kc_web_client_set_request(KCWebClient obj, KCWebRequestType request);
 /**
  * Set content type
+ * @param obj KCWebClient object
  * @param content_type Content type to use; default: XHTML
  * @return 0 ==> successful
  */
-int kc_web_client_set_content_type(KCWebContentType content_type);
+int kc_web_client_set_content_type(KCWebClient obj,
+                                   KCWebContentType content_type);
 /**
  * Set header value pair
+ * @param obj KCWebClient object
  * @param key Key to set
  * @param value Value to set
  * @return 0 ==> successful
  */
-int kc_web_client_set_header(char *key, char *value);
+int kc_web_client_set_header(KCWebClient obj, char *key, char *value);
 /**
  * Set content message
  * @param content Content message
  * @return 0 ==> successful
  */
-int kc_web_client_set_content(char* content);
-
-#if 0
-/**
- * Initialise the KCWeb object
- * @param type Content Type
- * @return KCWeb object or NULL on error
- */
-KCWeb kc_web_init_type(KCWebContentType type);
-/**
- * Initialise the KCWeb object from content type
- * Using CONTENT_TYPE value
- * @return KCWeb object or NULL on error
- */
-KCWeb kc_web_init_from_content_type();
-/**
- * Initialise the KCWeb object for a HTML document
- * Using SCRIPT_NAME value
- * @return KCWeb object or NULL on error
- */
-KCWeb kc_web_init_from_ending();
-/**
- * Free allocated memory
- * @param obj KCWeb object
- * @return 0 => successful
- */
-int kc_web_free(KCWeb obj);
-
-/**
- * Print content type
- * @param obj KCWeb object
- */
-void kc_web_print_content_type(KCWeb obj);
-/**
- * Print image
- * @param obj KCWeb object
- * @param file_name File to print, File name with path
- * @return 0 => successful
- */
-int kc_web_print_image(KCWeb obj, KCString file_name);
-
-/**
- * Get content type
- * @return Content type
- */
-KCWebContentType kc_web_parse_content_type();
-/**
- * Get content type
- * @param obj KCWeb object
- * @return Content type
- */
-KCWebContentType kc_web_get_content_type(KCWeb obj);
-/**
- * Get content type string
- * @param obj KCWeb object
- * @return String of content type
- */
-KCString kc_web_get_content_type_string(KCWeb obj);
-/**
- * Get content type
- * @param str String to parse
- * @return Content type or
- */
-KCWebContentType kc_web_get_content_type_from_ending(KCString str);
-
-/**
- * Convert value from query format to ascii format
- * @param value Value to parse
- * @param length Length of the value
- * @return Created string
- */
-KCString kc_web_convert_value_string(const char *value, size_t length);
-
-/**
- * Get the parameter list
- * @param obj KCWeb object
- * @return Linked parameter list
- */
-KCLinkedList kc_web_get_parameter_list(KCWeb obj);
-/**
- * Get parameter item from string
- * @param obj KCWeb object
- * @param search_string Key string to search for
- * @return List object or NULL when not found
- */
-KCWebParameter kc_web_parameter_get(KCWeb obj, KCString search_string);
-/**
- * Get key from KCWebParameter item
- * @param item KCWebParameter object
- * @return key object
- */
-KCString kc_web_parameter_get_key(KCWebParameter item);
-/**
- * Get value from KCWebParameter item
- * @param item KCWebParameter object
- * @return value object
- */
-KCString kc_web_parameter_get_value(KCWebParameter item);
-/**
- * Get type from KCWebParameter item
- * @param item KCWebParameter object
- * @return Parameter type
- */
-KCWebParameterType kc_web_parameter_get_type(KCWebParameter item);
-#endif
+int kc_web_client_set_content(KCWebClient obj, char *content);
 
 #ifdef __cplusplus
 }
 #endif
-
 #endif                          /* __KC_WEB_CLIENT_H__ */

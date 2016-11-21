@@ -34,9 +34,9 @@
  * Private define declaration
  */
 
-#define KC_WEB_CLIENT_DEFAULT_PORT          80  ///< Default HTTP port
-#define KC_WEB_CLIENT_DEFAULT_SECURE_PORTR  443 ///< Default HTTPS port
-#define KC_WEB_CLIENT_DEFAULT_PATH          "index.html" //Default path
+#define KC_WEB_CLIENT_DEFAULT_PORT        80    ///< Default HTTP port
+#define KC_WEB_CLIENT_DEFAULT_SECURE_PORT 443   ///< Default HTTPS port
+#define KC_WEB_CLIENT_DEFAULT_PATH        "index.html" //Default path
 
 /*
  * Private structure declaration
