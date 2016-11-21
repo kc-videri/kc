@@ -40,6 +40,32 @@
 #include <kc-string.h>
 #endif
 
+/*
+ * Private variable declaration
+ * */
+
+// TODO MOT: add all useful content types
+struct kc_web_content_type_def content_types[] = {
+//content_types = {
+    {KC_WEB_CONTENT_HTML, "text/html", {"htm", "html", NULL}},
+    {KC_WEB_CONTENT_XHTML, "text/xhtml", {"xhtml", NULL}},
+    {KC_WEB_CONTENT_JSON, "application/json", {NULL}},
+    {KC_WEB_CONTENT_TEXT, "text/text", {"txt", NULL}},
+    {KC_WEB_CONTENT_ICO, "image/x-icon", {"ico", NULL}},
+    {KC_WEB_CONTENT_HTML, "application/x-www-form-urlencoded", {"htm", "html", NULL}},
+    {KC_WEB_CONTENT_UNDEF, "application/xml", {"xml", NULL}},
+    {KC_WEB_CONTENT_UNDEF, "application/atom+xml", {NULL}},
+    {KC_WEB_CONTENT_UNDEF, "mulitpart/form - data", {NULL}},
+    {KC_WEB_CONTENT_UNDEF, "mulitpart/alternative", {NULL}},
+    {KC_WEB_CONTENT_UNDEF, "mulitpart/mixed", {NULL}},
+    {KC_WEB_CONTENT_UNDEF, "application / base64 ", {NULL}},
+    {KC_WEB_CONTENT_UNDEF, "application / octet - stream ", {NULL}},
+    {KC_WEB_CONTENT_TEXT, "text/plain ", {"txt", NULL}},
+    {KC_WEB_CONTENT_UNDEF, "text/css ", {"css", NULL}},
+    {KC_WEB_CONTENT_UNDEF, "application/javascript", {"js", NULL}},
+    {KC_WEB_CONTENT_UNDEF, NULL, {NULL}}
+};
+
 KCWeb kc_web_new()
 {
     fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 

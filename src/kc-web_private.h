@@ -70,6 +70,8 @@ struct kc_web_parameter {
  * Private variable declaration
  * */
 
+extern struct kc_web_content_type_def content_types[];
+#if 0
 // TODO MOT: add all useful content types
 struct kc_web_content_type_def content_types[] = {
     {KC_WEB_CONTENT_HTML, "text/html", {"htm", "html", NULL}},
@@ -90,6 +92,7 @@ struct kc_web_content_type_def content_types[] = {
     {KC_WEB_CONTENT_UNDEF, "application/javascript", {"js", NULL}},
     {KC_WEB_CONTENT_UNDEF, NULL, {NULL}}
 };
+#endif
 
 /*
  * Private function declaration
