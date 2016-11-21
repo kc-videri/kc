@@ -89,6 +89,13 @@ KCSocket kc_socket_init(int domain, int type, int protocol)
     return NULL;
 }
 
+int kc_socket_free(KCSocket obj)
+{
+    free(obj->addr);
+
+    return 0;
+}
+
 #if 0
 #include <stdio.h>
 #include <sys/socket.h>

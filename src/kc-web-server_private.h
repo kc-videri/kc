@@ -1,6 +1,6 @@
 /**
- * @file        kc-web_private.h
- * @brief       Some web stuff (Private header file)
+ * @file        kc-web-server_private.h
+ * @brief       Some web server stuff (Private header file)
  * @author      Michael Ott <kc.videri@gmail.com>
  *
  * copyright:   (C) 2016 by Michael Ott
@@ -22,7 +22,7 @@
 #ifndef __KC_WEB_SERVER_PRIVATE_H__
 #define __KC_WEB_SERVER_PRIVATE_H__
 
-#include <kc-object_private.h>
+#include <kc-web_private.h>
 #include <kc-linked-list.h>
 #include <kc-string.h>
 #include <kc-json.h>
@@ -37,15 +37,7 @@
  * Private structure declaration
  * */
 
-/**
- * Structure struct kc_web_content_type: Structure to handle different content types
- */
-struct kc_web_content_type {
-    KCWebContentType type;      ///< Content type
-    KCString type_string;       ///< String to send to define type
-    KCString endings[3];        ///< String to send to define type
-};
-
+#if 0
 /**
  * Structure struct kc_web_content_type: Structure to handle different content types
  */
@@ -56,27 +48,18 @@ struct kc_web_content_type_def {
 };
 
 typedef struct kc_web_content_type_def *KCWebContentTypeDef;
-
-/**
- * Structure KCWebServerParameter: Structure to save received parameter item
- */
-struct kc_web_server_parameter {
-    struct kc_object object;    ///< Parent object
-    KCWebParameterType type;    ///< On which way does the parameter come
-    KCString key;               ///< Key of a parameter
-    KCString value;             ///< Value of a parameter
-};
+#endif
 
 /**
  * Structure KCWebServer: Structure to save all important web information
  */
 struct kc_web_server {
-    struct kc_object object;    ///< Parent object
+    struct kc_web object;       ///< Parent object
 #if 0
     char *uri;                  ///< URI
     char *get_query_string;     ///< Get query string
-#endif
     KCLinkedList parameter;     ///< parameter list
+#endif
     KCWebRequestType request_type;  ///< request type
     KCWebContentTypeDef content_type;   ///< Content type structure
     KCJson json;                ///< JSON object
@@ -85,27 +68,6 @@ struct kc_web_server {
 /*
  * Private variable declaration
  * */
-
-// TODO MOT: add all useful content types
-struct kc_web_content_type_def content_types[] = {
-    {KC_WEB_CONTENT_HTML, "text/html", {"htm", "html", NULL}},
-    {KC_WEB_CONTENT_XHTML, "text/xhtml", {"xhtml", NULL}},
-    {KC_WEB_CONTENT_JSON, "application/json", {NULL}},
-    {KC_WEB_CONTENT_TEXT, "text/text", {"txt", NULL}},
-    {KC_WEB_CONTENT_ICO, "image/x-icon", {"ico", NULL}},
-    {KC_WEB_CONTENT_HTML, "application/x-www-form-urlencoded", {"htm", "html", NULL}},
-    {KC_WEB_CONTENT_UNDEF, "application/xml", {"xml", NULL}},
-    {KC_WEB_CONTENT_UNDEF, "application/atom+xml", {NULL}},
-    {KC_WEB_CONTENT_UNDEF, "mulitpart/form - data", {NULL}},
-    {KC_WEB_CONTENT_UNDEF, "mulitpart/alternative", {NULL}},
-    {KC_WEB_CONTENT_UNDEF, "mulitpart/mixed", {NULL}},
-    {KC_WEB_CONTENT_UNDEF, "application / base64 ", {NULL}},
-    {KC_WEB_CONTENT_UNDEF, "application / octet - stream ", {NULL}},
-    {KC_WEB_CONTENT_TEXT, "text/plain ", {"txt", NULL}},
-    {KC_WEB_CONTENT_UNDEF, "text/css ", {"css", NULL}},
-    {KC_WEB_CONTENT_UNDEF, "application/javascript", {"js", NULL}},
-    {KC_WEB_CONTENT_UNDEF, NULL, {NULL}}
-};
 
 char *kc_web_http_keys[] = {
     "HTTP_HOST",
@@ -149,41 +111,5 @@ KCWebParameter kc_web_server_parameter_new();
 KCWebParameter kc_web_server_parameter_new_from_string(KCString string,
                                                        size_t length,
                                                        KCWebParameterType type);
-/**
- * Free parameter entry
- * @param obj Object to free
- * @return 0 => successful
- */
-int kc_web_server_parameter_free(KCWebParameter obj);
-/**
- * Set key
- * @param obj KCWebParameter pointer object
- * @param key Key to set
- * @return 0 => successful
- */
-int kc_web_server_parameter_set_key(KCWebParameter obj, KCString key);
-/**
- * Set value
- * @param obj KCWebParameter pointer Object
- * @param value Value to set
- * @return 0 => successful
- */
-int kc_web_server_parameter_set_value(KCWebParameter obj, KCString value);
-/**
- * Set type
- * @param obj KCWebParameter pointer Object
- * @param type Type to set
- * @return 0 => successful
- */
-int kc_web_server_parameter_set_type(KCWebParameter obj,
-                                     KCWebParameterType type);
-/**
- * Add item to parameter list
- * @param obj KCWebServer object
- * @param item Parameter item to add
- * @return 0 => successfull
- */
-int kc_web_server_parameter_list_add_item(KCWebServer obj,
-                                          KCWebParameter item);
 
 #endif                          /* __KC_WEB_SERVER_PRIVATE_H__ */

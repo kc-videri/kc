@@ -32,6 +32,7 @@
 #include <kc-object.h>
 #include <kc-web-server.h>
 #include <kc-web-server_private.h>
+#include <kc-web_private.h>
 #include <kc-string.h>
 
 /**
@@ -46,11 +47,13 @@ extern char **environ;
 
 KCWebServer kc_web_server_init()
 {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     return kc_web_server_init_type(KC_WEB_CONTENT_HTML);
 }
 
 KCWebServer kc_web_server_init_type(KCWebContentType type)
 {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     KCWebServer obj;
     KCWebContentTypeDef content_type;
     KCString buffer;
@@ -58,23 +61,27 @@ KCWebServer kc_web_server_init_type(KCWebContentType type)
     kcbool found_one;
     int i;
 
-    obj = (KCWebServer) kc_object_new(sizeof(KCWebServer));
+    obj = (KCWebServer) kc_web_new(sizeof(KCWebServer));
     if (obj == NULL) {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
         return NULL;
     }
-
     // Default settings
     obj->content_type = NULL;
 
-    obj->parameter = kc_linked_list_new();
-    if (obj->parameter == NULL) {
+    ((KCWeb) obj)->parameter = kc_linked_list_new();
+    if (((KCWeb) obj)->parameter == NULL) {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
         goto kc_web_server_init_failed_memory;
     }
 
     for (content_type = content_types;
          content_type->type != KC_WEB_CONTENT_UNDEF; content_type++) {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
         if (type == content_type->type) {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
             obj->content_type = content_type;
+            fprintf(stderr, "%s\n", content_type->type_string); // DELETE
         }
     }
     if (obj->content_type == NULL) {
@@ -85,20 +92,24 @@ KCWebServer kc_web_server_init_type(KCWebContentType type)
     // GET parameter
     buffer = getenv("QUERY_STRING");
     if (buffer != NULL && strlen(buffer) > 0) {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
         kc_web_server_parse_query_string(obj, buffer,
                                          KC_WEB_PARAMETER_GET);
     }
     // POST parameter
     buffer = getenv("CONTENT_LENGTH");
     if (buffer != NULL) {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
         size_t post_length;
         char *post_content;
 
         post_length = atoi(buffer);
         if (post_length != 0) {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
             post_content =
                 (char *) malloc((post_length + 1) * sizeof(char));
             if (post_content != NULL) {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
                 fgets(post_content, post_length + 1, stdin);
 
                 kc_web_server_parse_query_string(obj, post_content,
@@ -108,31 +119,40 @@ KCWebServer kc_web_server_init_type(KCWebContentType type)
     }
     // HTTP variables
     for (env = environ; *env; ++env) {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
         if (!strncmp(*env, KC_WEB_HTTP_PREFIX, strlen(KC_WEB_HTTP_PREFIX))) {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
             fprintf(stderr, "%s\n", *env);  // DELETE 
             found_one = FALSE;
             for (key = kc_web_http_keys; *key; key++) {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
                 if (!strncmp(*key, *env, strlen(*key))) {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
                     found_one = TRUE;
                     break;
                 }
             }
 
             if (found_one == FALSE) {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
                 KCWebParameter item;
 
                 item =
-                    kc_web_server_parameter_new_from_string(*env + strlen(KC_WEB_HTTP_PREFIX),
+                    kc_web_server_parameter_new_from_string(*env +
+                                                            strlen
+                                                            (KC_WEB_HTTP_PREFIX),
                                                             strlen(*env),
                                                             type);
                 if (item != NULL) {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
                     KCString buffer;
 
-                    buffer = kc_web_server_parameter_get_key(item);
+                    buffer = kc_web_parameter_get_key(item);
                     for (i = 0; buffer[i]; i++) {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
                         buffer[i] = tolower(buffer[i]);
                     }
-                    kc_web_server_parameter_list_add_item(obj, item);
+                    kc_web_parameter_list_add_item((KCWeb) obj, item);
                 }
             }
         }
@@ -147,6 +167,7 @@ KCWebServer kc_web_server_init_type(KCWebContentType type)
 
 KCWebServer kc_web_init_from_content_type()
 {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     KCWebContentType type;
 
     type = kc_web_server_parse_content_type();
@@ -159,6 +180,7 @@ KCWebServer kc_web_init_from_content_type()
 
 KCWebServer kc_web_server_init_from_ending()
 {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     KCString buffer;
     KCWebContentType type;
 
@@ -173,33 +195,36 @@ KCWebServer kc_web_server_init_from_ending()
 
 int kc_web_server_free(KCWebServer obj)
 {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     KCLinkedList list;
     KCLinkedListIterator iterator;
     KCWebParameter parameter;
 
-    list = kc_web_server_get_parameter_list(obj);
+    list = kc_web_get_parameter_list((KCWeb) obj);
     kc_mutex_item_lock((KCMutexItem) list);
     for (iterator = kc_linked_list_item_get_first(list);
          kc_linked_list_item_is_last(list, iterator);
          iterator = kc_linked_list_item_get_next(iterator)) {
         parameter =
             (KCWebParameter) kc_linked_list_item_get_data(iterator);
-        kc_web_server_parameter_free(parameter);
+        kc_web_parameter_free(parameter);
     }
-    kc_mutex_item_unlock((KCMutexItem) obj->parameter);
-    kc_linked_list_free(obj->parameter);
+    kc_mutex_item_unlock((KCMutexItem)((KCWeb) obj)->parameter);
+    kc_linked_list_free(((KCWeb) obj)->parameter);
 
     return 0;
 }
 
 void kc_web_server_print_content_type(KCWebServer obj)
 {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     printf("Content-type: %s\r\n\r\n",
            kc_web_server_get_content_type_string(obj));
 }
 
 int kc_web_server_print_image(KCWebServer obj, KCString file_name)
 {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     int file;
     size_t length = 1024;
     //kc_uchar byte;
@@ -227,6 +252,7 @@ int kc_web_server_print_image(KCWebServer obj, KCString file_name)
 
 KCWebContentType kc_web_server_parse_content_type()
 {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     KCWebContentType type = KC_WEB_CONTENT_UNDEF;
     KCString buffer;
     kcbool found_one = FALSE;
@@ -257,16 +283,19 @@ KCWebContentType kc_web_server_parse_content_type()
 
 KCWebContentType kc_web_server_get_content_type(KCWebServer obj)
 {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     return obj->content_type->type;
 }
 
 KCString kc_web_server_get_content_type_string(KCWebServer obj)
 {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     return content_types[kc_web_server_get_content_type(obj)].type_string;
 }
 
 KCWebContentType kc_web_server_get_content_type_from_ending(KCString str)
 {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     KCWebContentType type = KC_WEB_CONTENT_UNDEF;
     KCString buffer;
     KCString *ending;
@@ -303,6 +332,7 @@ KCWebContentType kc_web_server_get_content_type_from_ending(KCString str)
 KCString kc_web_server_convert_value_string(const char *value,
                                             size_t length)
 {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     char *obj;
     size_t _length;
     size_t i, j;
@@ -348,57 +378,6 @@ KCString kc_web_server_convert_value_string(const char *value,
     return obj;
 }
 
-KCLinkedList kc_web_server_get_parameter_list(KCWebServer obj)
-{
-    return obj->parameter;
-}
-
-KCWebParameter kc_web_server_parameter_get(KCWebServer obj,
-                                           KCString search_string)
-{
-    KCLinkedList list;
-    KCLinkedListIterator iterator;
-    KCWebParameter parameter;
-
-    list = kc_web_server_get_parameter_list(obj);
-    kc_mutex_item_lock((KCMutexItem) list);
-    for (iterator = kc_linked_list_item_get_first(list);
-         kc_linked_list_item_is_last(list, iterator);
-         iterator = kc_linked_list_item_get_next(iterator)) {
-        parameter =
-            (KCWebParameter) kc_linked_list_item_get_data(iterator);
-        if (!strcmp
-            (search_string, kc_web_server_parameter_get_key(parameter))) {
-            kc_mutex_item_unlock((KCMutexItem) obj->parameter);
-
-            return parameter;
-        }
-    }
-
-    kc_mutex_item_unlock((KCMutexItem) obj->parameter);
-
-    return NULL;
-}
-
-KCString kc_web_server_parameter_get_key(KCWebParameter item)
-{
-    return item->key;
-}
-
-KCString kc_web_server_parameter_get_value(KCWebParameter item)
-{
-    if (item->value == NULL) {
-        return "";
-    } else {
-        return item->value;
-    }
-}
-
-KCWebParameterType kc_web_server_parameter_get_type(KCWebParameter item)
-{
-    return item->type;
-}
-
 /**
  * Private function definition
  * */
@@ -407,11 +386,11 @@ int kc_web_server_parse_query_string(KCWebServer obj,
                                      const char *query_string,
                                      KCWebParameterType type)
 {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     int result = 0;
     char *buffer;
     size_t string_length;
     size_t current_length;
-    //int i;
 
     buffer = (char *) query_string;
     while (1) {
@@ -426,12 +405,11 @@ int kc_web_server_parse_query_string(KCWebServer obj,
             }
         }
 
-        fprintf(stderr, "%s\n", buffer); // DELETE 
+        fprintf(stderr, "%s\n", buffer);    // DELETE 
         item =
-            kc_web_server_parameter_new_from_string(buffer, current_length,
-                                                    type);
+            kc_web_server_parameter_new_from_string(buffer, current_length, type);
         if (item != NULL) {
-            kc_web_server_parameter_list_add_item(obj, item);
+            kc_web_parameter_list_add_item((KCWeb) obj, item);
         }
 
         if (current_length == string_length) {
@@ -445,25 +423,11 @@ int kc_web_server_parse_query_string(KCWebServer obj,
     return result;
 }
 
-KCWebParameter kc_web_server_parameter_new()
-{
-    KCWebParameter obj;
-
-    obj =
-        (KCWebParameter)
-        kc_object_new(sizeof(struct kc_web_server_parameter));
-    if (obj != NULL) {
-        obj->key = NULL;
-        obj->value = NULL;
-    }
-
-    return obj;
-}
-
 KCWebParameter kc_web_server_parameter_new_from_string(KCString string,
                                                        size_t length,
                                                        KCWebParameterType type)
 {
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     KCWebParameter obj = NULL;
     int i;
 
@@ -474,13 +438,13 @@ KCWebParameter kc_web_server_parameter_new_from_string(KCString string,
     }
 
     if (i > 0) {
-        obj = kc_web_server_parameter_new();
+        obj = kc_web_parameter_new();
         if (obj == NULL) {
             return obj;
         }
-        kc_web_server_parameter_set_type(obj, type);
+        kc_web_parameter_set_type(obj, type);
 
-        kc_web_server_parameter_set_key(obj, kc_string_create(string, i));
+        kc_web_parameter_set_key(obj, kc_string_create(string, i));
 
         if (i != length) {
             KCString value;
@@ -488,52 +452,9 @@ KCWebParameter kc_web_server_parameter_new_from_string(KCString string,
             value =
                 kc_web_server_convert_value_string(string + i + 1,
                                                    length - i - 1);
-            kc_web_server_parameter_set_value(obj, value);
+            kc_web_parameter_set_value(obj, value);
         }
     }
 
     return obj;
-}
-
-int kc_web_server_parameter_free(KCWebParameter item)
-{
-    if (item->key != NULL) {
-        free(item->key);
-    }
-    if (item->value != NULL) {
-        free(item->value);
-    }
-    kc_object_free((KCObject) item);
-
-    return 0;
-}
-
-int kc_web_server_parameter_set_key(KCWebParameter item, KCString key)
-{
-    item->key = key;
-
-    return 0;
-}
-
-int kc_web_server_parameter_set_value(KCWebParameter item, KCString value)
-{
-    item->value = value;
-
-    return 0;
-}
-
-int kc_web_server_parameter_set_type(KCWebParameter item,
-                                     KCWebParameterType type)
-{
-    item->type = type;
-
-    return 0;
-}
-
-int kc_web_server_parameter_list_add_item(KCWebServer obj,
-                                          KCWebParameter item)
-{
-    kc_linked_list_add(obj->parameter, item);
-
-    return 0;
 }

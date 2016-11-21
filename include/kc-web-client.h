@@ -22,6 +22,11 @@
 #ifndef __KC_WEB_CLIENT_H__
 #define __KC_WEB_CLIENT_H__
 
+#include <stdint.h>
+
+#include <kc.h>
+#include <kc-web.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -41,6 +46,68 @@ typedef struct kc_web_client *KCWebClient;
  * @return KCWebClient object or NULL on error
  */
 KCWebClient kc_web_client_init();
+/**
+ * Set port
+ * @param port Port to use; default 80 / 443
+ * @return 0 ==> successful
+ */
+int kc_web_client_set_port(uint16_t port);
+/**
+ * Use a secure connection
+ * @param secure TRUE => use secure communication; default: false
+ * @return 0 ==> successful
+ */
+int kc_web_client_set_secure(kcbool secure);
+/**
+ * Set host name
+ * @param host Host name to use
+ * @return 0 ==> successful
+ */
+int kc_web_client_set_host(char *host);
+/**
+ * Set path
+ * @param path Path to use; default: index.html
+ * @return 0 ==> successful
+ */
+int kc_web_client_set_path(char *path);
+/**
+ * Set query
+ * @param query Query to use; default: empty
+ * @return 0 ==> successful
+ */
+int kc_web_client_set_query(char *query);
+/**
+ * Set fragment
+ * @param fragment Fragment to use; default: empty
+ * @return 0 ==> successful
+ */
+int kc_web_client_set_fragment(char *fragment);
+/**
+ * Set request type
+ * @param request Request type to use; default: GET
+ * @return 0 ==> successful
+ */
+int kc_web_client_set_request(KCWebRequestType request);
+/**
+ * Set content type
+ * @param content_type Content type to use; default: XHTML
+ * @return 0 ==> successful
+ */
+int kc_web_client_set_content_type(KCWebContentType content_type);
+/**
+ * Set header value pair
+ * @param key Key to set
+ * @param value Value to set
+ * @return 0 ==> successful
+ */
+int kc_web_client_set_header(char *key, char *value);
+/**
+ * Set content message
+ * @param content Content message
+ * @return 0 ==> successful
+ */
+int kc_web_client_set_content(char* content);
+
 #if 0
 /**
  * Initialise the KCWeb object

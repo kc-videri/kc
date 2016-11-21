@@ -30,12 +30,15 @@ extern "C" {
 
 #include "kc-mutex.h"
 
-#define TRUE        1                           ///< TRUE
-#define FALSE       0                           ///< FALSE
+#define TRUE            1                       ///< TRUE
+#define FALSE           0                       ///< FALSE
 
-typedef uint32_t kcbool;                        ///< Basic type boolean
-typedef char kcchar;                            ///< Basic type kc_char
-typedef unsigned char kcuchar;  ///< Basic type kc_uchar
+typedef uint32_t        kcbool;                 ///< Basic type boolean
+
+typedef char            kcchar;                 ///< Basic type kc_char
+typedef unsigned char   kcuchar;                ///< Basic type kc_uchar
+
+typedef uint16_t        kcushort;               ///< Basic type u16_t
 
 #ifdef __cplusplus
 }

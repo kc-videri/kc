@@ -24,21 +24,103 @@
 #include <kc-web-client.h>
 #include <kc-web-client_private.h>
 #include <kc-tcp-socket.h>
+#include <kc-object.h>
 
 KCWebClient kc_web_client_init()
 {
     KCWebClient obj;
 
-    obj = (KCWebClient)kc_tcp_socket_init();
+    obj = (KCWebClient)kc_object_new(sizeof(KCWebClient));
     if (obj == NULL) {
         return NULL;
     }
 
+    obj->socket = kc_tcp_socket_init();
+    if (obj->socket == NULL) {
+        goto kc_web_client_init_socket;
+    }
+
     // default values
+    obj->port = KC_WEB_CLIENT_DEFAULT_PORT;
+    obj->secure = FALSE;
+    obj->host = NULL;
+    obj->path = NULL;
+    obj->query = NULL;
+    obj->fragment = NULL;
+    obj->request = KC_WEB_REQUEST_GET;
+    obj->content_type = KC_WEB_CONTENT_XHTML;
+    obj->content = NULL;
 
 
     return obj;
+
+  //kc_web_client_init_socket:
+
+  kc_web_client_init_socket:
+    kc_object_free((KCObject)obj);
+    return NULL;
 }
+
+int kc_web_client_set_port(uint16_t port)
+{
+
+    return 0;
+}
+
+int kc_web_client_set_secure(kcbool secure)
+{
+
+    return 0;
+}
+
+int kc_web_client_set_host(char *host)
+{
+
+    return 0;
+}
+
+int kc_web_client_set_path(char *path)
+{
+
+    return 0;
+}
+
+int kc_web_client_set_query(char *query)
+{
+
+    return 0;
+}
+
+int kc_web_client_set_fragment(char *fragment)
+{
+
+    return 0;
+}
+
+int kc_web_client_set_request(KCWebRequestType request)
+{
+
+    return 0;
+}
+
+int kc_web_client_set_content_type(KCWebContentType content_type)
+{
+
+    return 0;
+}
+
+int kc_web_client_set_header(char *key, char *value)
+{
+
+    return 0;
+}
+
+int kc_web_client_set_content(char* content)
+{
+
+    return 0;
+}
+
 
 #if 0
 #include <stdlib.h>

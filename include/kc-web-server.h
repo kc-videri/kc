@@ -31,11 +31,9 @@ extern "C" {
 #include <kc-web.h>
 
 // forward declaration
-struct kc_web;
-struct kc_webserver_parameter;
+struct kc_web_server;
 
 typedef struct kc_web_server *KCWebServer;
-typedef struct kc_web_server_parameter *KCWebParameter;
 
 /**
  * Initialise the KCWebServer object for a HTML document
@@ -111,39 +109,6 @@ KCWebContentType kc_web_server_get_content_type_from_ending(KCString str);
  * @return Created string
  */
 KCString kc_web_server_convert_value_string(const char *value, size_t length);
-
-/**
- * Get the parameter list
- * @param obj KCWebServer object
- * @return Linked parameter list
- */
-KCLinkedList kc_web_server_get_parameter_list(KCWebServer obj);
-/**
- * Get parameter item from string
- * @param obj KCWebServer object
- * @param search_string Key string to search for
- * @return List object or NULL when not found
- */
-KCWebParameter kc_web_server_parameter_get(KCWebServer obj,
-                                           KCString search_string);
-/**
- * Get key from KCWebParameter item
- * @param item KCWebParameter object
- * @return key object
- */
-KCString kc_web_server_parameter_get_key(KCWebParameter item);
-/**
- * Get value from KCWebParameter item
- * @param item KCWebParameter object
- * @return value object
- */
-KCString kc_web_server_parameter_get_value(KCWebParameter item);
-/**
- * Get type from KCWebParameter item
- * @param item KCWebParameter object
- * @return Parameter type
- */
-KCWebParameterType kc_web_server_parameter_get_type(KCWebParameter item);
 
 #ifdef __cplusplus
 }

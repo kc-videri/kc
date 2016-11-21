@@ -28,82 +28,39 @@
 #include <kc-linked-list.h>
 #include <kc-string.h>
 #include <kc-json.h>
+#endif
 
 /*
  * Private define declaration
  */
 
-#define KC_WEB_HTTP_PREFIX "HTTP_"
-#endif
+#define KC_WEB_CLIENT_DEFAULT_PORT          80  ///< Default HTTP port
+#define KC_WEB_CLIENT_DEFAULT_SECURE_PORTR  443 ///< Default HTTPS port
+#define KC_WEB_CLIENT_DEFAULT_PATH          "index.html" //Default path
 
 /*
  * Private structure declaration
  * */
-
-#if 0
-/**
- * Structure struct kc_web_content_type: Structure to handle different content types
- */
-struct kc_web_content_type {
-    KCWebContentType type;                      ///< Content type
-    KCString type_string;                       ///< String to send to define type
-    KCString endings[3];                        ///< String to send to define type
-};
-
-/**
- * Structure struct kc_web_content_type: Structure to handle different content types
- */
-struct kc_web_content_type_def {
-    KCWebContentType type;                      ///< Content type
-    KCString type_string;                       ///< String to send to define type
-    KCString endings[3];                        ///< String to send to define type
-};
-
-typedef struct kc_web_content_type_def *KCWebContentTypeDef;
-
-/**
- * Structure KCWebParameter: Structure to save received parameter item
- */
-struct kc_web_parameter {
-    struct kc_object object;                    ///< Parent object
-    KCWebParameterType type;                    ///< On which way does the parameter come
-    KCString key;                               ///< Key of a parameter
-    KCString value;                             ///< Value of a parameter
-};
-#endif
 
 /**
  * Structure KCWeb: Structure to save all important web information
  */
 struct kc_web_client {
     struct kc_socket object;                    ///< Parent object
+    KCSocket socket;                            ///< KCSocket object
+    uint16_t port;
+    kcbool secure;
+    KCString host;
+    KCString path;
+    KCString query;
+    KCString fragment;
+    KCWebRequestType request;
+    KCWebContentType content_type;
+    //int kc_web_client_set_header(char *key, char *value;
+    KCString content;
 };
 
 #if 0
-/*
- * Private variable declaration
- * */
-
-// TODO MOT: add all useful content types
-struct kc_web_content_type_def content_types[] = {
-    {KC_WEB_CONTENT_HTML, "text/html", {"htm", "html", NULL}},
-    {KC_WEB_CONTENT_XHTML, "text/xhtml", {"xhtml", NULL}},
-    {KC_WEB_CONTENT_JSON, "application/json", {NULL}},
-    {KC_WEB_CONTENT_TEXT, "text/text", {"txt", NULL}},
-    {KC_WEB_CONTENT_ICO, "image/x-icon", {"ico", NULL}},
-    {KC_WEB_CONTENT_HTML, "application/x-www-form-urlencoded", {"htm", "html", NULL}},
-    {KC_WEB_CONTENT_UNDEF, "application/xml", {"xml", NULL}},
-    {KC_WEB_CONTENT_UNDEF, "application/atom+xml", {NULL}},
-    {KC_WEB_CONTENT_UNDEF, "mulitpart/form - data", {NULL}},
-    {KC_WEB_CONTENT_UNDEF, "mulitpart/alternative", {NULL}},
-    {KC_WEB_CONTENT_UNDEF, "mulitpart/mixed", {NULL}},
-    {KC_WEB_CONTENT_UNDEF, "application / base64 ", {NULL}},
-    {KC_WEB_CONTENT_UNDEF, "application / octet - stream ", {NULL}},
-    {KC_WEB_CONTENT_TEXT, "text/plain ", {"txt", NULL}},
-    {KC_WEB_CONTENT_UNDEF, "text/css ", {"css", NULL}},
-    {KC_WEB_CONTENT_UNDEF, "application/javascript", {"js", NULL}},
-    {KC_WEB_CONTENT_UNDEF, NULL, {NULL}}
-};
 
 char *kc_web_http_keys[] = {
     "HTTP_HOST",

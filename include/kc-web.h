@@ -22,9 +22,19 @@
 #ifndef __KC_WEB_H__
 #define __KC_WEB_H__
 
+#include <kc-linked-list.h>
+#include <kc-string.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+// forward declaration
+struct kc_web;
+struct kc_web_parameter;
+
+typedef struct kc_web *KCWeb;
+typedef struct kc_web_parameter *KCWebParameter;
 
 /**
  * Enumeration for different types of giving parameter
@@ -43,6 +53,10 @@ typedef enum {
     KC_WEB_REQUEST_POST,                        ///< Request type POST
     KC_WEB_REQUEST_PUT,                         ///< Request type PUT
     KC_WEB_REQUEST_DELETE,                      ///< Request type DELETE
+    KC_WEB_REQUEST_PATCH,                       ///< Request type PATCH
+    KC_WEB_REQUEST_HEAD,                        ///< Request type HEAD
+    KC_WEB_REQUEST_OPTIONS,                     ///< Request type OPTIONS
+    KC_WEB_REQUEST_TRACE,                       ///< Request type TRACE
 } KCWebRequestType;
 
 /**
@@ -56,6 +70,39 @@ typedef enum {
     KC_WEB_CONTENT_ICO,                         ///< Content type favicon
     KC_WEB_CONTENT_UNDEF                        ///< Last element or undefined type
 } KCWebContentType;
+
+/**
+ * Get the parameter list
+ * @param obj KCWeb object
+ * @return Linked parameter list
+ */
+KCLinkedList kc_web_get_parameter_list(KCWeb obj);
+/**
+ * Get parameter item from string
+ * @param obj KCWeb object
+ * @param search_string Key string to search for
+ * @return List object or NULL when not found
+ */
+KCWebParameter kc_web_parameter_get(KCWeb obj, KCString search_string);
+/**
+ * Get key from KCWebParameter item
+ * @param item KCWebParameter object
+ * @return key object
+ */
+KCString kc_web_parameter_get_key(KCWebParameter item);
+/**
+ * Get value from KCWebParameter item
+ * @param item KCWebParameter object
+ * @return value object
+ */
+KCString kc_web_parameter_get_value(KCWebParameter item);
+/**
+ * Get type from KCWebParameter item
+ * @param item KCWebParameter object
+ * @return Parameter type
+ */
+KCWebParameterType kc_web_parameter_get_type(KCWebParameter item);
+
 
 #ifdef __cplusplus
 }

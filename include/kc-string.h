@@ -22,6 +22,8 @@
 #ifndef __KC_STRING_H__
 #define __KC_STRING_H__
 
+#include <stdlib.h>
+
 #include <kc.h>
 
 #ifdef __cplusplus
