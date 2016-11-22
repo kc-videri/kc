@@ -33,6 +33,7 @@ extern "C" {
 // forward declaration
 struct kc_web_server;
 
+/// Structure to communicate with a web server
 typedef struct kc_web_server *KCWebServer;
 
 /**

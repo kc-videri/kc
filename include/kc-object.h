@@ -31,9 +31,7 @@ extern "C" {
 // Forward declaration
 struct kc_object;
 
-/**
- * Structure KCObject: Main class
- */
+/// Main KC class
 typedef struct kc_object* KCObject;
 
 /**

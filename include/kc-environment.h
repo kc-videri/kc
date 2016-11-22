@@ -26,9 +26,7 @@
 extern "C" {
 #endif
 
-/**
- * Class KCEnvironment
- */
+/// Save all important informations about the environment
 typedef struct environment KCEnvironment;
 
 /**

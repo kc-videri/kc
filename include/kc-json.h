@@ -33,17 +33,11 @@ struct kc_json;
 struct kc_json_object;
 struct kc_json_array;
 
-/**
- * Structure KCJson: Structure to handle JSON stuff
- */
+/// Structure to handle JSON stuff
 typedef struct kc_json* KCJson;
-/**
- * Structure KCJsonObject: JSON object
- */
+/// JSON object
 typedef struct kc_json_object* KCJsonObject;
-/**
- * Structure KCJsonArray: JSON array list
- */
+/// JSON array list
 typedef struct kc_json_array* KCJsonArray;
 
 /**

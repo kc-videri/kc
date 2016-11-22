@@ -33,7 +33,9 @@ extern "C" {
 struct kc_web;
 struct kc_web_parameter;
 
+/// Main structure for all web stuff
 typedef struct kc_web *KCWeb;
+/// Structure to handle parameter or key / value
 typedef struct kc_web_parameter *KCWebParameter;
 
 /**

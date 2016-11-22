@@ -39,6 +39,7 @@ extern "C" {
 // forward declaration
 struct kc_web_client;
 
+/// Main structure for communicate with a web server
 typedef struct kc_web_client *KCWebClient;
 
 /**
@@ -113,6 +114,7 @@ int kc_web_client_set_content_type(KCWebClient obj,
 int kc_web_client_set_header(KCWebClient obj, char *key, char *value);
 /**
  * Set content message
+ * @param obj KCWebClient object
  * @param content Content message
  * @return 0 ==> successful
  */

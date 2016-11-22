@@ -29,6 +29,7 @@ extern "C" {
 // Forward declaration
 struct kc_mutex_item;
 
+/// Main mutex structure
 typedef struct kc_mutex_item *KCMutexItem;
 
 /**

@@ -25,17 +25,13 @@
 #include <kc-mutex_private.h>
 #include <kc-linked-list.h>
 
-/**
- * structure KCLinkedListItem: Structure for a list item
- */
+/// Structure for a list item
 struct kc_linked_list_item {
     void *data;                         ///< Linked data
     KCLinkedListItem next;              ///< Next item
 };
 
-/**
- * Structure KCLinkedList: Structure for a linked list
- */
+/// Structure for a linked list
 struct kc_linked_list {
     struct kc_mutex_item mutex_item;    ///< Mutex item for the thread save part of the linked list
     KCLinkedListItem items;             ///< Linked Items

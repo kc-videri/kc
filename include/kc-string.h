@@ -30,7 +30,8 @@
 extern "C" {
 #endif
 
-typedef kcchar* KCString;                      ///< Definition KCString
+/// Definition KCString
+typedef kcchar* KCString;
 
 /**
  * Create a string

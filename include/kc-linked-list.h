@@ -32,15 +32,17 @@ extern "C" {
 // Forward declaration
 struct kc_linked_list_item;
 struct kc_linked_list;
-/**
- * Iterator for the linked List
- */
+
+/// Iterator for the linked List
 struct kc_linked_list_iterator {
     void *data;
 };
 
+/// Structure for a list item
 typedef struct kc_linked_list_item* KCLinkedListItem;
+/// Structure for a linked list
 typedef struct kc_linked_list* KCLinkedList;
+/// Iterator for the linked List
 typedef struct kc_linked_list_iterator KCLinkedListIterator;
 
 /**
