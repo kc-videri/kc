@@ -42,6 +42,15 @@ typedef struct kc_web_parameter *KCWebParameter;
  * Enumeration for different types of giving parameter
  */
 typedef enum {
+    KC_WEB_VERSION_1_0,                         ///< HTTP protocol version 1.0
+    KC_WEB_VERSION_1_1,                         ///< HTTP protocol version 1.1
+    KC_WEB_VERSION_2_0,                         ///< HTTP protocol version 2.0
+} KCWebHTTPVersion;
+
+/**
+ * Enumeration for different types of giving parameter
+ */
+typedef enum {
     KC_WEB_PARAMETER_GET,                       ///< Parameter comes using GET
     KC_WEB_PARAMETER_POST,                      ///< Parameter comes using POST
     KC_WEB_PARAMETER_HTTP,                      ///< Parameter comes using HTTP

@@ -38,9 +38,12 @@ extern "C" {
 
 // forward declaration
 struct kc_web_client;
+struct kc_web_client_recv_msg;
 
 /// Main structure for communicate with a web server
 typedef struct kc_web_client *KCWebClient;
+/// Save data from received message
+typedef struct kc_web_client_recv_msg *KCWebClientRecvMsg;
 
 /**
  * Initialise the KCWebClient object for a HTML document
@@ -104,6 +107,7 @@ int kc_web_client_set_request(KCWebClient obj, KCWebRequestType request);
  */
 int kc_web_client_set_content_type(KCWebClient obj,
                                    KCWebContentType content_type);
+
 /**
  * Set header value pair
  * @param obj KCWebClient object
@@ -119,6 +123,13 @@ int kc_web_client_set_header(KCWebClient obj, char *key, char *value);
  * @return 0 ==> successful
  */
 int kc_web_client_set_content(KCWebClient obj, char *content);
+
+/**
+ * Send message to web server
+ * @param obj KCWebClient object
+ * @return Received message object
+ */
+KCWebClientRecvMsg kc_web_client_send(KCWebClient obj);
 
 #ifdef __cplusplus
 }

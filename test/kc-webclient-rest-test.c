@@ -34,6 +34,7 @@ int main(void)
 
     kc_web_client_set_host(client, "localhost");
     kc_web_client_set_path(client, "cgi/rest.fcgi");
+    //kc_web_client_send(client);
 
     return 0;
 }

@@ -36,28 +36,31 @@
 
 #define KC_WEB_CLIENT_DEFAULT_PORT        80    ///< Default HTTP port
 #define KC_WEB_CLIENT_DEFAULT_SECURE_PORT 443   ///< Default HTTPS port
-#define KC_WEB_CLIENT_DEFAULT_PATH        "index.html" //Default path
+#define KC_WEB_CLIENT_DEFAULT_PATH        "index.html"  //Default path
 
 /*
  * Private structure declaration
  * */
 
-/**
- * Structure KCWeb: Structure to save all important web information
- */
+/// Structure to save all important web information
 struct kc_web_client {
-    struct kc_socket object;                    ///< Parent object
-    KCSocket socket;                            ///< KCSocket object
-    uint16_t port;
-    kcbool secure;
-    KCString host;
-    KCString path;
-    KCString query;
-    KCString fragment;
-    KCWebRequestType request;
-    KCWebContentType content_type;
-    //int kc_web_client_set_header(char *key, char *value;
-    KCString content;
+    struct kc_web object;       ///< Parent object
+    KCSocket socket;            ///< KCSocket object
+    uint16_t port;              ///< Port to use
+    kcbool secure;              ///< Using secure communication
+    KCString host;              ///< Host to use
+    KCString path;              ///< Path to use
+    KCString query;             ///< Query to use
+    KCString fragment;          ///< Fragement ???
+    KCString content;           ///< Content to send
+};
+
+struct kc_web_client_recv_msg {
+    struct kc_web object;       ///< Parent object
+    KCWebHTTPVersion version;   ///< HTTP Protocol version
+    int error_code;             ///< HTTP error code
+    KCString error_comment;     ///< HTTP error comment
+    KCString content;           ///< content
 };
 
 #if 0
@@ -101,8 +104,8 @@ KCWebParameter kc_web_parameter_new();
  * @return Item or NULL on error
  */
 KCWebParameter kc_web_parameter_new_from_string(KCString string,
-                                                 size_t length,
-                                                 KCWebParameterType type);
+                                                size_t length,
+                                                KCWebParameterType type);
 /**
  * Free parameter entry
  * @param obj Object to free
@@ -129,8 +132,7 @@ int kc_web_parameter_set_value(KCWebParameter obj, KCString value);
  * @param type Type to set
  * @return 0 => successful
  */
-int kc_web_parameter_set_type(KCWebParameter obj,
-                              KCWebParameterType type);
+int kc_web_parameter_set_type(KCWebParameter obj, KCWebParameterType type);
 /**
  * Add item to parameter list
  * @param obj KCWeb object

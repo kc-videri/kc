@@ -42,16 +42,16 @@ KCWebClient kc_web_client_init()
         goto kc_web_client_init_socket;
     }
     // default values
+    ((KCWeb) obj)->content_type =
+        kc_web_get_content_type_def_from_type(KC_WEB_CONTENT_XHTML);
+    ((KCWeb) obj)->request_type = KC_WEB_REQUEST_GET;
     obj->port = KC_WEB_CLIENT_DEFAULT_PORT;
     obj->secure = FALSE;
     obj->host = NULL;
     obj->path = NULL;
     obj->query = NULL;
     obj->fragment = NULL;
-    obj->request = KC_WEB_REQUEST_GET;
-    obj->content_type = KC_WEB_CONTENT_XHTML;
     obj->content = NULL;
-
 
     return obj;
 
@@ -109,9 +109,10 @@ int kc_web_client_set_fragment(KCWebClient obj, char *fragment)
     return 0;
 }
 
-int kc_web_client_set_request(KCWebClient obj, KCWebRequestType request)
+int kc_web_client_set_request(KCWebClient obj,
+                              KCWebRequestType request_type)
 {
-    obj->request = request;
+    ((KCWeb) obj)->request_type = request_type;
 
     return 0;
 }
@@ -119,7 +120,8 @@ int kc_web_client_set_request(KCWebClient obj, KCWebRequestType request)
 int kc_web_client_set_content_type(KCWebClient obj,
                                    KCWebContentType content_type)
 {
-    obj->content_type = content_type;
+    ((KCWeb) obj)->content_type =
+        kc_web_get_content_type_def_from_type(KC_WEB_CONTENT_XHTML);
 
     return 0;
 }
