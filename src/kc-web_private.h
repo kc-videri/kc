@@ -53,6 +53,8 @@ typedef struct kc_web_content_type_def *KCWebContentTypeDef;
  */
 struct kc_web {
     struct kc_object object;    ///< Parent object
+    KCWebContentTypeDef content_type;   ///< Content type structure
+    KCWebRequestType request_type;  ///< request type
     KCLinkedList parameter;     ///< parameter list
 };
 
@@ -71,28 +73,6 @@ struct kc_web_parameter {
  * */
 
 extern struct kc_web_content_type_def content_types[];
-#if 0
-// TODO MOT: add all useful content types
-struct kc_web_content_type_def content_types[] = {
-    {KC_WEB_CONTENT_HTML, "text/html", {"htm", "html", NULL}},
-    {KC_WEB_CONTENT_XHTML, "text/xhtml", {"xhtml", NULL}},
-    {KC_WEB_CONTENT_JSON, "application/json", {NULL}},
-    {KC_WEB_CONTENT_TEXT, "text/text", {"txt", NULL}},
-    {KC_WEB_CONTENT_ICO, "image/x-icon", {"ico", NULL}},
-    {KC_WEB_CONTENT_HTML, "application/x-www-form-urlencoded", {"htm", "html", NULL}},
-    {KC_WEB_CONTENT_UNDEF, "application/xml", {"xml", NULL}},
-    {KC_WEB_CONTENT_UNDEF, "application/atom+xml", {NULL}},
-    {KC_WEB_CONTENT_UNDEF, "mulitpart/form - data", {NULL}},
-    {KC_WEB_CONTENT_UNDEF, "mulitpart/alternative", {NULL}},
-    {KC_WEB_CONTENT_UNDEF, "mulitpart/mixed", {NULL}},
-    {KC_WEB_CONTENT_UNDEF, "application / base64 ", {NULL}},
-    {KC_WEB_CONTENT_UNDEF, "application / octet - stream ", {NULL}},
-    {KC_WEB_CONTENT_TEXT, "text/plain ", {"txt", NULL}},
-    {KC_WEB_CONTENT_UNDEF, "text/css ", {"css", NULL}},
-    {KC_WEB_CONTENT_UNDEF, "application/javascript", {"js", NULL}},
-    {KC_WEB_CONTENT_UNDEF, NULL, {NULL}}
-};
-#endif
 
 /*
  * Private function declaration
@@ -103,6 +83,20 @@ struct kc_web_content_type_def content_types[] = {
  * @return New KCWeb object or NULL on error
  */
 KCWeb kc_web_new();
+
+/**
+ * Get content type definition from content type
+ * @param type Content type
+ * @return KCWebContentTypeDef object or NULL on error
+ */
+KCWebContentTypeDef kc_web_get_content_type_def_from_type(KCWebContentType type);
+/**
+ * Get content type definition from content type
+ * @param type Content type
+ * @return KCWebContentTypeDef object or NULL on error
+ */
+KCWebContentTypeDef kc_web_get_content_type_def_from_string(char *str);
+
 /**
  * Create a new KCWebParameter
  * @return Item or NULL on error

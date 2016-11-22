@@ -74,6 +74,19 @@ typedef enum {
 } KCWebContentType;
 
 /**
+ * Get content type
+ * @param obj KCWeb object
+ * @return Content type
+ */
+KCWebContentType kc_web_get_content_type(KCWeb obj);
+/**
+ * Get content type string
+ * @param obj KCWeb object
+ * @return String of content type
+ */
+KCString kc_web_get_content_type_string(KCWeb obj);
+
+/**
  * Get the parameter list
  * @param obj KCWeb object
  * @return Linked parameter list

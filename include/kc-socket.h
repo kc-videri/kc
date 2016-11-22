@@ -34,6 +34,7 @@ extern "C" {
 // forward declaration
 struct kc_socket;
 
+// Main KC socket structure
 typedef struct kc_socket *KCSocket;
 
 /**

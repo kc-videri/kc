@@ -53,7 +53,6 @@ KCWebServer kc_web_server_init()
 KCWebServer kc_web_server_init_type(KCWebContentType type)
 {
     KCWebServer obj;
-    KCWebContentTypeDef content_type;
     KCString buffer;
     char **env, **key;
     kcbool found_one;
@@ -64,20 +63,15 @@ KCWebServer kc_web_server_init_type(KCWebContentType type)
         return NULL;
     }
     // Default settings
-    obj->content_type = NULL;
+    ((KCWeb) obj)->content_type = NULL;
 
     ((KCWeb) obj)->parameter = kc_linked_list_new();
     if (((KCWeb) obj)->parameter == NULL) {
         goto kc_web_server_init_failed_memory;
     }
 
-    for (content_type = content_types;
-         content_type->type != KC_WEB_CONTENT_UNDEF; content_type++) {
-        if (type == content_type->type) {
-            obj->content_type = content_type;
-        }
-    }
-    if (obj->content_type == NULL) {
+    ((KCWeb) obj)->content_type = kc_web_get_content_type_def_from_type(type);
+    if (((KCWeb) obj)->content_type == NULL) {
         fprintf(stderr, "%s(%d): Content type not implemented yet\n",
                 __func__, __LINE__);
         goto kc_web_server_init_failed_memory;
@@ -194,7 +188,7 @@ int kc_web_server_free(KCWebServer obj)
 void kc_web_server_print_content_type(KCWebServer obj)
 {
     printf("Content-type: %s\r\n\r\n",
-           kc_web_server_get_content_type_string(obj));
+           kc_web_get_content_type_string((KCWeb) obj));
 }
 
 int kc_web_server_print_image(KCWebServer obj, KCString file_name)
@@ -226,9 +220,7 @@ int kc_web_server_print_image(KCWebServer obj, KCString file_name)
 
 KCWebContentType kc_web_server_parse_content_type()
 {
-    KCWebContentType type = KC_WEB_CONTENT_UNDEF;
     KCString buffer;
-    kcbool found_one = FALSE;
     KCWebContentTypeDef content_type;
 
     buffer = getenv("CONTENT_TYPE");
@@ -238,30 +230,12 @@ KCWebContentType kc_web_server_parse_content_type()
         return KC_WEB_CONTENT_TEXT;
     }
 
-    for (content_type = content_types;
-         content_type->type_string != NULL; content_type++) {
-        if (!strcmp(buffer, content_type->type_string)) {
-            type = content_type->type;
-            found_one = TRUE;
-            break;
-        }
+    content_type = kc_web_get_content_type_def_from_string(buffer);
+    if (content_type == NULL) {
+        return KC_WEB_CONTENT_UNDEF;
+    } else {
+        return content_type->type;
     }
-    if (type == KC_WEB_CONTENT_UNDEF || found_one == FALSE) {
-        fprintf(stderr, "%s(%d): Unknown content type: %s\n",
-                __func__, __LINE__, buffer);
-    }
-
-    return type;
-}
-
-KCWebContentType kc_web_server_get_content_type(KCWebServer obj)
-{
-    return obj->content_type->type;
-}
-
-KCString kc_web_server_get_content_type_string(KCWebServer obj)
-{
-    return content_types[kc_web_server_get_content_type(obj)].type_string;
 }
 
 KCWebContentType kc_web_server_get_content_type_from_ending(KCString str)

@@ -60,9 +60,7 @@ struct kc_web_server {
     char *get_query_string;     ///< Get query string
     KCLinkedList parameter;     ///< parameter list
 #endif
-    KCWebRequestType request_type;  ///< request type
-    KCWebContentTypeDef content_type;   ///< Content type structure
-    KCJson json;                ///< JSON object
+    //KCJson json;                ///< JSON object
 };
 
 /*
@@ -110,6 +108,7 @@ KCWebParameter kc_web_server_parameter_new();
  */
 KCWebParameter kc_web_server_parameter_new_from_string(KCString string,
                                                        size_t length,
-                                                       KCWebParameterType type);
+                                                       KCWebParameterType
+                                                       type);
 
 #endif                          /* __KC_WEB_SERVER_PRIVATE_H__ */

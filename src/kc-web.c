@@ -66,29 +66,18 @@ struct kc_web_content_type_def content_types[] = {
     {KC_WEB_CONTENT_UNDEF, NULL, {NULL}}
 };
 
-KCWeb kc_web_new()
+/**
+ * Public function definition
+ * */
+
+KCWebContentType kc_web_get_content_type(KCWeb obj)
 {
-    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
-    KCWeb obj;
+    return ((KCWeb) obj)->content_type->type;
+}
 
-    obj = (KCWeb) kc_object_new(sizeof(KCWeb));
-    if (obj == NULL) {
-    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
-        return NULL;
-    }
-    // Default settings
-    obj->parameter = kc_linked_list_new();
-    if (obj->parameter == NULL) {
-    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
-        goto kc_web_init_failed_memory;
-    }
-
-    return obj;
-
-  kc_web_init_failed_memory:
-    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
-    kc_object_free((KCObject) obj);
-    return NULL;
+KCString kc_web_get_content_type_string(KCWeb obj)
+{
+    return content_types[kc_web_get_content_type(obj)].type_string;
 }
 
 KCLinkedList kc_web_get_parameter_list(KCWeb obj)
@@ -143,6 +132,67 @@ KCWebParameterType kc_web_parameter_get_type(KCWebParameter item)
 /**
  * Private function definition
  * */
+
+KCWeb kc_web_new()
+{
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__);    // DELETE
+    KCWeb obj;
+
+    obj = (KCWeb) kc_object_new(sizeof(KCWeb));
+    if (obj == NULL) {
+        fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__);    // DELETE
+        return NULL;
+    }
+    // Default settings
+    obj->parameter = kc_linked_list_new();
+    if (obj->parameter == NULL) {
+        fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__);    // DELETE
+        goto kc_web_init_failed_memory;
+    }
+
+    return obj;
+
+  kc_web_init_failed_memory:
+    fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__);    // DELETE
+    kc_object_free((KCObject) obj);
+    return NULL;
+}
+
+KCWebContentTypeDef kc_web_get_content_type_def_from_type(KCWebContentType
+                                                          type)
+{
+    KCWebContentTypeDef content_type;
+
+    for (content_type = content_types;
+         content_type->type != KC_WEB_CONTENT_UNDEF; content_type++) {
+        if (type == content_type->type) {
+            return content_type;
+        }
+    }
+
+    return NULL;
+}
+
+KCWebContentTypeDef kc_web_get_content_type_def_from_string(char *str)
+{
+    kcbool found_one = FALSE;
+    KCWebContentTypeDef content_type;
+
+    for (content_type = content_types;
+         content_type->type_string != NULL; content_type++) {
+        if (!strcmp(str, content_type->type_string)) {
+            found_one = TRUE;
+            break;
+        }
+    }
+    if (content_type->type == KC_WEB_CONTENT_UNDEF || found_one == FALSE) {
+        fprintf(stderr, "%s(%d): Unknown content type: %s\n", __func__,
+                __LINE__, str);
+        content_type = NULL;
+    }
+
+    return content_type;
+}
 
 KCWebParameter kc_web_parameter_new()
 {

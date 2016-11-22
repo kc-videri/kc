@@ -86,18 +86,6 @@ int kc_web_server_print_image(KCWebServer obj, KCString file_name);
 KCWebContentType kc_web_server_parse_content_type();
 /**
  * Get content type
- * @param obj KCWebServer object
- * @return Content type
- */
-KCWebContentType kc_web_server_get_content_type(KCWebServer obj);
-/**
- * Get content type string
- * @param obj KCWebServer object
- * @return String of content type
- */
-KCString kc_web_server_get_content_type_string(KCWebServer obj);
-/**
- * Get content type
  * @param str String to parse
  * @return Content type or
  */
