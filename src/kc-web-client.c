@@ -22,6 +22,7 @@
 #include <stdio.h>
 
 #include <kc-web.h>
+#include <kc-web_private.h>
 #include <kc-web-client.h>
 #include <kc-web-client_private.h>
 #include <kc-tcp-socket.h>
