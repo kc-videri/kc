@@ -51,6 +51,13 @@ typedef struct kc_web_client_recv_msg *KCWebClientRecvMsg;
  */
 KCWebClient kc_web_client_new();
 /**
+ * Free object
+ * @param obj KCWebClient object
+ * @return 0 ==> successful
+ */
+int kc_web_client_free(KCWebClient obj);
+
+/**
  * Set port
  * @param obj KCWebClient object
  * @param port Port to use; default 80 / 443

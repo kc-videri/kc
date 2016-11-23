@@ -62,6 +62,14 @@ KCWebClient kc_web_client_new()
     return NULL;
 }
 
+int kc_web_client_free(KCWebClient obj)
+{
+    kc_socket_free((KCSocket)obj);
+    kc_web_free((KCWeb)obj);
+
+    return 0;
+}
+
 int kc_web_client_set_port(KCWebClient obj, uint16_t port)
 {
     obj->port = port;
@@ -169,7 +177,7 @@ KCWebClientRecvMsg kc_web_client_send(KCWebClient obj)
     return result;
 
   kc_web_client_send_error:
-    kc_web_free(result);
+    kc_web_free((KCWeb)result);
 
     return NULL;
 }
