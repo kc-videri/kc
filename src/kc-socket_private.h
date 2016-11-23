@@ -61,4 +61,11 @@ KCSocket kc_socket_init(int domain, int type, int protocol);
  */
 int kc_socket_free(KCSocket obj);
 
+/**
+ * Connect to server
+ * @param obj KCSocket object to free
+ * @return 0 => successful
+ */
+int kc_socket_connect(KCSocket obj);
+
 #endif                          /* __KC_SOCKET_PRIVATE_H__ */

@@ -117,11 +117,37 @@ int kc_socket_set_ipv4_addr(KCSocket obj, char *ip_addr)
 
 int kc_socket_set_ipv6_addr(KCSocket obj, char *ip_addr)
 {
-    fprintf(stderr, "// TODO: not implemented\n"); // DELETE 
+    fprintf(stderr, "// TODO: not implemented\n");  // DELETE 
 
     return -1;
 }
 
+int kc_socket_connect(KCSocket obj)
+{
+    int retval;
+    struct sockaddr *addr;
+    size_t obj_size;
+
+    if (obj->domain == AF_INET) {
+        addr = (struct sockaddr *) obj->addr;
+        obj_size = sizeof(struct sockaddr);
+    } else if (obj->domain == AF_INET6) {
+        fprintf(stderr, "// TODO: not test\n");  // DELETE 
+        addr = (struct sockaddr *) obj->addr6;
+        obj_size = sizeof(struct sockaddr);
+    } else {
+        return -1;
+    }
+
+    retval = connect(obj->fd, addr, obj_size);
+    if (retval < 0) {
+        fprintf(stderr, "Cannot connect: %s (%d)\n", strerror(errno),
+                errno);
+        return errno;
+    }
+
+    return 0;
+}
 
 /*
  * Private function declaration
