@@ -48,7 +48,7 @@ int main(void)
         KCLinkedListIterator iterator;
 
         //printf("Content-type: application/json\r\n\r\n");
-        web = kc_web_server_init_type(KC_WEB_CONTENT_JSON);
+        web = kc_web_server_new_from_type(KC_WEB_CONTENT_JSON);
         if (web == NULL) {
             printf("No web server object received");
             continue;
