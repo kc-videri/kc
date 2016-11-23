@@ -22,6 +22,7 @@
 #include <string.h>
 #include <errno.h>
 #include <stdio.h>
+#include <unistd.h>
 
 #include <kc-socket.h>
 #include <kc-socket_private.h>
@@ -32,27 +33,93 @@
  * */
 int kc_socket_set_port(KCSocket obj, int port)
 {
-    obj->addr->sin_port = htons(port);
+    if (obj->domain == AF_INET) {
+        obj->addr->sin_port = htons(port);
+    } else if (obj->domain == AF_INET6) {
+        obj->addr6->sin6_port = htons(port);
+    } else {
+        return -1;
+    }
 
     return 0;
 }
 
-int kc_socket_set_domain_name(KCSocket obj, char *domain_name)
+int kc_socket_set_host(KCSocket obj, char *host)
 {
+    struct addrinfo hints, *results, *result;
+    int retval;
+    int fd;
+
+    memset(&hints, 0, sizeof hints);
+    hints.ai_family = obj->domain;
+    hints.ai_socktype = obj->type;
+
+    if ((retval = getaddrinfo(host, NULL, &hints, &results)) != 0) {
+        fprintf(stderr, "Cannot get address information: %s (%d)\n",
+                gai_strerror(retval), retval);
+        return retval;
+    }
+
+    for (result = results; result != NULL; result = result->ai_next) {
+        fd = socket(result->ai_family, result->ai_socktype,
+                    result->ai_protocol);
+        if (fd == -1) {
+            continue;
+        }
+
+        if (bind(fd, result->ai_addr, result->ai_addrlen) == 0) {
+            if (obj->domain == AF_INET) {
+                struct sockaddr_in *addr;
+
+                addr = (struct sockaddr_in *) result->ai_addr;
+                obj->addr->sin_addr.s_addr = addr->sin_addr.s_addr;
+            } else if (obj->domain == AF_INET6) {
+                struct sockaddr_in6 *addr;
+
+                addr = (struct sockaddr_in6 *) result->ai_addr;
+                memcpy(&(obj->addr6->sin6_addr), &(addr->sin6_addr),
+                       sizeof(struct in6_addr));
+            } else {
+                return -1;
+            }
+
+            close(fd);
+            break;
+        }
+
+        close(fd);
+
+    }
+
+    freeaddrinfo(results);      // all done with this structure
 
     return 0;
 }
 
 int kc_socket_set_ipv4_addr(KCSocket obj, char *ip_addr)
 {
+    int retval;
+
+    retval =
+        inet_pton(obj->domain, ip_addr,
+                  (void *) (&(obj->addr->sin_addr.s_addr)));
+    if (retval < 0) {
+        fprintf(stderr, "Can't set ip addr: %s (%d)", strerror(errno),
+                errno);
+        return errno;
+    } else if (retval == 0) {
+        fprintf(stderr, "%s is not a valid IP address\n", ip_addr);
+        return -1;
+    }
 
     return 0;
 }
 
 int kc_socket_set_ipv6_addr(KCSocket obj, char *ip_addr)
 {
+    fprintf(stderr, "// TODO: not implemented\n"); // DELETE 
 
-    return 0;
+    return -1;
 }
 
 
@@ -72,8 +139,15 @@ KCSocket kc_socket_init(int domain, int type, int protocol)
     obj->domain = domain;
     obj->type = type;
     obj->protocol = protocol;
-    obj->addr = (struct sockaddr_in *) malloc(sizeof(struct sockaddr_in *));
-    obj->addr->sin_family = domain;
+    if (obj->domain == AF_INET) {
+        obj->addr =
+            (struct sockaddr_in *) malloc(sizeof(struct sockaddr_in *));
+        obj->addr->sin_family = domain;
+    } else if (obj->domain == AF_INET6) {
+        obj->addr6 =
+            (struct sockaddr_in6 *) malloc(sizeof(struct sockaddr_in6 *));
+        obj->addr6->sin6_family = domain;
+    }
 
     if ((obj->fd = socket(obj->domain, obj->type, obj->protocol)) < 0) {
         fprintf(stderr, "Cannot create socket: %s (%d)\n", strerror(errno),
@@ -84,7 +158,7 @@ KCSocket kc_socket_init(int domain, int type, int protocol)
     return obj;
 
   kc_socket_init_error:
-    kc_object_free((KCObject)obj);
+    kc_object_free((KCObject) obj);
 
     return NULL;
 }
@@ -136,9 +210,29 @@ int main(int argc, char **argv)
     } else {
         page = PAGE;
     }
-    sock = create_tcp_socket();
-    ip = get_ip(host);
+
+    //sock = create_tcp_socket();
+    int sock;
+    if ((sock = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) < 0) {
+        perror("Can't create TCP socket");
+        exit(1);
+    }
+    //ip = get_ip(host);
+    struct hostent *hent;
+    int iplen = 15;             //XXX.XXX.XXX.XXX
+    ip = (char *) malloc(iplen + 1);
+    memset(ip, 0, iplen + 1);
+    if ((hent = gethostbyname(host)) == NULL) {
+        herror("Can't get IP");
+        exit(1);
+    }
+    if (inet_ntop(AF_INET, (void *) hent->h_addr_list[0], ip, iplen) ==
+        NULL) {
+        perror("Can't resolve host");
+        exit(1);
+    }
     fprintf(stderr, "IP is %s\n", ip);
+
     remote = (struct sockaddr_in *) malloc(sizeof(struct sockaddr_in *));
     remote->sin_family = AF_INET;
     tmpres = inet_pton(AF_INET, ip, (void *) (&(remote->sin_addr.s_addr)));

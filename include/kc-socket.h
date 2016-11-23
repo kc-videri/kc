@@ -47,10 +47,10 @@ int kc_socket_set_port(KCSocket obj, int port);
 /**
  * Set domain name
  * @param obj KCSocket object
- * @param domain_name
+ * @param host Host name
  * @return 0 => successful
  */
-int kc_socket_set_domain_name(KCSocket obj, char *domain_name);
+int kc_socket_set_host(KCSocket obj, char *host);
 /**
  * Set IPv4 address
  * @param obj KCSocket object
@@ -70,5 +70,4 @@ int kc_socket_set_ipv6_addr(KCSocket obj, char *ip_addr);
 #ifdef __cplusplus
 }
 #endif
-
 #endif                          /* __KC_SOCKET_H__ */

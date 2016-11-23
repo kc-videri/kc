@@ -38,7 +38,8 @@ struct kc_socket {
     int domain;                 ///< Domain type
     int type;                   ///< Socket type
     int protocol;               ///< Protocol type
-    struct sockaddr_in *addr;   ///< Address structure
+    struct sockaddr_in *addr;   ///< IPv4 address structure
+    struct sockaddr_in6 *addr6; ///< IPv6 address structure
 };
 
 /*

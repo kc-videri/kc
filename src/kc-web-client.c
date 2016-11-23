@@ -150,3 +150,15 @@ int kc_web_client_set_content(KCWebClient obj, char *content)
 
     return 0;
 }
+
+KCWebClientRecvMsg kc_web_client_send(KCWebClient obj)
+{
+    KCWebClientRecvMsg result;
+
+    result = (KCWebClientRecvMsg)kc_web_new();
+    if (result == NULL) {
+        return NULL;
+    }
+
+    return result;
+}
