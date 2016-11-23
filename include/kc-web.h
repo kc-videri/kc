@@ -33,32 +33,24 @@ extern "C" {
 struct kc_web;
 struct kc_web_parameter;
 
-/// Main structure for all web stuff
-typedef struct kc_web *KCWeb;
-/// Structure to handle parameter or key / value
-typedef struct kc_web_parameter *KCWebParameter;
+typedef struct kc_web *KCWeb;                   ///< Main structure for all web stuff
+typedef struct kc_web_parameter *KCWebParameter;///< Structure to handle parameter or key / value
 
-/**
- * Enumeration for different types of giving parameter
- */
+/// Enumeration for different types of giving parameter
 typedef enum {
     KC_WEB_VERSION_1_0,                         ///< HTTP protocol version 1.0
     KC_WEB_VERSION_1_1,                         ///< HTTP protocol version 1.1
     KC_WEB_VERSION_2_0,                         ///< HTTP protocol version 2.0
 } KCWebHTTPVersion;
 
-/**
- * Enumeration for different types of giving parameter
- */
+/// Enumeration for different types of giving parameter
 typedef enum {
     KC_WEB_PARAMETER_GET,                       ///< Parameter comes using GET
     KC_WEB_PARAMETER_POST,                      ///< Parameter comes using POST
     KC_WEB_PARAMETER_HTTP,                      ///< Parameter comes using HTTP
 } KCWebParameterType;
 
-/**
- * Enumeration for different types of receiving data
- */
+/// Enumeration for different types of receiving data
 typedef enum {
     KC_WEB_REQUEST_GET,                         ///< Request type GET
     KC_WEB_REQUEST_POST,                        ///< Request type POST
@@ -70,9 +62,7 @@ typedef enum {
     KC_WEB_REQUEST_TRACE,                       ///< Request type TRACE
 } KCWebRequestType;
 
-/**
- * Enumeration for different types of receiving data
- */
+/// Enumeration for different types of receiving data
 typedef enum {
     KC_WEB_CONTENT_HTML = 0,                    ///< Content type text/html
     KC_WEB_CONTENT_XHTML,                       ///< Content type text/xhtml
