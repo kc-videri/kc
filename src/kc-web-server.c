@@ -65,11 +65,6 @@ KCWebServer kc_web_server_new_from_type(KCWebContentType type)
     // Default settings
     ((KCWeb) obj)->content_type = NULL;
 
-    ((KCWeb) obj)->parameter = kc_linked_list_new();
-    if (((KCWeb) obj)->parameter == NULL) {
-        goto kc_web_server_init_failed_memory;
-    }
-
     ((KCWeb) obj)->content_type = kc_web_get_content_type_def_from_type(type);
     if (((KCWeb) obj)->content_type == NULL) {
         fprintf(stderr, "%s(%d): Content type not implemented yet\n",
@@ -166,21 +161,7 @@ KCWebServer kc_web_server_new_from_ending()
 
 int kc_web_server_free(KCWebServer obj)
 {
-    KCLinkedList list;
-    KCLinkedListIterator iterator;
-    KCWebParameter parameter;
-
-    list = kc_web_get_parameter_list((KCWeb) obj);
-    kc_mutex_item_lock((KCMutexItem) list);
-    for (iterator = kc_linked_list_item_get_first(list);
-         kc_linked_list_item_is_last(list, iterator);
-         iterator = kc_linked_list_item_get_next(iterator)) {
-        parameter =
-            (KCWebParameter) kc_linked_list_item_get_data(iterator);
-        kc_web_parameter_free(parameter);
-    }
-    kc_mutex_item_unlock((KCMutexItem)((KCWeb) obj)->parameter);
-    kc_linked_list_free(((KCWeb) obj)->parameter);
+    kc_web_free((KCWeb)obj);
 
     return 0;
 }

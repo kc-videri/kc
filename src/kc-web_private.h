@@ -83,6 +83,13 @@ extern struct kc_web_content_type_def content_types[];
  * @return New KCWeb object or NULL on error
  */
 KCWeb kc_web_new();
+/**
+ * Free allocated memory
+ * @param obj KCWeb object
+ * @return 0 => successful
+ */
+int kc_web_free(KCWeb obj);
+
 
 /**
  * Get content type definition from content type
