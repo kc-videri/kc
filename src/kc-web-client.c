@@ -154,11 +154,22 @@ int kc_web_client_set_content(KCWebClient obj, char *content)
 KCWebClientRecvMsg kc_web_client_send(KCWebClient obj)
 {
     KCWebClientRecvMsg result;
+    int retval;
 
     result = (KCWebClientRecvMsg) kc_web_new();
     if (result == NULL) {
         return NULL;
     }
 
+    retval = kc_socket_connect((KCSocket) obj);
+    if (retval != 0) {
+        goto kc_web_client_send_error;
+    }
+
     return result;
+
+  kc_web_client_send_error:
+    kc_web_free(result);
+
+    return NULL;
 }
