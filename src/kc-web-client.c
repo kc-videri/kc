@@ -28,7 +28,7 @@
 #include <kc-tcp-socket.h>
 #include <kc-object.h>
 
-KCWebClient kc_web_client_init()
+KCWebClient kc_web_client_new()
 {
     KCWebClient obj;
 
@@ -155,7 +155,7 @@ KCWebClientRecvMsg kc_web_client_send(KCWebClient obj)
 {
     KCWebClientRecvMsg result;
 
-    result = (KCWebClientRecvMsg)kc_web_new();
+    result = (KCWebClientRecvMsg) kc_web_new();
     if (result == NULL) {
         return NULL;
     }

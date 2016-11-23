@@ -49,7 +49,7 @@ typedef struct kc_web_client_recv_msg *KCWebClientRecvMsg;
  * Initialise the KCWebClient object for a HTML document
  * @return KCWebClient object or NULL on error
  */
-KCWebClient kc_web_client_init();
+KCWebClient kc_web_client_new();
 /**
  * Set port
  * @param obj KCWebClient object

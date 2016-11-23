@@ -40,25 +40,25 @@ typedef struct kc_web_server *KCWebServer;
  * Initialise the KCWebServer object for a HTML document
  * @return KCWebServer object or NULL on error
  */
-KCWebServer kc_web_server_init();
+KCWebServer kc_web_server_new();
 /**
  * Initialise the KCWebServer object
  * @param type Content Type
  * @return KCWebServer object or NULL on error
  */
-KCWebServer kc_web_server_init_type(KCWebContentType type);
+KCWebServer kc_web_server_new_from_type(KCWebContentType type);
 /**
  * Initialise the KCWebServer object from content type
  * Using CONTENT_TYPE value
  * @return KCWebServer object or NULL on error
  */
-KCWebServer kc_web_server_init_from_content_type();
+KCWebServer kc_web_server_new_using_content_type();
 /**
  * Initialise the KCWebServer object for a HTML document
  * Using SCRIPT_NAME value
  * @return KCWebServer object or NULL on error
  */
-KCWebServer kc_web_server_init_from_ending();
+KCWebServer kc_web_server_new_from_ending();
 /**
  * Free allocated memory
  * @param obj KCWebServer object

@@ -45,12 +45,12 @@ extern char **environ;
  * Public function definition
  * */
 
-KCWebServer kc_web_server_init()
+KCWebServer kc_web_server_new()
 {
-    return kc_web_server_init_type(KC_WEB_CONTENT_HTML);
+    return kc_web_server_new_from_type(KC_WEB_CONTENT_HTML);
 }
 
-KCWebServer kc_web_server_init_type(KCWebContentType type)
+KCWebServer kc_web_server_new_from_type(KCWebContentType type)
 {
     KCWebServer obj;
     KCString buffer;
@@ -74,7 +74,7 @@ KCWebServer kc_web_server_init_type(KCWebContentType type)
     if (((KCWeb) obj)->content_type == NULL) {
         fprintf(stderr, "%s(%d): Content type not implemented yet\n",
                 __func__, __LINE__);
-        goto kc_web_server_init_failed_memory;
+        goto kc_web_server_new_failed_memory;
     }
     // GET parameter
     buffer = getenv("QUERY_STRING");
@@ -133,12 +133,12 @@ KCWebServer kc_web_server_init_type(KCWebContentType type)
 
     return obj;
 
-  kc_web_server_init_failed_memory:
+  kc_web_server_new_failed_memory:
     kc_object_free((KCObject) obj);
     return NULL;
 }
 
-KCWebServer kc_web_init_from_content_type()
+KCWebServer kc_web_new_using_content_type()
 {
     KCWebContentType type;
 
@@ -147,10 +147,10 @@ KCWebServer kc_web_init_from_content_type()
         return NULL;
     }
 
-    return kc_web_server_init_type(type);
+    return kc_web_server_new_from_type(type);
 }
 
-KCWebServer kc_web_server_init_from_ending()
+KCWebServer kc_web_server_new_from_ending()
 {
     KCString buffer;
     KCWebContentType type;
@@ -161,7 +161,7 @@ KCWebServer kc_web_server_init_from_ending()
         return NULL;
     }
 
-    return kc_web_server_init_type(type);
+    return kc_web_server_new_from_type(type);
 }
 
 int kc_web_server_free(KCWebServer obj)
