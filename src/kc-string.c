@@ -25,26 +25,56 @@
 
 #include <kc-object.h>
 #include <kc-string.h>
+#include <kc-string_private.h>
 
 // TODO MOT: test application
-KCString kc_string_create(const char *value, size_t length)
+KCString kc_string_new()
 {
-    char *obj;
+    return kc_string_new_with_string(NULL, 1);
+}
 
-    obj = (char *) kc_object_new((length + 1) * sizeof(char));
+KCString kc_string_new_with_string(const kcchar *value, size_t length)
+{
+    KCString obj;
+
+    obj = (KCString) kc_object_new(sizeof(struct kc_string));
     if (obj == NULL) {
         goto kc_sting_create_exit;
     }
-    memcpy(obj, value, length);
-    obj[length] = '\0';
+
+    obj->string = (kcchar *) malloc((length + 1) * sizeof(kcchar));
+    if (value != NULL) {
+        memcpy(obj->string, value, length);
+        obj->pos = obj->length = length;
+        obj->string[length] = '\0';
+    } else {
+        obj->pos = obj->length = 0;
+    }
 
   kc_sting_create_exit:
     return obj;
 }
-
-int kc_string_free(KCString string)
+ 
+int kc_string_free(KCString obj)
 {
-    kc_object_free((KCObject) string);
+    free(obj->string);
+    kc_object_free((KCObject) obj);
 
     return 0;
 }
+
+#if 0
+int kc_string_add(KCString, char *value, ...)
+{
+    return 0;
+}
+
+int kc_string_add_char(KCString, char value)
+{
+    return 0;
+}
+
+int *kc_string_set_pos(KCString obj, size_t pos);
+kcchar *kc_string_get(KCString obj);
+kcchar *kc_string_get_pos(KCString obj);
+#endif

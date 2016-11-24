@@ -24,10 +24,7 @@
 
 #include <kc-linked-list.h>
 #include <kc-object_private.h>
-#if 0
-#include <kc-string.h>
-#include <kc-json.h>
-#endif
+#include <kc.h>
 
 /*
  * Private define declaration
@@ -42,8 +39,8 @@
  */
 struct kc_web_content_type_def {
     KCWebContentType type;      ///< Content type
-    KCString type_string;       ///< String to send to define type
-    KCString endings[3];        ///< String to send to define type
+    kcchar *type_string;          ///< String to send to define type
+    kcchar *endings[3];           ///< String to send to define type
 };
 
 typedef struct kc_web_content_type_def *KCWebContentTypeDef;
@@ -65,8 +62,8 @@ struct kc_web {
 struct kc_web_parameter {
     struct kc_object object;    ///< Parent object
     KCWebParameterType type;    ///< On which way does the parameter come
-    KCString key;               ///< Key of a parameter
-    KCString value;             ///< Value of a parameter
+    kcchar *key;                  ///< Key of a parameter
+    kcchar *value;                ///< Value of a parameter
 };
 
 /*
@@ -143,14 +140,14 @@ int kc_web_parameter_free(KCWebParameter obj);
  * @param key Key to set
  * @return 0 => successful
  */
-int kc_web_parameter_set_key(KCWebParameter obj, KCString key);
+int kc_web_parameter_set_key(KCWebParameter obj, char *key);
 /**
  * Set value
  * @param obj KCWebParameter pointer Object
  * @param value Value to set
  * @return 0 => successful
  */
-int kc_web_parameter_set_value(KCWebParameter obj, KCString value);
+int kc_web_parameter_set_value(KCWebParameter obj, char *value);
 /**
  * Set type
  * @param obj KCWebParameter pointer Object

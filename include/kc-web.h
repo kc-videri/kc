@@ -83,7 +83,7 @@ KCWebContentType kc_web_get_content_type(KCWeb obj);
  * @param obj KCWeb object
  * @return String of content type
  */
-KCString kc_web_get_content_type_string(KCWeb obj);
+kcchar *kc_web_get_content_type_string(KCWeb obj);
 
 /**
  * Get the parameter list
@@ -97,19 +97,19 @@ KCLinkedList kc_web_get_parameter_list(KCWeb obj);
  * @param search_string Key string to search for
  * @return List object or NULL when not found
  */
-KCWebParameter kc_web_parameter_get(KCWeb obj, KCString search_string);
+KCWebParameter kc_web_parameter_get(KCWeb obj, char *search_string);
 /**
  * Get key from KCWebParameter item
  * @param item KCWebParameter object
  * @return key object
  */
-KCString kc_web_parameter_get_key(KCWebParameter item);
+kcchar *kc_web_parameter_get_key(KCWebParameter item);
 /**
  * Get value from KCWebParameter item
  * @param item KCWebParameter object
  * @return value object
  */
-KCString kc_web_parameter_get_value(KCWebParameter item);
+kcchar *kc_web_parameter_get_value(KCWebParameter item);
 /**
  * Get type from KCWebParameter item
  * @param item KCWebParameter object

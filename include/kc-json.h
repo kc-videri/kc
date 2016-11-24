@@ -34,11 +34,11 @@ struct kc_json_object;
 struct kc_json_array;
 
 /// Structure to handle JSON stuff
-typedef struct kc_json* KCJson;
+typedef struct kc_json *KCJson;
 /// JSON object
-typedef struct kc_json_object* KCJsonObject;
+typedef struct kc_json_object *KCJsonObject;
 /// JSON array list
-typedef struct kc_json_array* KCJsonArray;
+typedef struct kc_json_array *KCJsonArray;
 
 /**
  * Create a new empty JSON object
@@ -51,7 +51,7 @@ KCJson kc_json_new();
  * @param json_string String to parse
  * @return NULL when memory allocation failed,
  */
-KCJson kc_json_new_from_string(KCString json_string);
+KCJson kc_json_new_from_string(char *json_string);
 /**
  * Free allocated memory
  * @param obj object to free
@@ -70,7 +70,7 @@ int kc_json_get_error_no(KCJson obj);
  * @param obj JSON object
  * @return Error description
  */
-KCString kc_json_get_error_description(KCJson obj);
+kcchar *kc_json_get_error_description(KCJson obj);
 
 /**
  * Get JSON string from JSON object
@@ -78,10 +78,10 @@ KCString kc_json_get_error_description(KCJson obj);
  * @param nice Nice outlook of the string
  * @return JSON object as string
  */
-KCString kc_json_get_json_string(KCJson obj, kcbool nice);
+kcchar *kc_json_get_json_string(KCJson obj, kcbool nice);
 
 #if 0
-struct lh_table * kc_json_get_object(KCJsonObject obj);
+struct lh_table *kc_json_get_object(KCJsonObject obj);
 int json_object_object_length(KCJsonObject obj);
 #endif
 /**
@@ -91,11 +91,12 @@ int json_object_object_length(KCJsonObject obj);
  * @param value Value
  * @return 0 => successful
  */
-int kc_json_add_object(KCJson obj, const KCString key, KCJsonObject value);
+int kc_json_add_object(KCJson obj, const char *key,
+                       KCJsonObject value);
 #if 0
-kcbool json_object_object_get_ex(KCJsonObject obj, const KCString key,
+kcbool json_object_object_get_ex(KCJsonObject obj, const char *key,
                                  KCJsonObject value);
-void json_object_object_del(KCJsonObject obj, const KCString key);
+void json_object_object_del(KCJsonObject obj, const char *key);
 #endif
 /**
  * Create a new empty JSON array
@@ -116,7 +117,7 @@ KCJsonArray kc_json_array_get(KCJsonObject obj);
 int kc_json_array_get_length(KCJsonObject obj);
 #if 0
 void kc_json_array_sort(KCJsonObject jso,
-                            int (*sort_fn)(const void *, const void *));
+                        int (*sort_fn) (const void *, const void *));
 #endif
 /**
  * Add an element to the end of the array
@@ -132,7 +133,8 @@ int kc_json_array_add(KCJsonObject obj, KCJsonObject value);
  * @param value Element to set
  * @return 0 => successful
  */
-int kc_json_array_put_index(KCJsonObject obj, int index, KCJsonObject value);
+int kc_json_array_put_index(KCJsonObject obj, int index,
+                            KCJsonObject value);
 /**
  *
  * @param obj JSON object
@@ -194,7 +196,7 @@ double kc_json_get_double(KCJsonObject obj);
  * @param value String to use
  * @return JSON object or NULL on error
  */
-KCJsonObject kc_json_new_string(const KCString value);
+KCJsonObject kc_json_new_string(const char *value);
 /**
  * Create a JSON object from string
  * A copy of the string is made and the memory is managed by the class
@@ -202,7 +204,7 @@ KCJsonObject kc_json_new_string(const KCString value);
  * @param len Length of the string
  * @return JSON object or NULL on error
  */
-KCJsonObject kc_json_new_string_len(const KCString value, int len);
+KCJsonObject kc_json_new_string_len(const char *value, int len);
 /**
  * Get the string value of a JSON object
  * @param obj JSON object
@@ -210,7 +212,7 @@ KCJsonObject kc_json_new_string_len(const KCString value, int len);
  * representation of the object is returned; The returned string memory is
  * managed by the json_object
  */
-const KCString kc_json_get_string(KCJsonObject obj);
+const kcchar *kc_json_get_string(KCJsonObject obj);
 /**
  * Get the string length of a JSON object
  * @param obj JSON object
@@ -221,5 +223,4 @@ int kc_json_get_string_len(KCJsonObject obj);
 #ifdef __cplusplus
 }
 #endif
-
-#endif /* __KC_JSON_H__ */
+#endif                          /* __KC_JSON_H__ */

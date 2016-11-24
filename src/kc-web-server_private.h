@@ -56,8 +56,8 @@ typedef struct kc_web_content_type_def *KCWebContentTypeDef;
 struct kc_web_server {
     struct kc_web object;       ///< Parent object
 #if 0
-    char *uri;                  ///< URI
-    char *get_query_string;     ///< Get query string
+    kcchar *uri;                  ///< URI
+    kcchar *get_query_string;     ///< Get query string
     KCLinkedList parameter;     ///< parameter list
 #endif
     //KCJson json;                ///< JSON object
@@ -67,7 +67,7 @@ struct kc_web_server {
  * Private variable declaration
  * */
 
-char *kc_web_http_keys[] = {
+kcchar *kc_web_http_keys[] = {
     "HTTP_HOST",
     "HTTP_USER_AGENT",
     "HTTP_ACCEPT",
@@ -106,9 +106,8 @@ KCWebParameter kc_web_server_parameter_new();
  * @param type Type to set
  * @return Item or NULL on error
  */
-KCWebParameter kc_web_server_parameter_new_from_string(KCString string,
+KCWebParameter kc_web_server_parameter_new_from_string(char *string,
                                                        size_t length,
-                                                       KCWebParameterType
-                                                       type);
+                                                       KCWebParameterType type);
 
 #endif                          /* __KC_WEB_SERVER_PRIVATE_H__ */

@@ -1,6 +1,6 @@
 /**
- * @file        kc-string.h
- * @brief       Header file for all string operations
+ * @file        kc-string_private.h
+ * @brief       Private Header file for all string operations
  * @author      K-C Videri <kc.videri@gmail.com>
  *
  * copyright:   (C) 2016 by K-C Videri
@@ -19,23 +19,24 @@
  * along with this program; if not, see <http://www.gnu.org/licenses/>.
  ***************************************************************************/
 
-#ifndef __KC_STRING_H__
-#define __KC_STRING_H__
+#ifndef __KC_STRING_PRIVATE_H__
+#define __KC_STRING_PRIVATE_H__
 
 #include <stdlib.h>
 
-#include <kc.h>
+#include <kc-object_private.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+/**
+ * Structure to handle strings
+ */
+struct kc_string {
+    struct kc_object object;    ///< Parent object
+    kcchar *string;               ///< Real string
+    size_t length;              ///< Length of the string
+    size_t pos;                 ///< current position in string
+};
 
-// forward declaration
-struct kc_string;
-
-/// Definition KCString
-typedef struct kc_string* KCString;
-
+#if 0
 /**
  * Create a string
  * @param value Value to copy into created string
@@ -49,25 +50,13 @@ KCString kc_string_new();
  * @param length Length of the value
  * @return New created string or NULL on error
  */
-KCString kc_string_new_with_string(const char *value, size_t length);
+KCString kc_string_new_with_string(const kcchar *value, size_t length);
 /**
  * Free string
  * @param string String to free
  * @return 0 => successful
  */
 int kc_string_free(KCString string);
-
-#if 0
-int kc_string_add(KCString, char *value, ...); 
-int kc_string_add_char(KCString, char value);
-
-int *kc_string_set_pos(KCString obj, size_t pos);
-kcchar *kc_string_get(KCString obj);
-kcchar *kc_string_get_pos(KCString obj);
 #endif
 
-#ifdef __cplusplus
-}
-#endif
-
-#endif /* __KC_STRING_H__ */
+#endif /* __KC_STRING_PRIVATE_H__ */

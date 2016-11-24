@@ -27,6 +27,8 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
+#include <kc.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif

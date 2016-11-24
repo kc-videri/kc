@@ -77,7 +77,7 @@ void kc_web_server_print_content_type(KCWebServer obj);
  * @param file_name File to print, File name with path
  * @return 0 => successful
  */
-int kc_web_server_print_image(KCWebServer obj, KCString file_name);
+int kc_web_server_print_image(KCWebServer obj, char *file_name);
 
 /**
  * Get content type
@@ -89,7 +89,7 @@ KCWebContentType kc_web_server_parse_content_type();
  * @param str String to parse
  * @return Content type or
  */
-KCWebContentType kc_web_server_get_content_type_from_ending(KCString str);
+KCWebContentType kc_web_server_get_content_type_from_ending(char *str);
 
 /**
  * Convert value from query format to ascii format
@@ -97,7 +97,7 @@ KCWebContentType kc_web_server_get_content_type_from_ending(KCString str);
  * @param length Length of the value
  * @return Created string
  */
-KCString kc_web_server_convert_value_string(const char *value, size_t length);
+kcchar *kc_web_server_convert_value_string(const char *value, size_t length);
 
 #ifdef __cplusplus
 }

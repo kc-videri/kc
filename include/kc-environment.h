@@ -22,6 +22,8 @@
 #ifndef __KC_ENVIRONMENT_H__
 #define __KC_ENVIRONMENT_H__
 
+#include <kc.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -44,13 +46,13 @@ void kc_environment_free(KCEnvironment * environment);
  * @param environment Object of KCEnvironment
  * @return Local host name
  */
-char *kc_environment_get_username(KCEnvironment * environment);
+kcchar *kc_environment_get_username(KCEnvironment * environment);
 /**
  * Get user name
  * @param environment Object of KCEnvironment
  * @return User name
  */
-char *kc_environment_get_hostname(KCEnvironment * environment);
+kcchar *kc_environment_get_hostname(KCEnvironment * environment);
 
 #ifdef __cplusplus
 }

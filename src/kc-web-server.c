@@ -53,8 +53,8 @@ KCWebServer kc_web_server_new()
 KCWebServer kc_web_server_new_from_type(KCWebContentType type)
 {
     KCWebServer obj;
-    KCString buffer;
-    char **env, **key;
+    kcchar *buffer;
+    kcchar **env, **key;
     kcbool found_one;
     int i;
 
@@ -65,7 +65,8 @@ KCWebServer kc_web_server_new_from_type(KCWebContentType type)
     // Default settings
     ((KCWeb) obj)->content_type = NULL;
 
-    ((KCWeb) obj)->content_type = kc_web_get_content_type_def_from_type(type);
+    ((KCWeb) obj)->content_type =
+        kc_web_get_content_type_def_from_type(type);
     if (((KCWeb) obj)->content_type == NULL) {
         fprintf(stderr, "%s(%d): Content type not implemented yet\n",
                 __func__, __LINE__);
@@ -81,12 +82,12 @@ KCWebServer kc_web_server_new_from_type(KCWebContentType type)
     buffer = getenv("CONTENT_LENGTH");
     if (buffer != NULL) {
         size_t post_length;
-        char *post_content;
+        kcchar *post_content;
 
         post_length = atoi(buffer);
         if (post_length != 0) {
             post_content =
-                (char *) malloc((post_length + 1) * sizeof(char));
+                (kcchar *) malloc((post_length + 1) * sizeof(kcchar));
             if (post_content != NULL) {
                 fgets(post_content, post_length + 1, stdin);
 
@@ -114,7 +115,7 @@ KCWebServer kc_web_server_new_from_type(KCWebContentType type)
                                                             strlen(*env),
                                                             type);
                 if (item != NULL) {
-                    KCString buffer;
+                    kcchar *buffer;
 
                     buffer = kc_web_parameter_get_key(item);
                     for (i = 0; buffer[i]; i++) {
@@ -147,7 +148,7 @@ KCWebServer kc_web_new_using_content_type()
 
 KCWebServer kc_web_server_new_from_ending()
 {
-    KCString buffer;
+    kcchar *buffer;
     KCWebContentType type;
 
     buffer = getenv("SCRIPT_NAME");
@@ -161,7 +162,7 @@ KCWebServer kc_web_server_new_from_ending()
 
 int kc_web_server_free(KCWebServer obj)
 {
-    kc_web_free((KCWeb)obj);
+    kc_web_free((KCWeb) obj);
 
     return 0;
 }
@@ -172,7 +173,7 @@ void kc_web_server_print_content_type(KCWebServer obj)
            kc_web_get_content_type_string((KCWeb) obj));
 }
 
-int kc_web_server_print_image(KCWebServer obj, KCString file_name)
+int kc_web_server_print_image(KCWebServer obj, char *file_name)
 {
     int file;
     size_t length = 1024;
@@ -201,7 +202,7 @@ int kc_web_server_print_image(KCWebServer obj, KCString file_name)
 
 KCWebContentType kc_web_server_parse_content_type()
 {
-    KCString buffer;
+    kcchar *buffer;
     KCWebContentTypeDef content_type;
 
     buffer = getenv("CONTENT_TYPE");
@@ -219,11 +220,11 @@ KCWebContentType kc_web_server_parse_content_type()
     }
 }
 
-KCWebContentType kc_web_server_get_content_type_from_ending(KCString str)
+KCWebContentType kc_web_server_get_content_type_from_ending(char *str)
 {
     KCWebContentType type = KC_WEB_CONTENT_UNDEF;
-    KCString buffer;
-    KCString *ending;
+    kcchar *buffer;
+    kcchar **ending;
     KCWebContentTypeDef content_type;
 
     if (str == NULL) {
@@ -254,37 +255,36 @@ KCWebContentType kc_web_server_get_content_type_from_ending(KCString str)
     return type;
 }
 
-KCString kc_web_server_convert_value_string(const char *value,
-                                            size_t length)
+kcchar *kc_web_server_convert_value_string(const char *value, size_t length)
 {
-    char *obj;
+    kcchar *result;
     size_t _length;
     size_t i, j;
 
-    obj = kc_string_create(value, length);
-    if (obj == NULL) {
+    result = kc_string_new(value, length);
+    if (result == NULL) {
         return NULL;
     }
 
     _length = length;
 
     for (i = 0; i < _length; i++) {
-        switch (obj[i]) {
+        switch (result[i]) {
         case '+':
-            obj[i] = ' ';
+            result[i] = ' ';
             break;
         case '%':
-            if (isxdigit(obj[i + 1]) && isxdigit(obj[i + 2])) {
-                char buffer[3], c;
+            if (isxdigit(result[i + 1]) && isxdigit(result[i + 2])) {
+                kcchar buffer[3], c;
 
-                buffer[0] = obj[i + 1];
-                buffer[1] = obj[i + 2];
+                buffer[0] = result[i + 1];
+                buffer[1] = result[i + 2];
                 buffer[2] = '\0';
 
                 c = (uint8_t) strtol(buffer, NULL, 16);
-                obj[i] = c;
+                result[i] = c;
                 for (j = i + 1; j < _length - 2; j++) {
-                    obj[j] = obj[j + 2];
+                    result[j] = result[j + 2];
                 }
                 _length -= 2;
             } else {
@@ -297,9 +297,9 @@ KCString kc_web_server_convert_value_string(const char *value,
             break;
         }
     }
-    obj[_length] = '\0';
+    result[_length] = '\0';
 
-    return obj;
+    return result;
 }
 
 /**
@@ -311,11 +311,11 @@ int kc_web_server_parse_query_string(KCWebServer obj,
                                      KCWebParameterType type)
 {
     int result = 0;
-    char *buffer;
+    kcchar *buffer;
     size_t string_length;
     size_t current_length;
 
-    buffer = (char *) query_string;
+    buffer = (kcchar *) query_string;
     while (1) {
         KCWebParameter item;
 
@@ -329,7 +329,8 @@ int kc_web_server_parse_query_string(KCWebServer obj,
         }
 
         item =
-            kc_web_server_parameter_new_from_string(buffer, current_length, type);
+            kc_web_server_parameter_new_from_string(buffer, current_length,
+                                                    type);
         if (item != NULL) {
             kc_web_parameter_list_add_item((KCWeb) obj, item);
         }
@@ -345,7 +346,7 @@ int kc_web_server_parse_query_string(KCWebServer obj,
     return result;
 }
 
-KCWebParameter kc_web_server_parameter_new_from_string(KCString string,
+KCWebParameter kc_web_server_parameter_new_from_string(char *string,
                                                        size_t length,
                                                        KCWebParameterType type)
 {
@@ -365,10 +366,10 @@ KCWebParameter kc_web_server_parameter_new_from_string(KCString string,
         }
         kc_web_parameter_set_type(obj, type);
 
-        kc_web_parameter_set_key(obj, kc_string_create(string, i));
+        kc_web_parameter_set_key(obj, kc_string_new(string, i));
 
         if (i != length) {
-            KCString value;
+            kcchar *value;
 
             value =
                 kc_web_server_convert_value_string(string + i + 1,

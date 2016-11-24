@@ -30,7 +30,7 @@
  * */
 
 /**
- * Structure struct kc_web_content_type: Structure to handle different content types
+ * Structure to handle socket communication
  */
 struct kc_socket {
     struct kc_object object;    ///< Parent object

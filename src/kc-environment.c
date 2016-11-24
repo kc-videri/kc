@@ -40,8 +40,8 @@
  * Private environment structure
  */
 struct environment {
-    char *hostname; /**< Local host name */
-    char *username; /**< User name */
+    kcchar *hostname; /**< Local host name */
+    kcchar *username; /**< User name */
 };
 
 // private
@@ -98,12 +98,12 @@ void kc_environment_free(KCEnvironment * obj)
     return;
 }
 
-char *kc_environment_get_hostname(KCEnvironment * obj)
+kcchar *kc_environment_get_hostname(KCEnvironment * obj)
 {
     return (obj->hostname);
 }
 
-char *kc_environment_get_username(KCEnvironment * obj)
+kcchar *kc_environment_get_username(KCEnvironment * obj)
 {
     return (obj->username);
 }
@@ -114,7 +114,7 @@ int get_hostname(KCEnvironment * obj)
     WSADATA WSAData;
 #endif
 
-    obj->hostname = (char *) malloc((BUFFER_LENGTH + 1) * sizeof(char));
+    obj->hostname = (kcchar *) malloc((BUFFER_LENGTH + 1) * sizeof(kcchar));
     if (obj->hostname == NULL) {
         return (-1);
     }
@@ -142,7 +142,7 @@ int get_username(KCEnvironment * obj)
 {
     int retval;
 
-    obj->username = (char *) malloc((BUFFER_LENGTH + 1) * sizeof(char));
+    obj->username = (kcchar *) malloc((BUFFER_LENGTH + 1) * sizeof(kcchar));
     if (obj->username == NULL) {
         return (-1);
     }
@@ -174,7 +174,7 @@ int get_username(KCEnvironment * obj)
 #if (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
 int convert_wchar_multibyte(TCHAR * msg, char *value)
 {
-    value = (char *) malloc((BUFFER_LENGTH + 1) * sizeof(char));
+    value = (kcchar *) malloc((BUFFER_LENGTH + 1) * sizeof(kcchar));
     if (value == NULL) {
         return (-1);
     }

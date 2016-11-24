@@ -31,7 +31,7 @@
  * */
 
 KCJson kc_json_new()
-{ 
+{
     KCJson obj;
 
     obj = (KCJson) kc_object_new(sizeof(struct kc_json));
@@ -39,13 +39,13 @@ KCJson kc_json_new()
         return obj;
     }
     obj->error_no = json_tokener_success;
-    obj->error_desc = (KCString) json_tokener_error_desc(obj->error_no);
+    obj->error_desc = (kcchar *) json_tokener_error_desc(obj->error_no);
     obj->json_object = NULL;
 
     return obj;
 }
 
-KCJson kc_json_new_from_string(KCString json_string)
+KCJson kc_json_new_from_string(char *json_string)
 {
     KCJson obj;
 
@@ -54,10 +54,10 @@ KCJson kc_json_new_from_string(KCString json_string)
         return NULL;
     }
 
-    obj->json_object = json_tokener_parse_verbose(json_string, &obj->error_no);
+    obj->json_object =
+        json_tokener_parse_verbose(json_string, &obj->error_no);
     if (obj->json_object == NULL) {
-        obj->error_desc =
-            (KCString) json_tokener_error_desc(obj->error_no);
+        obj->error_desc = (kcchar *) json_tokener_error_desc(obj->error_no);
         fprintf(stderr, "Cannot parse content: %s (%d)\n",
                 json_tokener_error_desc(obj->error_no), obj->error_no);
     }
@@ -67,7 +67,7 @@ KCJson kc_json_new_from_string(KCString json_string)
 
 int kc_json_free(KCJson obj)
 {
-    fprintf(stderr, "%s::%s(%d): // TODO MOT: to implement\n", __FILE__, __FUNCTION__, __LINE__);
+    fprintf(stderr, "%s::%s(%d): // TODO MOT: to implement\n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
 
     return 0;
 }
@@ -77,12 +77,12 @@ int kc_json_get_error_no(KCJson obj)
     return obj->error_no;
 }
 
-KCString kc_json_get_error_description(KCJson obj)
+kcchar *kc_json_get_error_description(KCJson obj)
 {
     return obj->error_desc;
 }
 
-KCString kc_json_get_json_string(KCJson obj, kcbool nice)
+kcchar *kc_json_get_json_string(KCJson obj, kcbool nice)
 {
     int flag = 0;
     if (obj->json_object == NULL) {
@@ -93,10 +93,10 @@ KCString kc_json_get_json_string(KCJson obj, kcbool nice)
         flag = JSON_C_TO_STRING_SPACED | JSON_C_TO_STRING_PRETTY;
     }
 
-    return (KCString)json_object_to_json_string_ext(obj->json_object, flag);
+    return (kcchar *) json_object_to_json_string_ext(obj->json_object, flag);
 }
 
-int kc_json_add_object(KCJson obj, const KCString key, KCJsonObject value)
+int kc_json_add_object(KCJson obj, const char *key, KCJsonObject value)
 {
     if (obj->json_object == NULL) {
         obj->json_object = json_object_new_object();
@@ -126,14 +126,14 @@ KCJsonArray kc_json_array_get(KCJsonObject obj)
 {
     KCJsonArray result;
 
-    result = (KCJsonArray)kc_object_new(sizeof(KCJsonObject));
+    result = (KCJsonArray) kc_object_new(sizeof(KCJsonObject));
     if (result == NULL) {
         return result;
     }
 
     result->array = json_object_get_array(obj->json_object);
 
-    return  result;
+    return result;
 }
 
 int kc_json_array_add(KCJsonObject obj, KCJsonObject value)
@@ -145,11 +145,14 @@ int kc_json_array_add(KCJsonObject obj, KCJsonObject value)
     return retval;
 }
 
-int kc_json_array_put_index(KCJsonObject obj, int index, KCJsonObject value)
+int kc_json_array_put_index(KCJsonObject obj, int index,
+                            KCJsonObject value)
 {
     int retval;
 
-    retval = json_object_array_put_idx(obj->json_object, index, value->json_object);
+    retval =
+        json_object_array_put_idx(obj->json_object, index,
+                                  value->json_object);
 
     return retval;
 }
@@ -163,7 +166,8 @@ KCJsonObject kc_json_array_get_index(KCJsonObject obj, int index)
         return result;
     }
 
-    result->json_object = json_object_array_get_idx(obj->json_object, index);
+    result->json_object =
+        json_object_array_get_idx(obj->json_object, index);
 
     return result;
 }
@@ -178,7 +182,7 @@ KCJsonObject kc_json_new_boolean(kcbool value)
     }
 
     obj->json_object = json_object_new_boolean(value);
-    
+
     return obj;
 }
 
@@ -197,7 +201,7 @@ KCJsonObject kc_json_new_int(int32_t value)
     }
 
     obj->json_object = json_object_new_int(value);
-    
+
     return obj;
 }
 
@@ -211,7 +215,7 @@ KCJsonObject kc_json_new_int64(int64_t value)
     }
 
     obj->json_object = json_object_new_int64(value);
-    
+
     return obj;
 }
 
@@ -235,7 +239,7 @@ KCJsonObject kc_json_new_double(double value)
     }
 
     obj->json_object = json_object_new_double(value);
-    
+
     return obj;
 }
 
@@ -244,7 +248,7 @@ double kc_json_get_double(KCJsonObject obj)
     return json_object_get_double(obj->json_object);
 }
 
-KCJsonObject kc_json_new_string(const KCString value)
+KCJsonObject kc_json_new_string(const char *value)
 {
     KCJsonObject obj;
 
@@ -254,11 +258,11 @@ KCJsonObject kc_json_new_string(const KCString value)
     }
 
     obj->json_object = json_object_new_string(value);
-    
+
     return obj;
 }
 
-KCJsonObject kc_json_new_string_len(const KCString value, int len)
+KCJsonObject kc_json_new_string_len(const char *value, int len)
 {
     KCJsonObject obj;
 
@@ -266,15 +270,15 @@ KCJsonObject kc_json_new_string_len(const KCString value, int len)
     if (obj == NULL) {
         return obj;
     }
-    
+
     obj->json_object = json_object_new_string_len(value, len);
 
     return obj;
 }
 
-const KCString kc_json_get_string(KCJsonObject obj)
+const kcchar *kc_json_get_string(KCJsonObject obj)
 {
-    return (const KCString)json_object_get_string(obj->json_object);
+    return (const kcchar *) json_object_get_string(obj->json_object);
 }
 
 int kc_json_get_string_len(KCJsonObject obj)
@@ -302,14 +306,14 @@ KCJsonObject kc_json_object_new()
 
 int kc_json_object_free(KCJsonObject obj)
 {
-    fprintf(stderr, "%s::%s(%d): // TODO MOT: to implement\n", __FILE__, __FUNCTION__, __LINE__);
+    fprintf(stderr, "%s::%s(%d): // TODO MOT: to implement\n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
 
     return 0;
 }
 
 int kc_json_object_free_header(KCJsonObject obj)
 {
-    kc_object_free((KCObject)obj);
+    kc_object_free((KCObject) obj);
 
     return 0;
 }

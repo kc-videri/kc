@@ -75,7 +75,7 @@ KCWebContentType kc_web_get_content_type(KCWeb obj)
     return ((KCWeb) obj)->content_type->type;
 }
 
-KCString kc_web_get_content_type_string(KCWeb obj)
+kcchar *kc_web_get_content_type_string(KCWeb obj)
 {
     return content_types[kc_web_get_content_type(obj)].type_string;
 }
@@ -85,7 +85,7 @@ KCLinkedList kc_web_get_parameter_list(KCWeb obj)
     return obj->parameter;
 }
 
-KCWebParameter kc_web_parameter_get(KCWeb obj, KCString search_string)
+KCWebParameter kc_web_parameter_get(KCWeb obj, char *search_string)
 {
     KCLinkedList list;
     KCLinkedListIterator iterator;
@@ -110,12 +110,12 @@ KCWebParameter kc_web_parameter_get(KCWeb obj, KCString search_string)
     return NULL;
 }
 
-KCString kc_web_parameter_get_key(KCWebParameter item)
+kcchar *kc_web_parameter_get_key(KCWebParameter item)
 {
     return item->key;
 }
 
-KCString kc_web_parameter_get_value(KCWebParameter item)
+kcchar *kc_web_parameter_get_value(KCWebParameter item)
 {
     if (item->value == NULL) {
         return "";
@@ -173,7 +173,7 @@ int kc_web_free(KCWeb obj)
             (KCWebParameter) kc_linked_list_item_get_data(iterator);
         kc_web_parameter_free(parameter);
     }
-    kc_mutex_item_unlock((KCMutexItem)((KCWeb) obj)->parameter);
+    kc_mutex_item_unlock((KCMutexItem) ((KCWeb) obj)->parameter);
     kc_linked_list_free(((KCWeb) obj)->parameter);
 
     kc_object_free((KCObject) obj);
@@ -218,7 +218,8 @@ KCWebContentTypeDef kc_web_get_content_type_def_from_string(char *str)
 
 int kc_web_set_content_type(KCWeb obj, KCWebContentType type)
 {
-    obj->content_type = kc_web_get_content_type_def_from_type(KC_WEB_CONTENT_XHTML);
+    obj->content_type =
+        kc_web_get_content_type_def_from_type(KC_WEB_CONTENT_XHTML);
 
     return 0;
 }
@@ -264,14 +265,14 @@ int kc_web_parameter_free(KCWebParameter item)
     return 0;
 }
 
-int kc_web_parameter_set_key(KCWebParameter item, KCString key)
+int kc_web_parameter_set_key(KCWebParameter item, char *key)
 {
     item->key = key;
 
     return 0;
 }
 
-int kc_web_parameter_set_value(KCWebParameter item, KCString value)
+int kc_web_parameter_set_value(KCWebParameter item, char *value)
 {
     item->value = value;
 

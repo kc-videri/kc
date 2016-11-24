@@ -34,7 +34,7 @@ struct kc_json {
     struct kc_object object;                    ///< Parent object
     struct json_object *json_object;            ///< JSON object
     enum json_tokener_error error_no;           ///< Error number
-    KCString error_desc;                        ///< Error description
+    kcchar *error_desc;                         ///< Error description
 };
 
 struct kc_json_object {

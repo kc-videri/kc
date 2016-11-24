@@ -48,11 +48,11 @@ struct kc_web_client {
     KCSocket socket;            ///< KCSocket object
     uint16_t port;              ///< Port to use
     kcbool secure;              ///< Using secure communication
-    KCString host;              ///< Host to use
-    KCString path;              ///< Path to use
-    KCString query;             ///< Query to use
-    KCString fragment;          ///< Fragement ???
-    KCString content;           ///< Content to send
+    kcchar *host;                 ///< Host to use
+    kcchar *path;                 ///< Path to use
+    kcchar *query;                ///< Query to use
+    kcchar *fragment;             ///< Fragement ???
+    kcchar *content;              ///< Content to send
 };
 
 struct kc_web_client_recv_msg {

@@ -31,8 +31,8 @@ extern "C" {
 #endif
 
 typedef struct parameter {
-    char *key;
-    char *value;
+    kcchar *key;
+    kcchar *value;
     KCParameter *next;
 } KCParameter;
 

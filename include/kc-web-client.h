@@ -117,7 +117,7 @@ int kc_web_client_set_content_type(KCWebClient obj,
 /**
  * Set HTTP version
  * @param obj KCWeb object
- * @param version HTTP version to set
+ * @param version HTTP version to set; default: 1.1
  * @return 0 => successful
  */
 int kc_web_client_set_http_version(KCWebClient obj, KCWebHTTPVersion version);

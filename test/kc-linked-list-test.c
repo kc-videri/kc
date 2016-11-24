@@ -46,7 +46,7 @@ void print_content(KCLinkedList list, kcbool content);
 int main(void) {
 	KCLinkedList list;
 	int retval, i, buffer3;
-	char *buffer1, buffer2[BUFFER_LENGTH];
+	kcchar *buffer1, buffer2[BUFFER_LENGTH];
 
 	buffer1 = BUFFER_1;
 	memcpy(buffer2, BUFFER_2, strlen(BUFFER_2));

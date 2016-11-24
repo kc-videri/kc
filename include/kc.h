@@ -35,8 +35,8 @@ extern "C" {
 
 typedef uint32_t        kcbool;                 ///< Basic type boolean
 
-typedef char            kcchar;                 ///< Basic type kc_char
-typedef unsigned char   kcuchar;                ///< Basic type kc_uchar
+typedef char            kcchar;                 ///< Basic type kcchar
+typedef unsigned char   kcuchar;                ///< Basic type kcuchar
 
 typedef uint16_t        kcushort;               ///< Basic type u16_t
 
