@@ -114,6 +114,13 @@ int kc_web_client_set_request(KCWebClient obj, KCWebRequestType request);
  */
 int kc_web_client_set_content_type(KCWebClient obj,
                                    KCWebContentType content_type);
+/**
+ * Set HTTP version
+ * @param obj KCWeb object
+ * @param version HTTP version to set
+ * @return 0 => successful
+ */
+int kc_web_client_set_http_version(KCWebClient obj, KCWebHTTPVersion version);
 
 /**
  * Set header value pair

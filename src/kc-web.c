@@ -216,6 +216,27 @@ KCWebContentTypeDef kc_web_get_content_type_def_from_string(char *str)
     return content_type;
 }
 
+int kc_web_set_content_type(KCWeb obj, KCWebContentType type)
+{
+    obj->content_type = kc_web_get_content_type_def_from_type(KC_WEB_CONTENT_XHTML);
+
+    return 0;
+}
+
+int kc_web_set_request_type(KCWeb obj, KCWebRequestType type)
+{
+    obj->request_type = KC_WEB_REQUEST_GET;
+
+    return 0;
+}
+
+int kc_web_set_http_version(KCWeb obj, KCWebHTTPVersion version)
+{
+    obj->version = version;
+
+    return 0;
+}
+
 KCWebParameter kc_web_parameter_new()
 {
     KCWebParameter obj;

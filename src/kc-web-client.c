@@ -42,9 +42,9 @@ KCWebClient kc_web_client_new()
         goto kc_web_client_init_socket;
     }
     // default values
-    ((KCWeb) obj)->content_type =
-        kc_web_get_content_type_def_from_type(KC_WEB_CONTENT_XHTML);
-    ((KCWeb) obj)->request_type = KC_WEB_REQUEST_GET;
+    kc_web_set_content_type((KCWeb) obj, KC_WEB_CONTENT_XHTML);
+    kc_web_set_request_type((KCWeb) obj, KC_WEB_REQUEST_GET);
+    kc_web_set_http_version((KCWeb) obj, KC_WEB_VERSION_1_1);
     obj->port = KC_WEB_CLIENT_DEFAULT_PORT;
     obj->secure = FALSE;
     obj->host = NULL;
@@ -64,8 +64,8 @@ KCWebClient kc_web_client_new()
 
 int kc_web_client_free(KCWebClient obj)
 {
-    kc_socket_free((KCSocket)obj);
-    kc_web_free((KCWeb)obj);
+    kc_socket_free((KCSocket) obj);
+    kc_web_free((KCWeb) obj);
 
     return 0;
 }
@@ -120,18 +120,19 @@ int kc_web_client_set_fragment(KCWebClient obj, char *fragment)
 int kc_web_client_set_request(KCWebClient obj,
                               KCWebRequestType request_type)
 {
-    ((KCWeb) obj)->request_type = request_type;
-
-    return 0;
+    return kc_web_set_request_type((KCWeb) obj, request_type);
 }
 
 int kc_web_client_set_content_type(KCWebClient obj,
                                    KCWebContentType content_type)
 {
-    ((KCWeb) obj)->content_type =
-        kc_web_get_content_type_def_from_type(KC_WEB_CONTENT_XHTML);
+    return kc_web_set_content_type((KCWeb) obj, content_type);
+}
 
-    return 0;
+int kc_web_client_set_http_version(KCWebClient obj,
+                                   KCWebHTTPVersion version)
+{
+    return kc_web_set_http_version((KCWeb) obj, version);
 }
 
 int kc_web_client_set_header(KCWebClient obj, char *key, char *value)
@@ -177,7 +178,7 @@ KCWebClientRecvMsg kc_web_client_send(KCWebClient obj)
     return result;
 
   kc_web_client_send_error:
-    kc_web_free((KCWeb)result);
+    kc_web_free((KCWeb) result);
 
     return NULL;
 }

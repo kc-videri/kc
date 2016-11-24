@@ -55,6 +55,7 @@ struct kc_web {
     struct kc_object object;    ///< Parent object
     KCWebContentTypeDef content_type;   ///< Content type structure
     KCWebRequestType request_type;  ///< request type
+    KCWebHTTPVersion version;   ///< HTTP version
     KCLinkedList parameter;     ///< parameter list
 };
 
@@ -90,7 +91,13 @@ KCWeb kc_web_new();
  */
 int kc_web_free(KCWeb obj);
 
-
+/**
+ * Set content type
+ * @param obj KCWeb object
+ * @param type Content type to set
+ * @return 0 => successful
+ */
+int kc_web_set_content_type(KCWeb obj, KCWebContentType type);
 /**
  * Get content type definition from content type
  * @param type Content type
@@ -103,6 +110,21 @@ KCWebContentTypeDef kc_web_get_content_type_def_from_type(KCWebContentType type)
  * @return KCWebContentTypeDef object or NULL on error
  */
 KCWebContentTypeDef kc_web_get_content_type_def_from_string(char *str);
+
+/**
+ * Set request type
+ * @param obj KCWeb object
+ * @param type Request type to set
+ * @return 0 => successful
+ */
+int kc_web_set_request_type(KCWeb obj, KCWebRequestType type);
+/**
+ * Set HTTP version
+ * @param obj KCWeb object
+ * @param version HTTP version to set
+ * @return 0 => successful
+ */
+int kc_web_set_http_version(KCWeb obj, KCWebHTTPVersion version);
 
 /**
  * Create a new KCWebParameter
