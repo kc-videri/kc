@@ -60,11 +60,46 @@ int kc_string_free(KCString string);
 #if 0
 int kc_string_add(KCString, char *value, ...); 
 int kc_string_add_char(KCString, char value);
-
-int *kc_string_set_pos(KCString obj, size_t pos);
-kcchar *kc_string_get(KCString obj);
-kcchar *kc_string_get_pos(KCString obj);
 #endif
+
+/**
+ * Get string
+ * @param obj KCString object
+ * @return String
+ */
+kcchar *kc_string_get_string(KCString obj);
+/**
+ * Get string from position
+ * @param obj KCString object
+ * @param pos Position to use
+ * @return String
+ */
+kcchar *kc_string_get_string_from_pos(KCString obj, size_t pos);
+/**
+ * Get string from current position
+ * @param obj KCString object
+ * @return String
+ */
+kcchar *kc_string_get_string_from_current_pos(KCString obj);
+/**
+ * Set current string position
+ * @param obj KCString object
+ * @param pos position to use
+ * @return 0 => successful
+ */
+int kc_string_set_pos(KCString obj, size_t pos);
+/**
+ * Get current string position
+ * @param obj KCString object
+ * @return Current position
+ */
+size_t kc_string_get_pos(KCString obj);
+/**
+ * Get string length
+ * @param obj KCString object
+ * @return Length of the string
+ */
+size_t kc_string_get_length(KCString obj);
 
 #ifdef __cplusplus
 }

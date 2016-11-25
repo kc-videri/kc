@@ -74,7 +74,47 @@ int kc_string_add_char(KCString, char value)
     return 0;
 }
 
-int *kc_string_set_pos(KCString obj, size_t pos);
-kcchar *kc_string_get(KCString obj);
-kcchar *kc_string_get_pos(KCString obj);
 #endif
+
+kcchar *kc_string_get_string(KCString obj)
+{
+    return kc_string_get_string_from_pos(obj, 0);
+}
+
+kcchar *kc_string_get_string_from_pos(KCString obj, size_t pos)
+{
+    kcchar *result = NULL;
+
+    if (pos < 0 || pos >= kc_string_get_length(obj)) {
+        return result;
+    }
+
+    result = obj->string;
+    result += pos;
+
+    return result;
+}
+
+kcchar *kc_string_get_string_from_current_pos(KCString obj)
+{
+    return kc_string_get_string_from_pos(obj, kc_string_get_pos(obj));
+}
+
+int kc_string_set_pos(KCString obj, size_t pos)
+{
+    if (pos < 0 || pos >= kc_string_get_length(obj)) {
+        return -1;
+    }
+
+    return 0;
+}
+
+size_t kc_string_get_pos(KCString obj)
+{
+    return obj->pos;
+}
+
+size_t kc_string_get_length(KCString obj)
+{
+    return obj->length;
+}
