@@ -38,18 +38,15 @@ typedef struct kc_string* KCString;
 
 /**
  * Create a string
- * @param value Value to copy into created string
- * @param length Length of the value
  * @return New created string or NULL on error
  */
 KCString kc_string_new();
 /**
  * Create a string
  * @param value Value to copy into created string
- * @param length Length of the value
  * @return New created string or NULL on error
  */
-KCString kc_string_new_with_string(const char *value, size_t length);
+KCString kc_string_new_with_string(const char *value, ...);
 /**
  * Free string
  * @param string String to free
@@ -58,8 +55,8 @@ KCString kc_string_new_with_string(const char *value, size_t length);
 int kc_string_free(KCString string);
 
 #if 0
-int kc_string_add(KCString, char *value, ...); 
-int kc_string_add_char(KCString, char value);
+int kc_string_append(KCString, char *value, ...); 
+int kc_string_append_char(KCString, char value);
 #endif
 
 /**
@@ -94,6 +91,13 @@ int kc_string_set_pos(KCString obj, size_t pos);
  * @return Current position
  */
 size_t kc_string_get_pos(KCString obj);
+/**
+ * Set string length
+ * @param obj KCString object
+ * @param pos position to use
+ * @return Length of the string
+ */
+int kc_string_set_length(KCString obj, size_t length);
 /**
  * Get string length
  * @param obj KCString object

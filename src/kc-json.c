@@ -27,7 +27,7 @@
 #include <kc-object.h>
 
 /*
- * Private function definition
+ * Public function definition
  * */
 
 KCJson kc_json_new()

@@ -31,32 +31,26 @@
  */
 struct kc_string {
     struct kc_object object;    ///< Parent object
-    kcchar *string;               ///< Real string
+    kcchar *string;             ///< Real string
     size_t length;              ///< Length of the string
     size_t pos;                 ///< current position in string
 };
 
-#if 0
 /**
  * Create a string
  * @param value Value to copy into created string
  * @param length Length of the value
  * @return New created string or NULL on error
  */
-KCString kc_string_new();
-/**
- * Create a string
- * @param value Value to copy into created string
- * @param length Length of the value
- * @return New created string or NULL on error
- */
-KCString kc_string_new_with_string(const kcchar *value, size_t length);
-/**
- * Free string
- * @param string String to free
- * @return 0 => successful
- */
-int kc_string_free(KCString string);
-#endif
+KCString kc_string_new_with_string_length(const char *value, size_t length);
 
-#endif /* __KC_STRING_PRIVATE_H__ */
+/**
+ * Create a string
+ * @param [out] length Length of the string
+ * @param str Main part of the string
+ * @param list Parameter list
+ * @return New created string or NULL on error
+ */
+char *kc_string_create_string(size_t * length, const char *str, va_list list);
+
+#endif                          /* __KC_STRING_PRIVATE_H__ */

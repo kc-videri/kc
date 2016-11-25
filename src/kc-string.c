@@ -22,39 +22,53 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <stdarg.h>
 
 #include <kc-object.h>
 #include <kc-string.h>
 #include <kc-string_private.h>
 
+#define BUFFER_LENGTH 1024
+
+/*
+ * Public function definition
+ * */
+
 // TODO MOT: test application
 KCString kc_string_new()
 {
-    return kc_string_new_with_string(NULL, 1);
+    return kc_string_new_with_string_length(NULL, BUFFER_LENGTH);
 }
 
-KCString kc_string_new_with_string(const kcchar *value, size_t length)
+KCString kc_string_new_with_string(const kcchar * value, ...)
 {
     KCString obj;
+    kcchar *buffer = NULL;
+    va_list list;
+    size_t length;
 
-    obj = (KCString) kc_object_new(sizeof(struct kc_string));
+    va_start(list, value);
+    buffer = kc_string_create_string(&length, value, list);
+    va_end(list);
+    if (buffer == NULL) {
+        goto kc_string_new_with_string_buffer_error;
+        return NULL;
+    }
+
+    obj = kc_string_new_with_string_length(value, length);
     if (obj == NULL) {
-        goto kc_sting_create_exit;
+        goto kc_string_new_with_string_obj_error;
     }
 
-    obj->string = (kcchar *) malloc((length + 1) * sizeof(kcchar));
-    if (value != NULL) {
-        memcpy(obj->string, value, length);
-        obj->pos = obj->length = length;
-        obj->string[length] = '\0';
-    } else {
-        obj->pos = obj->length = 0;
-    }
-
-  kc_sting_create_exit:
     return obj;
+
+  kc_string_new_with_string_obj_error:
+    free(buffer);
+
+  kc_string_new_with_string_buffer_error:
+    return NULL;
 }
- 
+
 int kc_string_free(KCString obj)
 {
     free(obj->string);
@@ -64,12 +78,12 @@ int kc_string_free(KCString obj)
 }
 
 #if 0
-int kc_string_add(KCString, char *value, ...)
+int kc_string_append(KCString, char *value, ...)
 {
     return 0;
 }
 
-int kc_string_add_char(KCString, char value)
+int kc_string_append_char(KCString, char value)
 {
     return 0;
 }
@@ -114,7 +128,81 @@ size_t kc_string_get_pos(KCString obj)
     return obj->pos;
 }
 
+int kc_string_set_length(KCString obj, size_t length)
+{
+    obj->string = (char *) realloc(obj->string, length + 1);
+    if (obj->string == NULL) {
+        return -1;
+    }
+
+    obj->length = length;
+    if (kc_string_get_pos(obj) > obj->length) {
+        kc_string_set_pos(obj, obj->length);
+    }
+
+    return 0;
+}
+
 size_t kc_string_get_length(KCString obj)
 {
     return obj->length;
+}
+
+/*
+ * Private function definition
+ * */
+
+KCString kc_string_new_with_string_length(const char *value, size_t length)
+{
+    KCString obj;
+
+    obj = (KCString) kc_object_new(sizeof(struct kc_string));
+    if (obj == NULL) {
+        goto kc_sting_create_exit;
+    }
+    obj->string = (kcchar *) malloc((length + 1) * sizeof(kcchar));
+    if (value != NULL) {
+        memcpy(obj->string, value, length);
+        obj->pos = obj->length = length;
+        obj->string[length] = '\0';
+    } else {
+        obj->pos = 0;
+        obj->length = length;
+    }
+
+  kc_sting_create_exit:
+    return obj;
+
+}
+
+kcchar *kc_string_create_string(size_t * length, const char *str,
+                                va_list list)
+{
+    size_t retval;
+    char *result = NULL;
+    kcbool do_it_again = FALSE;
+
+    *length = BUFFER_LENGTH + 1;
+
+    while (1) {
+        result = (char *) realloc(result, *length);
+        if (result == NULL) {
+            fprintf(stderr, "Cannot create memory\n");
+            *length = 0;
+        }
+
+        retval = vsnprintf(result, *length, str, list);
+        if (do_it_again == TRUE) {
+            break;
+        }
+        if (retval > *length) {
+            *length = retval + 1;
+            do_it_again = TRUE;
+        } else {
+            break;
+        }
+    }
+
+    return result;
+
 }
