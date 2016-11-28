@@ -34,20 +34,16 @@
  * Private structure declaration
  * */
 
-/**
- * Structure struct kc_web_content_type: Structure to handle different content types
- */
+/// Structure struct kc_web_content_type: Structure to handle different content types
 struct kc_web_content_type_def {
     KCWebContentType type;      ///< Content type
-    kcchar *type_string;          ///< String to send to define type
-    kcchar *endings[3];           ///< String to send to define type
+    kcchar *type_string;        ///< String to send to define type
+    kcchar *endings[3];         ///< String to send to define type
 };
 
 typedef struct kc_web_content_type_def *KCWebContentTypeDef;
 
-/**
- * Structure KCWeb: Structure to save all important web information
- */
+/// Structure KCWeb: Structure to save all important web information
 struct kc_web {
     struct kc_object object;    ///< Parent object
     KCWebContentTypeDef content_type;   ///< Content type structure
@@ -56,14 +52,20 @@ struct kc_web {
     KCLinkedList parameter;     ///< parameter list
 };
 
-/**
- * Structure KCWeb: Structure to save received parameter item
- */
+/// Structure KCWeb: Structure to save received parameter item
 struct kc_web_parameter {
     struct kc_object object;    ///< Parent object
     KCWebParameterType type;    ///< On which way does the parameter come
-    kcchar *key;                  ///< Key of a parameter
-    kcchar *value;                ///< Value of a parameter
+    kcchar *key;                ///< Key of a parameter
+    kcchar *value;              ///< Value of a parameter
+};
+
+/// Structure to encode and decode ASCII signs
+struct kc_web_html_chars {
+    uint8_t id;                 ///< Id
+    char sign;               ///< ASCII Sign
+    kcchar *symbol;             ///< HTML name
+    kcchar *description;        ///< Description
 };
 
 /*
@@ -71,6 +73,7 @@ struct kc_web_parameter {
  * */
 
 extern struct kc_web_content_type_def content_types[];
+extern struct kc_web_html_chars html_chars[];
 
 /*
  * Private function declaration
