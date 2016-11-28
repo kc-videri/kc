@@ -69,6 +69,29 @@ KCString kc_string_new_with_string(const kcchar * value, ...)
     return NULL;
 }
 
+KCString kc_string_new_with_string_length(const char *value, size_t length)
+{
+    KCString obj;
+
+    obj = (KCString) kc_object_new(sizeof(struct kc_string));
+    if (obj == NULL) {
+        goto kc_sting_create_exit;
+    }
+    obj->string = (kcchar *) malloc((length + 1) * sizeof(kcchar));
+    if (value != NULL) {
+        memcpy(obj->string, value, length);
+        obj->pos = obj->length = length;
+        obj->string[length] = '\0';
+    } else {
+        obj->pos = 0;
+        obj->length = length;
+    }
+
+  kc_sting_create_exit:
+    return obj;
+
+}
+
 int kc_string_free(KCString obj)
 {
     free(obj->string);
@@ -95,7 +118,37 @@ kcchar *kc_string_get_string(KCString obj)
     return kc_string_get_string_from_pos(obj, 0);
 }
 
+kcchar *kc_string_get_string_pointer(KCString obj)
+{
+    return kc_string_get_string_pointer_from_pos(obj, 0);
+}
+
 kcchar *kc_string_get_string_from_pos(KCString obj, size_t pos)
+{
+    kcchar *result = NULL;
+    kcchar *buffer = NULL;
+    size_t length;
+
+    if (pos < 0 || pos >= kc_string_get_length(obj)) {
+        return result;
+    }
+
+    buffer = obj->string;
+    buffer += pos;
+    length = strlen(buffer);
+    fprintf(stderr, "buffer: %s %d", buffer, length); // DELETE
+
+    result = (kcchar *)malloc((length + 1) * sizeof(kcchar));
+    if (result == NULL) {
+        return result;
+    }
+    snprintf(result, length + 1, buffer);
+    fprintf(stderr, "buffer: %s %d", result, length); // DELETE
+
+    return result;
+}
+
+kcchar *kc_string_get_string_pointer_from_pos(KCString obj, size_t pos)
 {
     kcchar *result = NULL;
 
@@ -112,6 +165,11 @@ kcchar *kc_string_get_string_from_pos(KCString obj, size_t pos)
 kcchar *kc_string_get_string_from_current_pos(KCString obj)
 {
     return kc_string_get_string_from_pos(obj, kc_string_get_pos(obj));
+}
+
+kcchar *kc_string_get_string_pointer_from_current_pos(KCString obj)
+{
+    return kc_string_get_string_pointer_from_pos(obj, kc_string_get_pos(obj));
 }
 
 int kc_string_set_pos(KCString obj, size_t pos)
@@ -151,29 +209,6 @@ size_t kc_string_get_length(KCString obj)
 /*
  * Private function definition
  * */
-
-KCString kc_string_new_with_string_length(const char *value, size_t length)
-{
-    KCString obj;
-
-    obj = (KCString) kc_object_new(sizeof(struct kc_string));
-    if (obj == NULL) {
-        goto kc_sting_create_exit;
-    }
-    obj->string = (kcchar *) malloc((length + 1) * sizeof(kcchar));
-    if (value != NULL) {
-        memcpy(obj->string, value, length);
-        obj->pos = obj->length = length;
-        obj->string[length] = '\0';
-    } else {
-        obj->pos = 0;
-        obj->length = length;
-    }
-
-  kc_sting_create_exit:
-    return obj;
-
-}
 
 kcchar *kc_string_create_string(size_t * length, const char *str,
                                 va_list list)

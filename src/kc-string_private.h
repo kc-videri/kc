@@ -38,14 +38,6 @@ struct kc_string {
 
 /**
  * Create a string
- * @param value Value to copy into created string
- * @param length Length of the value
- * @return New created string or NULL on error
- */
-KCString kc_string_new_with_string_length(const char *value, size_t length);
-
-/**
- * Create a string
  * @param [out] length Length of the string
  * @param str Main part of the string
  * @param list Parameter list

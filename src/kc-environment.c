@@ -140,18 +140,20 @@ int get_hostname(KCEnvironment * obj)
 
 int get_username(KCEnvironment * obj)
 {
-    int retval;
-
     obj->username = (kcchar *) malloc((BUFFER_LENGTH + 1) * sizeof(kcchar));
     if (obj->username == NULL) {
         return (-1);
     }
 #if defined(__linux__)
+    int retval;
+
     //gethostname(obj->hostname, BUFFER_LENGTH);
     retval = getlogin_r(obj->username, BUFFER_LENGTH);
-    // TODO MOT: Error handling
+    if (retval != 0) {
+        // TODO MOT: Error handling
+    }
 
-    return (0);
+    return retval;
 #elif (defined _WIN32 || defined __WIN32__) && ! defined __CYGWIN__
     //int length;
     DWORD length;

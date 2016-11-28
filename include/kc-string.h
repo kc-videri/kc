@@ -48,6 +48,13 @@ KCString kc_string_new();
  */
 KCString kc_string_new_with_string(const char *value, ...);
 /**
+ * Create a string
+ * @param value Value to copy into created string
+ * @param length Length of the value
+ * @return New created string or NULL on error
+ */
+KCString kc_string_new_with_string_length(const char *value, size_t length);
+/**
  * Free string
  * @param string String to free
  * @return 0 => successful
@@ -60,24 +67,43 @@ int kc_string_append_char(KCString, char value);
 #endif
 
 /**
- * Get string
+ * Get string as copy
  * @param obj KCString object
  * @return String
  */
 kcchar *kc_string_get_string(KCString obj);
 /**
- * Get string from position
+ * Get string
+ * @param obj KCString object
+ * @return String
+ */
+kcchar *kc_string_get_string_pointer(KCString obj);
+/**
+ * Get string as copy from position
  * @param obj KCString object
  * @param pos Position to use
  * @return String
  */
 kcchar *kc_string_get_string_from_pos(KCString obj, size_t pos);
 /**
- * Get string from current position
+ * Get string from position
+ * @param obj KCString object
+ * @param pos Position to use
+ * @return String
+ */
+kcchar *kc_string_get_string_pointer_from_pos(KCString obj, size_t pos);
+/**
+ * Get string as copy from current position
  * @param obj KCString object
  * @return String
  */
 kcchar *kc_string_get_string_from_current_pos(KCString obj);
+/**
+ * Get string from current position
+ * @param obj KCString object
+ * @return String
+ */
+kcchar *kc_string_get_string_pointer_from_current_pos(KCString obj);
 /**
  * Set current string position
  * @param obj KCString object
