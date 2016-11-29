@@ -4,6 +4,7 @@ include_HEADERS = \
     kc-object.h \
     kc-environment.h \
     kc-string.h \
+    kc-wstring.h \
     kc-web-server.h \
     kc-web-client.h \
     kc-linked-list.h \

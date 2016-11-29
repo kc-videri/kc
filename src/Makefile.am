@@ -17,6 +17,7 @@ libkc_la_SOURCES = \
 	kc-object.c \
 	kc-environment.c \
 	kc-string.c \
+	kc-wstring.c \
 	kc-linked-list.c \
 	kc-mutex.c \
 	kc-json.c \
