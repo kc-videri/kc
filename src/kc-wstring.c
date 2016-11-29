@@ -37,11 +37,13 @@
 // TODO MOT: test application
 KCWString kc_wstring_new()
 {
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
     return kc_wstring_new_with_string_length(NULL, BUFFER_LENGTH);
 }
 
 KCWString kc_wstring_new_with_string(const kcchar * value, ...)
 {
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
     KCWString obj;
     kcchar *buffer = NULL;
     va_list list;
@@ -69,31 +71,96 @@ KCWString kc_wstring_new_with_string(const kcchar * value, ...)
     return NULL;
 }
 
+KCWString kc_wstring_new_with_wstring(const wchar_t *value, ...)
+{
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE
+#if 0
+    KCWString obj;
+    kcchar *buffer = NULL;
+    va_list list;
+    size_t length;
+
+    va_start(list, value);
+    buffer = kc_wstring_create_string(&length, value, list);
+    va_end(list);
+    if (buffer == NULL) {
+        goto kc_wstring_new_with_string_buffer_error;
+        return NULL;
+    }
+
+    obj = kc_wstring_new_with_string_length(value, length);
+    if (obj == NULL) {
+        goto kc_wstring_new_with_string_obj_error;
+    }
+
+    return obj;
+
+  kc_wstring_new_with_string_obj_error:
+    free(buffer);
+
+  kc_wstring_new_with_string_buffer_error:
+#endif 
+    return NULL;
+}
+
 KCWString kc_wstring_new_with_string_length(const char *value, size_t length)
 {
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
     KCWString obj;
 
-    obj = (KCWString) kc_object_new(sizeof(struct kc_wstring));
+    obj = kc_wstring_new_with_length(length);
     if (obj == NULL) {
-        goto kc_sting_create_exit;
+        return obj;
     }
-    obj->string = (kcchar *) malloc((length + 1) * sizeof(kcchar));
+
     if (value != NULL) {
+#if 0
         memcpy(obj->string, value, length);
-        obj->pos = obj->length = length;
+        obj->pos = obj->string_length = wcslen(value);
+        obj->length = length;
         obj->string[length] = '\0';
+#endif
     } else {
-        obj->pos = 0;
+        obj->pos = obj->string_length = 0;
         obj->length = length;
     }
 
-  kc_sting_create_exit:
     return obj;
+}
 
+KCWString kc_wstring_new_with_wstring_length(const wchar_t *value, size_t length)
+{
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
+    KCWString obj;
+
+    obj = kc_wstring_new_with_length(length);
+    if (obj == NULL) {
+        return obj;
+    }
+
+    if (value != NULL) {
+        size_t len;
+
+        len = wcslen(value);
+        if (len > length) {
+            len = length;
+        }
+
+        memcpy(obj->string, value, len);
+        obj->pos = obj->string_length = len;
+        obj->length = length;
+        obj->string[len] = '\0';
+    } else {
+        obj->pos = obj->string_length = 0;
+        obj->length = length;
+    }
+
+    return obj;
 }
 
 int kc_wstring_free(KCWString obj)
 {
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
     free(obj->string);
     kc_object_free((KCObject) obj);
 
@@ -103,30 +170,45 @@ int kc_wstring_free(KCWString obj)
 #if 0
 int kc_wstring_append(KCWString, char *value, ...)
 {
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
     return 0;
 }
 
 int kc_wstring_append_char(KCWString, char value)
 {
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
     return 0;
 }
+
+int kc_wstring_append_wchar(KCWString, wchar_t value);
 
 #endif
 
 kcchar *kc_wstring_get_string(KCWString obj)
 {
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
     return kc_wstring_get_string_from_pos(obj, 0);
 }
 
-kcchar *kc_wstring_get_string_pointer(KCWString obj)
+kcwchar *kc_wstring_get_wstring(KCWString obj)
 {
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
+    return kc_wstring_get_wstring_from_pos(obj, 0);
+}
+
+kcwchar *kc_wstring_get_string_pointer(KCWString obj)
+{
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
     return kc_wstring_get_string_pointer_from_pos(obj, 0);
 }
 
-kcchar *kc_wstring_get_string_from_pos(KCWString obj, size_t pos)
+kcchar *kc_wstring_get_string_from_pos(KCWString obj, size_t pos);
+
+kcwchar *kc_wstring_get_wstring_from_pos(KCWString obj, size_t pos)
 {
-    kcchar *result = NULL;
-    kcchar *buffer = NULL;
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
+    kcwchar *result = NULL;
+    kcwchar *buffer = NULL;
     size_t length;
 
     if (pos < 0 || pos >= kc_wstring_get_length(obj)) {
@@ -135,22 +217,24 @@ kcchar *kc_wstring_get_string_from_pos(KCWString obj, size_t pos)
 
     buffer = obj->string;
     buffer += pos;
-    length = strlen(buffer);
-    fprintf(stderr, "buffer: %s %d", buffer, length); // DELETE
+    length = wcslen(buffer);
+    fprintf(stderr, "buffer: %ls %ld", buffer, length); // DELETE
 
-    result = (kcchar *)malloc((length + 1) * sizeof(kcchar));
+    result = (kcwchar *)malloc((length + 1) * sizeof(kcwchar));
     if (result == NULL) {
         return result;
     }
-    snprintf(result, length + 1, buffer);
-    fprintf(stderr, "buffer: %s %d", result, length); // DELETE
+    // TODO MOT: 
+    //snprintf(result, length + 1, buffer);
+    fprintf(stderr, "buffer: %ls %ld", result, length); // DELETE
 
     return result;
 }
 
-kcchar *kc_wstring_get_string_pointer_from_pos(KCWString obj, size_t pos)
+kcwchar *kc_wstring_get_string_pointer_from_pos(KCWString obj, size_t pos)
 {
-    kcchar *result = NULL;
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
+    kcwchar *result = NULL;
 
     if (pos < 0 || pos >= kc_wstring_get_length(obj)) {
         return result;
@@ -164,16 +248,25 @@ kcchar *kc_wstring_get_string_pointer_from_pos(KCWString obj, size_t pos)
 
 kcchar *kc_wstring_get_string_from_current_pos(KCWString obj)
 {
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
     return kc_wstring_get_string_from_pos(obj, kc_wstring_get_pos(obj));
 }
 
-kcchar *kc_wstring_get_string_pointer_from_current_pos(KCWString obj)
+kcwchar *kc_wstring_get_wstring_from_current_pos(KCWString obj)
 {
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
+    return kc_wstring_get_wstring_from_pos(obj, kc_wstring_get_pos(obj));
+}
+
+kcwchar *kc_wstring_get_string_pointer_from_current_pos(KCWString obj)
+{
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
     return kc_wstring_get_string_pointer_from_pos(obj, kc_wstring_get_pos(obj));
 }
 
 int kc_wstring_set_pos(KCWString obj, size_t pos)
 {
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
     if (pos < 0 || pos >= kc_wstring_get_length(obj)) {
         return -1;
     }
@@ -183,12 +276,14 @@ int kc_wstring_set_pos(KCWString obj, size_t pos)
 
 size_t kc_wstring_get_pos(KCWString obj)
 {
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
     return obj->pos;
 }
 
 int kc_wstring_set_length(KCWString obj, size_t length)
 {
-    obj->string = (char *) realloc(obj->string, length + 1);
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
+    obj->string = (kcwchar *) realloc(obj->string, length + 1);
     if (obj->string == NULL) {
         return -1;
     }
@@ -203,6 +298,7 @@ int kc_wstring_set_length(KCWString obj, size_t length)
 
 size_t kc_wstring_get_length(KCWString obj)
 {
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
     return obj->length;
 }
 
@@ -210,9 +306,33 @@ size_t kc_wstring_get_length(KCWString obj)
  * Private function definition
  * */
 
+KCWString kc_wstring_new_with_length(size_t length)
+{
+    KCWString obj;
+
+    obj = (KCWString) kc_object_new(sizeof(struct kc_wstring));
+    if (obj == NULL) {
+        goto kc_string_new_with_string_length_exit;
+    }
+    obj->string = (kcwchar *) malloc((length + 1) * sizeof(kcwchar));
+    if (obj->string == NULL) {
+        goto kc_string_new_with_string_length_string;
+    }
+
+    return obj;
+
+  kc_string_new_with_string_length_string:
+    free(obj);
+    obj = NULL;
+
+  kc_string_new_with_string_length_exit:
+    return obj;
+}
+
 kcchar *kc_wstring_create_string(size_t * length, const char *str,
                                 va_list list)
 {
+    fprintf(stderr, "// TODO MOT: to test\n"); // DELETE 
     size_t retval;
     char *result = NULL;
     kcbool do_it_again = FALSE;

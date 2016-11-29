@@ -63,7 +63,7 @@ struct kc_web_parameter {
 /// Structure to encode and decode ASCII signs
 struct kc_web_html_chars {
     uint8_t id;                 ///< Id
-    char sign;               ///< ASCII Sign
+    wchar_t sign;               ///< ASCII Sign
     kcchar *symbol;             ///< HTML name
     kcchar *description;        ///< Description
 };

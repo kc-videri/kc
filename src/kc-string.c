@@ -75,21 +75,37 @@ KCString kc_string_new_with_string_length(const char *value, size_t length)
 
     obj = (KCString) kc_object_new(sizeof(struct kc_string));
     if (obj == NULL) {
-        goto kc_sting_create_exit;
+        goto kc_string_new_with_string_length_exit;
     }
     obj->string = (kcchar *) malloc((length + 1) * sizeof(kcchar));
+    if (obj->string == NULL) {
+        goto kc_string_new_with_string_length_string;
+    }
     if (value != NULL) {
-        memcpy(obj->string, value, length);
-        obj->pos = obj->length = length;
-        obj->string[length] = '\0';
+        size_t len;
+
+        len = strlen(value);
+        if (len > length) {
+            len = length;
+        }
+
+        memcpy(obj->string, value, len);
+        obj->pos = obj->string_length = len;
+        obj->length = length;
+        obj->string[len] = '\0';
     } else {
-        obj->pos = 0;
+        obj->pos = obj->string_length = 0;
         obj->length = length;
     }
 
-  kc_sting_create_exit:
     return obj;
 
+  kc_string_new_with_string_length_string:
+    free(obj);
+    obj = NULL;
+
+  kc_string_new_with_string_length_exit:
+    return obj;
 }
 
 int kc_string_free(KCString obj)
@@ -136,14 +152,14 @@ kcchar *kc_string_get_string_from_pos(KCString obj, size_t pos)
     buffer = obj->string;
     buffer += pos;
     length = strlen(buffer);
-    fprintf(stderr, "buffer: %s %d", buffer, length); // DELETE
+    fprintf(stderr, "buffer: %s %ld", buffer, length); // DELETE
 
     result = (kcchar *)malloc((length + 1) * sizeof(kcchar));
     if (result == NULL) {
         return result;
     }
     snprintf(result, length + 1, buffer);
-    fprintf(stderr, "buffer: %s %d", result, length); // DELETE
+    fprintf(stderr, "buffer: %s %ld", result, length); // DELETE
 
     return result;
 }
@@ -188,7 +204,7 @@ size_t kc_string_get_pos(KCString obj)
 
 int kc_string_set_length(KCString obj, size_t length)
 {
-    obj->string = (char *) realloc(obj->string, length + 1);
+    obj->string = (kcchar *) realloc(obj->string, length + 1);
     if (obj->string == NULL) {
         return -1;
     }

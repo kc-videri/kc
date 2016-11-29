@@ -33,6 +33,7 @@ struct kc_string {
     struct kc_object object;    ///< Parent object
     kcchar *string;             ///< Real string
     size_t length;              ///< Length of the string
+    size_t string_length;       ///< Real string length
     size_t pos;                 ///< current position in string
 };
 

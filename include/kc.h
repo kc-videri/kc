@@ -27,6 +27,7 @@ extern "C" {
 #endif
 
 #include <stdint.h>
+#include <wchar.h>
 
 #include "kc-mutex.h"
 
@@ -37,6 +38,7 @@ typedef uint32_t        kcbool;                 ///< Basic type boolean
 
 typedef char            kcchar;                 ///< Basic type kcchar
 typedef unsigned char   kcuchar;                ///< Basic type kcuchar
+typedef wchar_t         kcwchar;                ///< Basic type kcwchar
 
 typedef uint16_t        kcushort;               ///< Basic type u16_t
 

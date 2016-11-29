@@ -50,10 +50,23 @@ KCWString kc_wstring_new_with_string(const char *value, ...);
 /**
  * Create a string
  * @param value Value to copy into created string
+ * @return New created string or NULL on error
+ */
+KCWString kc_wstring_new_with_wstring(const wchar_t *value, ...);
+/**
+ * Create a string
+ * @param value Value to copy into created string
  * @param length Length of the value
  * @return New created string or NULL on error
  */
 KCWString kc_wstring_new_with_string_length(const char *value, size_t length);
+/**
+ * Create a string
+ * @param value Value to copy into created string
+ * @param length Length of the value
+ * @return New created string or NULL on error
+ */
+KCWString kc_wstring_new_with_wstring_length(const wchar_t *value, size_t length);
 /**
  * Free string
  * @param string String to free
@@ -64,6 +77,7 @@ int kc_wstring_free(KCWString string);
 #if 0
 int kc_wstring_append(KCWString, char *value, ...); 
 int kc_wstring_append_char(KCWString, char value);
+int kc_wstring_append_wchar(KCWString, wchar_t value);
 #endif
 
 /**
@@ -73,11 +87,17 @@ int kc_wstring_append_char(KCWString, char value);
  */
 kcchar *kc_wstring_get_string(KCWString obj);
 /**
+ * Get string as copy
+ * @param obj KCWString object
+ * @return String
+ */
+kcwchar *kc_wstring_get_wstring(KCWString obj);
+/**
  * Get string
  * @param obj KCWString object
  * @return String
  */
-kcchar *kc_wstring_get_string_pointer(KCWString obj);
+kcwchar *kc_wstring_get_string_pointer(KCWString obj);
 /**
  * Get string as copy from position
  * @param obj KCWString object
@@ -86,12 +106,19 @@ kcchar *kc_wstring_get_string_pointer(KCWString obj);
  */
 kcchar *kc_wstring_get_string_from_pos(KCWString obj, size_t pos);
 /**
+ * Get string as copy from position
+ * @param obj KCWString object
+ * @param pos Position to use
+ * @return String
+ */
+kcwchar *kc_wstring_get_wstring_from_pos(KCWString obj, size_t pos);
+/**
  * Get string from position
  * @param obj KCWString object
  * @param pos Position to use
  * @return String
  */
-kcchar *kc_wstring_get_string_pointer_from_pos(KCWString obj, size_t pos);
+kcwchar *kc_wstring_get_string_pointer_from_pos(KCWString obj, size_t pos);
 /**
  * Get string as copy from current position
  * @param obj KCWString object
@@ -99,11 +126,17 @@ kcchar *kc_wstring_get_string_pointer_from_pos(KCWString obj, size_t pos);
  */
 kcchar *kc_wstring_get_string_from_current_pos(KCWString obj);
 /**
+ * Get string as copy from current position
+ * @param obj KCWString object
+ * @return String
+ */
+kcwchar *kc_wstring_get_wstring_from_current_pos(KCWString obj);
+/**
  * Get string from current position
  * @param obj KCWString object
  * @return String
  */
-kcchar *kc_wstring_get_string_pointer_from_current_pos(KCWString obj);
+kcwchar *kc_wstring_get_string_pointer_from_current_pos(KCWString obj);
 /**
  * Set current string position
  * @param obj KCWString object

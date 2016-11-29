@@ -31,11 +31,18 @@
  */
 struct kc_wstring {
     struct kc_object object;    ///< Parent object
-    kcchar *string;             ///< Real string
+    kcwchar *string;            ///< Real string
     size_t length;              ///< Length of the string
+    size_t string_length;       ///< Real string length
     size_t pos;                 ///< current position in string
 };
 
+/**
+ * Create a empty KCWString object
+ * @param length Memory length to allocates
+ * @return KCWString object or NULL on error
+ */
+KCWString kc_wstring_new_with_length(size_t length);
 /**
  * Create a string
  * @param [out] length Length of the string
