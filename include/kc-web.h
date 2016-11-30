@@ -23,7 +23,7 @@
 #define __KC_WEB_H__
 
 #include <kc-linked-list.h>
-#include <kc-string.h>
+#include <kc-wstring.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -97,19 +97,19 @@ KCLinkedList kc_web_get_parameter_list(KCWeb obj);
  * @param search_string Key string to search for
  * @return List object or NULL when not found
  */
-KCWebParameter kc_web_parameter_get(KCWeb obj, char *search_string);
+KCWebParameter kc_web_parameter_get(KCWeb obj, KCWString search_string);
 /**
  * Get key from KCWebParameter item
  * @param item KCWebParameter object
  * @return key object
  */
-kcchar *kc_web_parameter_get_key(KCWebParameter item);
+KCWString kc_web_parameter_get_key(KCWebParameter item);
 /**
  * Get value from KCWebParameter item
  * @param item KCWebParameter object
  * @return value object
  */
-kcchar *kc_web_parameter_get_value(KCWebParameter item);
+KCWString kc_web_parameter_get_value(KCWebParameter item);
 /**
  * Get type from KCWebParameter item
  * @param item KCWebParameter object

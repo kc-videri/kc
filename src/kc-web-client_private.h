@@ -23,10 +23,10 @@
 #define __KC_WEB_CLIENT_PRIVATE_H__
 
 #include <kc-socket_private.h>
+#include <kc-string.h>
 
 #if 0
 #include <kc-linked-list.h>
-#include <kc-string.h>
 #include <kc-json.h>
 #endif
 
@@ -63,83 +63,6 @@ struct kc_web_client_recv_msg {
     KCString content;           ///< content
 };
 
-#if 0
-
-char *kc_web_http_keys[] = {
-    "HTTP_HOST",
-    "HTTP_USER_AGENT",
-    "HTTP_ACCEPT",
-    "HTTP_ACCEPT_LANGUAGE",
-    "HTTP_ACCEPT_ENCODING",
-    "HTTP_DNT",
-    "HTTP_COOKIE",
-    "HTTP_CONNECTION",
-    NULL,
-};
-
-/*
- * Private function declaration
- * */
-
-/**
- * Parse a received string (query (get), content (post), ...)
- * @param obj KCWeb object
- * @param query_string String to parse
- * @param type Type of request
- * @return
- */
-int kc_web_parse_query_string(KCWeb obj, const char *query_string,
-                              KCWebParameterType type);
-
-/**
- * Create a new KCWebParameter
- * @return Item or NULL on error
- */
-KCWebParameter kc_web_parameter_new();
-/**
- * Create a new KCWebParameter
- * @param string String to check
- * @param length Length of string
- * @param type Type to set
- * @return Item or NULL on error
- */
-KCWebParameter kc_web_parameter_new_from_string(KCString string,
-                                                size_t length,
-                                                KCWebParameterType type);
-/**
- * Free parameter entry
- * @param obj Object to free
- * @return 0 => successful
- */
-int kc_web_parameter_free(KCWebParameter obj);
-/**
- * Set key
- * @param obj KCWebParameter pointer object
- * @param key Key to set
- * @return 0 => successful
- */
-int kc_web_parameter_set_key(KCWebParameter obj, KCString key);
-/**
- * Set value
- * @param obj KCWebParameter pointer Object
- * @param value Value to set
- * @return 0 => successful
- */
-int kc_web_parameter_set_value(KCWebParameter obj, KCString value);
-/**
- * Set type
- * @param obj KCWebParameter pointer Object
- * @param type Type to set
- * @return 0 => successful
- */
-int kc_web_parameter_set_type(KCWebParameter obj, KCWebParameterType type);
-/**
- * Add item to parameter list
- * @param obj KCWeb object
- * @param item Parameter item to add
- * @return 0 => successfull
- */
-int kc_web_parameter_list_add_item(KCWeb obj, KCWebParameter item);
-#endif
+KCString kc_web_client_create_query(KCWebClient obj);
 
 #endif                          /* __KC_WEB_CLIENT_PRIVATE_H__ */

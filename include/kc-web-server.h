@@ -97,7 +97,7 @@ KCWebContentType kc_web_server_get_content_type_from_ending(char *str);
  * @param length Length of the value
  * @return Created string
  */
-kcchar *kc_web_server_convert_value_string(const char *value, size_t length);
+KCWString kc_web_server_convert_value_string(const char *value, size_t length);
 
 #ifdef __cplusplus
 }

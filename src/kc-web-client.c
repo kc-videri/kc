@@ -135,7 +135,7 @@ int kc_web_client_set_http_version(KCWebClient obj,
     return kc_web_set_http_version((KCWeb) obj, version);
 }
 
-int kc_web_client_set_header(KCWebClient obj, char *key, char *value)
+int kc_web_client_set_header(KCWebClient obj, KCWString key, KCWString value)
 {
     fprintf(stderr, "%s::%s(%d): \n", __FILE__, __FUNCTION__, __LINE__);    // DELETE
     KCWebParameter item;
@@ -181,4 +181,11 @@ KCWebClientRecvMsg kc_web_client_send(KCWebClient obj)
     kc_web_free((KCWeb) result);
 
     return NULL;
+}
+
+KCString kc_web_client_create_query(KCWebClient obj)
+{
+    KCString result = NULL;
+
+    return result;
 }

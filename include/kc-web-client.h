@@ -129,7 +129,7 @@ int kc_web_client_set_http_version(KCWebClient obj, KCWebHTTPVersion version);
  * @param value Value to set
  * @return 0 ==> successful
  */
-int kc_web_client_set_header(KCWebClient obj, char *key, char *value);
+int kc_web_client_set_header(KCWebClient obj, KCWString key, KCWString value);
 /**
  * Set content message
  * @param obj KCWebClient object
