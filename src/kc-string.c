@@ -255,5 +255,4 @@ kcchar *kc_string_create_string(size_t * length, const char *str,
     }
 
     return result;
-
 }

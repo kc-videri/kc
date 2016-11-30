@@ -46,27 +46,27 @@ KCWString kc_wstring_new();
  * @param value Value to copy into created string
  * @return New created string or NULL on error
  */
-KCWString kc_wstring_new_with_string(const char *value, ...);
+KCWString kc_wstring_new_with_string(const kcchar *value, ...);
 /**
  * Create a string
  * @param value Value to copy into created string
  * @return New created string or NULL on error
  */
-KCWString kc_wstring_new_with_wstring(const wchar_t *value, ...);
-/**
- * Create a string
- * @param value Value to copy into created string
- * @param length Length of the value
- * @return New created string or NULL on error
- */
-KCWString kc_wstring_new_with_string_length(const char *value, size_t length);
+KCWString kc_wstring_new_with_wstring(const kcwchar *value, ...);
 /**
  * Create a string
  * @param value Value to copy into created string
  * @param length Length of the value
  * @return New created string or NULL on error
  */
-KCWString kc_wstring_new_with_wstring_length(const wchar_t *value, size_t length);
+KCWString kc_wstring_new_with_string_length(const kcchar *value, size_t length);
+/**
+ * Create a string
+ * @param value Value to copy into created string
+ * @param length Length of the value
+ * @return New created string or NULL on error
+ */
+KCWString kc_wstring_new_with_wstring_length(const kcwchar *value, size_t length);
 /**
  * Free string
  * @param string String to free
@@ -74,24 +74,85 @@ KCWString kc_wstring_new_with_wstring_length(const wchar_t *value, size_t length
  */
 int kc_wstring_free(KCWString string);
 
-#if 0
-int kc_wstring_append(KCWString, char *value, ...); 
-int kc_wstring_append_char(KCWString, char value);
-int kc_wstring_append_wchar(KCWString, wchar_t value);
-#endif
+/**
+ * Append a string
+ * @param obj KCWString object
+ * @param value String to append
+ * @return 0 => successful
+ */
+int kc_wstring_append(KCWString obj, kcwchar *value, ...);
+/**
+ * Append a char string
+ * @param obj KCWString object
+ * @param value String to append
+ * @return 0 => successful
+ */
+int kc_wstring_append_char_string(KCWString obj, kcchar *value, ...);
+/**
+ * Append a char
+ * @param obj KCWString object
+ * @param value char to append
+ * @return 0 => successful
+ */
+int kc_wstring_append_char(KCWString obj, kcchar value);
+/**
+ * Append a wchar
+ * @param obj KCWString object
+ * @param value wchar to append
+ * @return 0 => successful
+ */
+int kc_wstring_append_wchar(KCWString obj, kcwchar value);
+
+/**
+ * Compare two string
+ * @param string1 String 1
+ * @param string2 String 2
+ * @return 0 => equal
+ */
+int kc_wstring_compare(KCWString string1, KCWString string2);
+/**
+ * Compare two string
+ * @param string1 String 1
+ * @param string2 String 2
+ * @return 0 => equal
+ */
+int kc_wstring_compare_wchar(KCWString string1, kcwchar *string2);
+/**
+ * Compare two string
+ * @param string1 String 1
+ * @param string2 String 2
+ * @return 0 => equal
+ */
+int kc_wstring_compare_char(KCWString string1, kcchar *string2);
+/**
+ * Compare two string
+ * @param string1 String 1
+ * @param string2 String 2
+ * @param n Number of bytes to compare
+ * @return 0 => equal
+ */
+int kc_wstring_compare_size(KCWString string1, KCWString string2, size_t n);
+/**
+ * Compare two string
+ * @param string1 String 1
+ * @param string2 String 2
+ * @param n Number of bytes to compare
+ * @return 0 => equal
+ */
+int kc_wstring_compare_size_wchar(KCWString string1, kcwchar *string2, size_t n);
 
 /**
  * Get string as copy
  * @param obj KCWString object
  * @return String
  */
-kcchar *kc_wstring_get_string(KCWString obj);
+kcchar *kc_wstring_get_char_string(KCWString obj);
 /**
  * Get string as copy
  * @param obj KCWString object
  * @return String
  */
-kcwchar *kc_wstring_get_wstring(KCWString obj);
+kcwchar *kc_wstring_get_string(KCWString obj);
 /**
  * Get string
  * @param obj KCWString object
@@ -104,14 +165,14 @@ kcwchar *kc_wstring_get_string_pointer(KCWString obj);
  * @param pos Position to use
  * @return String
  */
-kcchar *kc_wstring_get_string_from_pos(KCWString obj, size_t pos);
+kcchar *kc_wstring_get_char_string_from_pos(KCWString obj, size_t pos);
 /**
  * Get string as copy from position
  * @param obj KCWString object
  * @param pos Position to use
  * @return String
  */
-kcwchar *kc_wstring_get_wstring_from_pos(KCWString obj, size_t pos);
+kcwchar *kc_wstring_get_string_from_pos(KCWString obj, size_t pos);
 /**
  * Get string from position
  * @param obj KCWString object
@@ -124,13 +185,13 @@ kcwchar *kc_wstring_get_string_pointer_from_pos(KCWString obj, size_t pos);
  * @param obj KCWString object
  * @return String
  */
-kcchar *kc_wstring_get_string_from_current_pos(KCWString obj);
+kcchar *kc_wstring_get_char_string_from_current_pos(KCWString obj);
 /**
  * Get string as copy from current position
  * @param obj KCWString object
  * @return String
  */
-kcwchar *kc_wstring_get_wstring_from_current_pos(KCWString obj);
+kcwchar *kc_wstring_get_string_from_current_pos(KCWString obj);
 /**
  * Get string from current position
  * @param obj KCWString object

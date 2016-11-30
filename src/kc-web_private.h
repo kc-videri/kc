@@ -25,6 +25,7 @@
 #include <kc-linked-list.h>
 #include <kc-object_private.h>
 #include <kc.h>
+#include <kc-wstring.h>
 
 /*
  * Private define declaration
@@ -56,8 +57,8 @@ struct kc_web {
 struct kc_web_parameter {
     struct kc_object object;    ///< Parent object
     KCWebParameterType type;    ///< On which way does the parameter come
-    kcchar *key;                ///< Key of a parameter
-    kcchar *value;              ///< Value of a parameter
+    KCWString key;              ///< Key of a parameter
+    KCWString value;            ///< Value of a parameter
 };
 
 /// Structure to encode and decode ASCII signs
@@ -143,14 +144,14 @@ int kc_web_parameter_free(KCWebParameter obj);
  * @param key Key to set
  * @return 0 => successful
  */
-int kc_web_parameter_set_key(KCWebParameter obj, char *key);
+int kc_web_parameter_set_key(KCWebParameter obj, KCWString key);
 /**
  * Set value
  * @param obj KCWebParameter pointer Object
  * @param value Value to set
  * @return 0 => successful
  */
-int kc_web_parameter_set_value(KCWebParameter obj, char *value);
+int kc_web_parameter_set_value(KCWebParameter obj, KCWString value);
 /**
  * Set type
  * @param obj KCWebParameter pointer Object

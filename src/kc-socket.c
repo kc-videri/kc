@@ -277,6 +277,21 @@ int main(int argc, char **argv)
         exit(1);
     }
     get = build_get_query(host, page);
+#if 0
+    char *query;
+    char *getpage = page;
+    char *tpl = "GET /%s HTTP/1.0\r\nHost: %s\r\nUser-Agent: %s\r\n\r\n";
+    if (getpage[0] == '/') {
+        getpage = getpage + 1;
+        fprintf(stderr, "Removing leading \"/\", converting %s to %s\n",
+                page, getpage);
+    }
+    // -5 is to consider the %s %s %s in tpl and the ending \0 query =
+    (char *) malloc(strlen(host) + strlen(getpage) +
+                    strlen(USERAGENT) + strlen(tpl) - 5);
+    sprintf(query, tpl, getpage, host, USERAGENT);
+    return query;
+#endif
     fprintf(stderr, "Query is:\n<<START>>\n%s<<END>>\n", get);
 
     //Send the query to the server
