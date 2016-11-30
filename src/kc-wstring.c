@@ -37,7 +37,6 @@
 // TODO MOT: test application
 KCWString kc_wstring_new()
 {
-    fprintf(stderr, "%s::%s(%d): // TODO MOT: to test\n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     return kc_wstring_new_with_string_length(NULL, BUFFER_LENGTH);
 }
 
@@ -105,7 +104,6 @@ KCWString kc_wstring_new_with_wstring(const wchar_t *value, ...)
 
 KCWString kc_wstring_new_with_string_length(const char *value, size_t length)
 {
-    fprintf(stderr, "%s::%s(%d): // TODO MOT: to test\n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     KCWString obj;
 
     obj = kc_wstring_new_with_length(length);
@@ -114,6 +112,7 @@ KCWString kc_wstring_new_with_string_length(const char *value, size_t length)
     }
 
     if (value != NULL) {
+        fprintf(stderr, "%s::%s(%d): // TODO MOT: to implement\n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
 #if 0
         memcpy(obj->string, value, length);
         obj->pos = obj->string_length = wcslen(value);
@@ -160,7 +159,6 @@ KCWString kc_wstring_new_with_wstring_length(const wchar_t *value, size_t length
 
 int kc_wstring_free(KCWString obj)
 {
-    fprintf(stderr, "%s::%s(%d): // TODO MOT: to test\n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     free(obj->string);
     kc_object_free((KCObject) obj);
 
@@ -235,7 +233,6 @@ kcwchar *kc_wstring_get_string(KCWString obj)
 
 kcwchar *kc_wstring_get_string_pointer(KCWString obj)
 {
-    fprintf(stderr, "%s::%s(%d): // TODO MOT: to test\n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     return kc_wstring_get_string_pointer_from_pos(obj, 0);
 }
 
@@ -274,7 +271,6 @@ kcwchar *kc_wstring_get_string_from_pos(KCWString obj, size_t pos)
 
 kcwchar *kc_wstring_get_string_pointer_from_pos(KCWString obj, size_t pos)
 {
-    fprintf(stderr, "%s::%s(%d): // TODO MOT: to test\n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     kcwchar *result = NULL;
 
     if (pos < 0 || pos >= kc_wstring_get_length(obj)) {
@@ -339,7 +335,6 @@ int kc_wstring_set_length(KCWString obj, size_t length)
 
 size_t kc_wstring_get_length(KCWString obj)
 {
-    fprintf(stderr, "%s::%s(%d): // TODO MOT: to test\n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     return obj->length;
 }
 
