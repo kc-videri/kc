@@ -23,6 +23,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <locale.h>
 
 #include <kc-object.h>
 #include <kc-wstring.h>
@@ -112,13 +113,16 @@ KCWString kc_wstring_new_with_string_length(const char *value, size_t length)
     }
 
     if (value != NULL) {
-        fprintf(stderr, "%s::%s(%d): // TODO MOT: to implement\n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
-#if 0
-        memcpy(obj->string, value, length);
-        obj->pos = obj->string_length = wcslen(value);
+        size_t retval;
+
+        retval = mbstowcs(obj->string, value, length);
+        if (retval == -1) {
+            kc_wstring_free(obj);
+            return NULL;
+        }
+        obj->pos = obj->string_length = retval;
         obj->length = length;
-        obj->string[length] = '\0';
-#endif
+        obj->string[length] = L'\0';
     } else {
         obj->pos = obj->string_length = 0;
         obj->length = length;
@@ -148,7 +152,7 @@ KCWString kc_wstring_new_with_wstring_length(const wchar_t *value, size_t length
         memcpy(obj->string, value, len);
         obj->pos = obj->string_length = len;
         obj->length = length;
-        obj->string[len] = '\0';
+        obj->string[len] = L'\0';
     } else {
         obj->pos = obj->string_length = 0;
         obj->length = length;
@@ -179,13 +183,28 @@ int kc_wstring_append_char_string(KCWString obj, kcchar *value, ...)
 
 int kc_wstring_append_char(KCWString obj, kcchar value)
 {
-    fprintf(stderr, "%s::%s(%d): // TODO MOT: to test\n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
+    kcwchar c;
+
+    if (kc_wstring_resize(obj, obj->string_length + 1) == NULL) {
+        return -1;
+    }
+
+    mbstowcs(&c, &value, 1);
+    obj->string[obj->string_length++] = c;
+    obj->string[obj->string_length] = L'\0';
+
     return 0;
 }
 
 int kc_wstring_append_wchar(KCWString obj, kcwchar value)
 {
-    fprintf(stderr, "%s::%s(%d): // TODO MOT: to test\n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
+    if (kc_wstring_resize(obj, obj->string_length + 1) == NULL) {
+        return -1;
+    }
+
+    obj->string[obj->string_length++] = value;
+    obj->string[obj->string_length] = L'\0';
+
     return 0;
 }
 
@@ -221,7 +240,6 @@ int kc_wstring_compare_size_wchar(KCWString string1, kcwchar *string2, size_t n)
 
 kcchar *kc_wstring_get_char_string(KCWString obj)
 {
-    fprintf(stderr, "%s::%s(%d): // TODO MOT: to test\n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
     return kc_wstring_get_char_string_from_pos(obj, 0);
 }
 
@@ -238,9 +256,32 @@ kcwchar *kc_wstring_get_string_pointer(KCWString obj)
 
 kcchar *kc_wstring_get_char_string_from_pos(KCWString obj, size_t pos)
 {
-    fprintf(stderr, "%s::%s(%d): // TODO MOT: to implement\n", __FILE__, __FUNCTION__, __LINE__); // DELETE 
+    kcchar *result = NULL;
+    kcwchar *buffer = NULL;
+    size_t retval, length;
 
-    return NULL;
+    if (pos < 0 || pos >= kc_wstring_get_length(obj)) {
+        return result;
+    }
+
+    buffer = obj->string;
+    buffer += pos;
+    length = wcslen(buffer);
+
+    result = (kcchar *)malloc(((length * 4) + 1) * sizeof(kcchar));
+    if (result == NULL) {
+        return result;
+    }
+
+    setlocale(LC_ALL, "");
+
+    retval = wcstombs(result, buffer, length * 4);
+    if (retval == -1) {
+        free (result);
+        result = NULL;
+    }
+
+    return result;
 }
 
 kcwchar *kc_wstring_get_string_from_pos(KCWString obj, size_t pos)
@@ -335,7 +376,7 @@ int kc_wstring_set_length(KCWString obj, size_t length)
 
 size_t kc_wstring_get_length(KCWString obj)
 {
-    return obj->length;
+    return obj->string_length;
 }
 
 /*
@@ -350,19 +391,31 @@ KCWString kc_wstring_new_with_length(size_t length)
     if (obj == NULL) {
         goto kc_string_new_with_string_length_exit;
     }
-    obj->string = (kcwchar *) malloc((length + 1) * sizeof(kcwchar));
-    if (obj->string == NULL) {
-        goto kc_string_new_with_string_length_string;
+    obj->string = NULL;
+    obj->length = 0;
+    kc_wstring_resize(obj, length);
+
+  kc_string_new_with_string_length_exit:
+    return obj;
+}
+
+KCWString kc_wstring_resize(KCWString obj, size_t length)
+{
+    if (obj->length < length) {
+        obj->string = (kcwchar *) realloc(obj->string,
+                                          (length + 1) * sizeof(kcwchar));
+        if (obj->string == NULL) {
+            goto kc_string_new_with_string_length_string;
+        }
+        obj->length = length;
     }
 
     return obj;
 
   kc_string_new_with_string_length_string:
     free(obj);
-    obj = NULL;
 
-  kc_string_new_with_string_length_exit:
-    return obj;
+    return NULL;
 }
 
 kcchar *kc_wstring_create_string(size_t * length, const char *str,
@@ -431,6 +484,8 @@ int main()
     }
     printf("%lc \n", sign);
 
+    int string_length = wcslen(umlauts) * 3;
+    char string[string_length];
     retval = wcstombs(string, umlauts, string_length);
     printf("%ld: %s: ", retval, string);
     for (i = 0; i < retval; i++) {

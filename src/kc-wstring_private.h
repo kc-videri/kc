@@ -44,6 +44,13 @@ struct kc_wstring {
  */
 KCWString kc_wstring_new_with_length(size_t length);
 /**
+ * Resize string if it has to
+ * @param obj KCWString object
+ * @param length Memory length to allocates
+ * @return KCWString object or NULL on error
+ */
+KCWString kc_wstring_resize(KCWString obj, size_t length);
+/**
  * Create a string
  * @param [out] length Length of the string
  * @param str Main part of the string

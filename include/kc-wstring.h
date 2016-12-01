@@ -142,7 +142,7 @@ int kc_wstring_compare_size(KCWString string1, KCWString string2, size_t n);
 int kc_wstring_compare_size_wchar(KCWString string1, kcwchar *string2, size_t n);
 
 /**
- * Get string as copy
+ * Get string as copy, String has to be free
  * @param obj KCWString object
  * @return String
  */
@@ -160,7 +160,7 @@ kcwchar *kc_wstring_get_string(KCWString obj);
  */
 kcwchar *kc_wstring_get_string_pointer(KCWString obj);
 /**
- * Get string as copy from position
+ * Get string as copy from position, String has to be free
  * @param obj KCWString object
  * @param pos Position to use
  * @return String
@@ -187,7 +187,7 @@ kcwchar *kc_wstring_get_string_pointer_from_pos(KCWString obj, size_t pos);
  */
 kcchar *kc_wstring_get_char_string_from_current_pos(KCWString obj);
 /**
- * Get string as copy from current position
+ * Get string as copy from current position, String has to be free
  * @param obj KCWString object
  * @return String
  */
