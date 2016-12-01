@@ -61,12 +61,19 @@ int main(void)
              !kc_linked_list_item_is_last(list, iterator);
              iterator = kc_linked_list_item_get_next(iterator)) {
             KCWebParameter entry;
+            KCWString buffer;
+            kcchar *key, *value;
             entry =
                 (KCWebParameter) kc_linked_list_item_get_data(iterator);
-            printf("%02x: type: %02x; key: %-20s; value: %s\n", i++,
-                   kc_web_parameter_get_type(entry),
-                   kc_web_parameter_get_key(entry),
-                   kc_web_parameter_get_value(entry));
+            
+            buffer = kc_web_parameter_get_key(entry);
+            key = kc_wstring_get_char_string(buffer);
+            buffer = kc_web_parameter_get_value(entry);
+            value = kc_wstring_get_char_string(buffer);
+            printf("%02x: type: %02x; key: %-20s; value: %s\n", i++, 
+                   kc_web_parameter_get_type(entry), key, value);
+            free(key);
+            free(value);
         }
         printf("\n");
 

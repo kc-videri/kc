@@ -270,29 +270,17 @@ KCWebContentType kc_web_server_get_content_type_from_ending(char *str)
 KCWString kc_web_server_convert_value_string(const char *value, size_t length)
 {
     KCWString result;
-#if 0
-    size_t _length;
     size_t i, j;
-#endif
 
-    fprintf(stderr, "%s(%d): TODO to implement\n", __FUNCTION__, __LINE__); // DELETE
-
-        fprintf(stderr, "%d: %s\n", __LINE__, value); // DELETE 
-    // TODO MOT: Use KCWString
     result = kc_wstring_new();
     if (result == NULL) {
         return NULL;
     }
 
-#if 0
-    _length = length;
-
-        fprintf(stderr, "%d: %s\n", __LINE__, value); // DELETE 
-    for (i = 0, j = 0; i < _length; i++, j++) {
-        fprintf(stderr, "%d: %d %d %lc %02x\n", __LINE__, i, j, value[i], value[i]); // DELETE 
+    for (i = 0, j = 0; i < length; i++, j++) {
         switch (value[i]) {
         case '+':
-            result[j] = ' ';
+            kc_wstring_append_char(result, ' ');
             break;
         case '%':
             if (isxdigit(value[i + 1]) && isxdigit(value[i + 2])) {
@@ -304,13 +292,9 @@ KCWString kc_web_server_convert_value_string(const char *value, size_t length)
                 buffer[2] = '\0';
 
                 id = (uint8_t) strtol(buffer, NULL, 16);
-                fprintf(stderr, "%d: %lc %02x %s %d %02x\n", __LINE__, id, id, buffer, strtol(buffer, NULL, 16), strtol(buffer, NULL, 16)); // DELETE
                 if (html_chars[id].sign != 0) {
-                    result[j] = html_chars[id].sign;
-                    fprintf(stderr, "%d: %lc\n", __LINE__, html_chars[id].sign); // DELETE
-                    fprintf(stderr, "%d: %s\n", __LINE__, html_chars[id].symbol); // DELETE
+                    kc_wstring_append_wchar(result, html_chars[id].sign);
                 } else {
-                    fprintf(stderr, "%d\n", __LINE__); // DELETE 
                     j--;
                 }
                 i += 2;
@@ -320,14 +304,11 @@ KCWString kc_web_server_convert_value_string(const char *value, size_t length)
 
             break;
         default:
-            result[j] = value[i];
+            kc_wstring_append_char(result, value[i]);
 
             break;
         }
-        fprintf(stderr, "%d: %d %ls\n", __LINE__, _length, result); // DELETE 
     }
-    result[_length] = '\0';
-#endif
 
     return result;
 }
@@ -358,7 +339,6 @@ int kc_web_server_parse_query_string(KCWebServer obj,
             }
         }
 
-        fprintf(stderr, "%d %s\n", current_length, buffer); // DELETE 
         item =
             kc_web_server_parameter_new_from_string(buffer, current_length,
                                                     type);
@@ -390,7 +370,6 @@ KCWebParameter kc_web_server_parameter_new_from_string(char *string,
         }
     }
 
-    fprintf(stderr, "%d: %s\n", __LINE__, string); // DELETE 
     if (i > 0) {
         KCWString key;
 
@@ -399,22 +378,16 @@ KCWebParameter kc_web_server_parameter_new_from_string(char *string,
             return obj;
         }
         kc_web_parameter_set_type(obj, type);
-            fprintf(stderr, "%d: %s\n", __LINE__, string); // DELETE 
 
         key = kc_wstring_new_with_string_length(string, i);
-        fprintf(stderr, "key: %ls\n", kc_wstring_get_string_pointer(key)); // DELETE
         kc_web_parameter_set_key(obj, key);
-        kc_wstring_free(key);
-        fprintf(stderr, "%d: %s\n", __LINE__, string); // DELETE
 
         if (i != length) {
             KCWString value;
-            fprintf(stderr, "%d: %s\n", __LINE__, string + i + 1); // DELETE 
 
             value =
                 kc_web_server_convert_value_string(string + i + 1,
                                                    length - i - 1);
-            fprintf(stderr, "%d: %s\n", __LINE__, value); // DELETE 
             kc_web_parameter_set_value(obj, value);
         }
     }
